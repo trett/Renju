@@ -26,7 +26,7 @@ private:
     int **table;
     int column, rows;
     QByteArray array;
-    void conversionMove();
+    void conversionMove(int cx, int cy);
     void DebugInConsole();
     int checkDst(int mx, int my, int dx, int dy, int a);
     void generator();

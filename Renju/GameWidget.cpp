@@ -49,16 +49,20 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     //qDebug()<<pointX<<"    "<<pointY<<"\n"<<pe->x()<<"   "<<pe->y();
     x=(pointX-20)/40;
     y=(pointY-20)/40;
+    qDebug()<<table[x][y];
     if (table[x][y]!=1 && table[x][y]!=2){
-    this->moveFirst();
-    this->conversionMove();
-    this->checkTable(x,y);
-    counter++;
-    this->moveSecond();
-    this->conversionMove();
-    this->checkTable(x1,y1);
-    counter++;
-}
+
+        this->moveFirst();
+        this->conversionMove(x,y);
+        qDebug()<<"x y"<<x<<y;
+        this->checkTable(x,y);
+        counter++;
+        this->moveSecond();
+        this->conversionMove(x1,y1);
+        qDebug()<<"x1 y1"<<x1<<y1;
+        this->checkTable(x1,y1);
+        counter++;
+    }
     else qDebug("Impossible");
 }
 
@@ -87,39 +91,30 @@ void GameWidget::moveFirst()
 }
 void GameWidget::moveSecond()
 {
-    QPainter p3(&pix);
-    p3.setRenderHint(QPainter::Antialiasing,true);
-    p3.setBrush(QBrush(Qt::white));
-    int cx,cy;
     generator();
     if (table[x1][y1]!=1 && table[x1][y1]!=2){
-    cx=x1*40+10;
-    cy=y1*40+10;// пока рандомно
-    }
-    else generator();
-    p3.drawEllipse(QRect(cx,cy,20,20));
-    //qDebug()<<x1<<"         "<<y1;
+        QPainter p3(&pix);
+        p3.setRenderHint(QPainter::Antialiasing,true);
+        p3.setBrush(QBrush(Qt::white));
+        p3.drawEllipse(QRect(x1*40+10,y1*40+10,20,20));
     this->repaint();
-
+    }
+    else moveSecond();
 }
-void GameWidget::conversionMove()
+void GameWidget::conversionMove(int cx, int cy)
 {   
     bool odd = !!(counter & 1);
-    // qDebug()<<cellX<<"  "<<cellY;
     if (odd==true){
-//        x=(pointX-20)/40;
-//        y=(pointY-20)/40;
-        table[x][y]=1;
+        table[cx][cy]=1;
     }
     else {
-        table[x1][y1]=2;
+        table[cx][cy]=2;
     }
 }
 void GameWidget::DebugInConsole()
 {
     for (int j=0;j<column;++j){
         for(int k=0;k<rows;++k){
-            //            qDebug()<<cell [j][k];
             std::cout<<table[k][j];
             if(k>=14) std::cout<<"\n";
         }
