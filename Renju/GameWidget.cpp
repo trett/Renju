@@ -4,7 +4,8 @@
 #include <QPixmap>
 #include "GameWidget.h"
 #include <iostream>
-#define MIN=0,MAX=14
+#define MIN 0
+#define MAX 14
 GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600),column(15),rows(15),x(0),y(0),
     counter(1),x1(0),y1(0)
 {
@@ -117,15 +118,13 @@ void GameWidget::DebugInConsole()
 void GameWidget::checkTable()
 {
     //  qDebug()<<"x y"<<x<<""<<y;
-    int min,max,fiveRows,cx,cy;
-    min=0;
-    max=14;
+    int fiveRows,cx,cy;
     fiveRows=0;
     cx=x;
     cy=y;
     while(cx>(x-5) && cx>=0){
         for (int i=0;i<5;++i){
-            if(cx>=min && cx+i<=max){
+            if(cx>=MIN && cx+i<=MAX){
                 // qDebug()<<"x  "<<c+i;
                 if (table[cx+i][y]==1)
                     fiveRows++;
@@ -141,7 +140,7 @@ void GameWidget::checkTable()
     }
     while(cy>(y-5) && cy>=0){
         for (int i=0;i<5;++i){
-            if(cy>=min && cy+i<=max){
+            if(cy>=MIN && cy+i<=MAX){
                 //               qDebug()<<"y "<<cy+i;
                 if (table[x][cy+i]==1)
                     fiveRows++;
@@ -159,7 +158,7 @@ void GameWidget::checkTable()
     cy=y;
     while(cy>(y-5) && cx>(x-5)){
         for (int i=0;i<5;++i){
-            if(cy>=min && cy+i<=max && cx>=min && cx+i<=max){
+            if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
                 //             qDebug()<<cx+i<<"  "<<cy+i;
                 if (table[cx+i][cy+i]==1)
                     fiveRows++;
@@ -178,7 +177,7 @@ void GameWidget::checkTable()
     cy=y;
     while(cy<(y+5) && cx>(x-5)){
         for (int i=0;i<5;++i){
-            if(cy>=min && cy+i<=max && cx>=min && cx+i<=max){
+            if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
                 // qDebug()<<cx+i<<"  "<<cy-i;
                 if (table[cx+i][cy-i]==1)
                     fiveRows++;
