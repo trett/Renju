@@ -28,7 +28,6 @@ private:
     QByteArray array;
     void conversionMove();
     void DebugInConsole();
-    int checkFive(int black, int white);
     int checkDst(int mx, int my, int dx, int dy, int a);
 };
 
