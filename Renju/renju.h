@@ -16,7 +16,7 @@ public:
     explicit Renju(QWidget *parent = 0);
     ~Renju();
      GameWidget gw;
-    QVBoxLayout v_layout;
+     QVBoxLayout v_layout;
 
 private slots:
 

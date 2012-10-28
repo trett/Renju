@@ -14,19 +14,17 @@ public:
     void clearTable();
     void moveFirst();
     void moveSecond();
-    int cellX,cellY;
     int counter;
+    void checkTable();
 protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
 private:
     void paintEvent(QPaintEvent *event);
     QPixmap pix;
-    int pointX;
-    int pointY;
-    int **cell;
-    int column;
-    int rows;
+    int pointX,pointY,x,y,x1,y1;
+    int **table;
+    int column, rows;
     QByteArray array;
     void conversionMove();
     void DebugInConsole();

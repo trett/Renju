@@ -4,7 +4,9 @@
 #include <QPixmap>
 #include "GameWidget.h"
 #include <iostream>
-GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600),column(15),rows(15),cellX(0),cellY(0),counter(1)
+#define MIN=0,MAX=14
+GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600),column(15),rows(15),x(0),y(0),
+    counter(1),x1(0),y1(0)
 {
     this->setStyleSheet("background: #FFDEAD; border: 5px solid black;");
     this->setFixedSize(600,600);
@@ -17,11 +19,11 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600),column(15),
 GameWidget::~GameWidget()
 {
     qDebug("ia umer");
-     this->DebugInConsole();
+    this->DebugInConsole();
     for (int i=0; i<column;++i){
-        delete []cell[i];
+        delete []table[i];
     }
-    delete [] cell;
+    delete [] table;
 }
 
 void GameWidget::paintEvent(QPaintEvent *event)
@@ -42,19 +44,24 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     //qDebug()<<pointX<<"    "<<pointY<<"\n"<<pe->x()<<"   "<<pe->y();
     this->moveFirst();
     this->conversionMove();
+    this->checkTable();
     counter++;
+    this->moveSecond();
+    this->conversionMove();
+    counter++;
+
 }
 
 void GameWidget::clearTable()
 {
     pix.loadFromData(array);
-    cell = new int *[column];
+    table = new int *[column];
     for (int i=0;i<column;++i){
-        cell[i]= new int[rows];
+        table[i]= new int[rows];
     }
     for (int j=0;j<column;++j){
         for(int k=0;k<rows;++k){
-            cell[j][k]=0;
+            table[j][k]=0;
             //qDebug()<<cell [j][k];
         }
     }
@@ -70,30 +77,120 @@ void GameWidget::moveFirst()
 }
 void GameWidget::moveSecond()
 {
+    QPainter p3(&pix);
+    p3.setRenderHint(QPainter::Antialiasing,true);
+    p3.setBrush(QBrush(Qt::white));
+    int cx,cy;
+    x1=rand()%15;
+    cx=x1*40+10; //
+    y1=rand()%15;
+    cy=y1*40+10; // пока рандомно
+    p3.drawEllipse(QRect(cx,cy,20,20));
+    //qDebug()<<x1<<"         "<<y1;
+    this->repaint();
 
 }
 void GameWidget::conversionMove()
 {
-    cellX=(pointX-20)/40;
-    cellY=(pointY-20)/40;
-    qDebug()<<"counter"<<counter;
+
     bool odd = !!(counter & 1);
-    qDebug()<<cellX<<"  "<<cellY;
+    // qDebug()<<cellX<<"  "<<cellY;
     if (odd==true){
-        cell[cellX][cellY]=1;
+        x=(pointX-20)/40;
+        y=(pointY-20)/40;
+        table[x][y]=1;
     }
     else {
-        cell[cellX][cellY]=2;
+        table[x1][y1]=2;
     }
-    qDebug()<<"odd"<<odd;
 }
 void GameWidget::DebugInConsole()
 {
     for (int j=0;j<column;++j){
         for(int k=0;k<rows;++k){
-//            qDebug()<<cell [j][k];
-            std::cout<<cell[k][j];
+            //            qDebug()<<cell [j][k];
+            std::cout<<table[k][j];
             if(k>=14) std::cout<<"\n";
         }
+    }
+}
+void GameWidget::checkTable()
+{
+    //  qDebug()<<"x y"<<x<<""<<y;
+    int min,max,fiveRows,cx,cy;
+    min=0;
+    max=14;
+    fiveRows=0;
+    cx=x;
+    cy=y;
+    while(cx>(x-5) && cx>=0){
+        for (int i=0;i<5;++i){
+            if(cx>=min && cx+i<=max){
+                // qDebug()<<"x  "<<c+i;
+                if (table[cx+i][y]==1)
+                    fiveRows++;
+            }
+        }
+        // qDebug()<<"Xrows "<<fiveRows;
+        if (fiveRows==5){
+            qDebug()<<"X You win";
+            fiveRows=0;
+        }
+        else {fiveRows=0;}
+        cx--;
+    }
+    while(cy>(y-5) && cy>=0){
+        for (int i=0;i<5;++i){
+            if(cy>=min && cy+i<=max){
+                //               qDebug()<<"y "<<cy+i;
+                if (table[x][cy+i]==1)
+                    fiveRows++;
+            }
+        }
+       // qDebug()<<"Yrows "<<fiveRows;
+        if (fiveRows==5){
+            qDebug()<<"Y You win";
+            fiveRows=0;
+        }
+        else {fiveRows=0;}
+        cy--;
+    }
+    cx=x;
+    cy=y;
+    while(cy>(y-5) && cx>(x-5)){
+        for (int i=0;i<5;++i){
+            if(cy>=min && cy+i<=max && cx>=min && cx+i<=max){
+                //             qDebug()<<cx+i<<"  "<<cy+i;
+                if (table[cx+i][cy+i]==1)
+                    fiveRows++;
+            }
+        }
+        //qDebug()<<"Arows "<<fiveRows;
+        if (fiveRows==5){
+            qDebug()<<"A You win";
+            fiveRows=0;
+        }
+        else {fiveRows=0;}
+        cy--;
+        cx--;
+    }
+    cx=x;
+    cy=y;
+    while(cy<(y+5) && cx>(x-5)){
+        for (int i=0;i<5;++i){
+            if(cy>=min && cy+i<=max && cx>=min && cx+i<=max){
+                // qDebug()<<cx+i<<"  "<<cy-i;
+                if (table[cx+i][cy-i]==1)
+                    fiveRows++;
+            }
+        }
+        //qDebug()<<"Brows "<<fiveRows;
+        if (fiveRows==5){
+            qDebug()<<"B You win";
+            fiveRows=0;
+        }
+        else {fiveRows=0;}
+        cy++;
+        cx--;
     }
 }
