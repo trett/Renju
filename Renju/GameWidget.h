@@ -29,6 +29,7 @@ private:
     void conversionMove();
     void DebugInConsole();
     int checkDst(int mx, int my, int dx, int dy, int a);
+    void generator();
 };
 
 #endif // GAMEWIDGET_H

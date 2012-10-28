@@ -47,6 +47,9 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     pointX = ((qRound((double((pe->x()-20))/40)))*40)+20;
     pointY = ((qRound((double((pe->y()-20))/40)))*40)+20;
     //qDebug()<<pointX<<"    "<<pointY<<"\n"<<pe->x()<<"   "<<pe->y();
+    x=(pointX-20)/40;
+    y=(pointY-20)/40;
+    if (table[x][y]!=1 && table[x][y]!=2){
     this->moveFirst();
     this->conversionMove();
     this->checkTable(x,y);
@@ -55,7 +58,8 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     this->conversionMove();
     this->checkTable(x1,y1);
     counter++;
-
+}
+    else qDebug("Impossible");
 }
 
 void GameWidget::clearTable()
@@ -87,10 +91,12 @@ void GameWidget::moveSecond()
     p3.setRenderHint(QPainter::Antialiasing,true);
     p3.setBrush(QBrush(Qt::white));
     int cx,cy;
-    x1=rand()%15;
-    cx=x1*40+10; //
-    y1=rand()%15;
-    cy=y1*40+10; // пока рандомно
+    generator();
+    if (table[x1][y1]!=1 && table[x1][y1]!=2){
+    cx=x1*40+10;
+    cy=y1*40+10;// пока рандомно
+    }
+    else generator();
     p3.drawEllipse(QRect(cx,cy,20,20));
     //qDebug()<<x1<<"         "<<y1;
     this->repaint();
@@ -101,8 +107,8 @@ void GameWidget::conversionMove()
     bool odd = !!(counter & 1);
     // qDebug()<<cellX<<"  "<<cellY;
     if (odd==true){
-        x=(pointX-20)/40;
-        y=(pointY-20)/40;
+//        x=(pointX-20)/40;
+//        y=(pointY-20)/40;
         table[x][y]=1;
     }
     else {
@@ -151,4 +157,9 @@ int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
         cy += dy;
     }
     return c;
+}
+void GameWidget::generator()
+{
+    x1=rand()%15;
+    y1=rand()%15;
 }
