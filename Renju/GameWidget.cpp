@@ -6,9 +6,13 @@
 #include <iostream>
 #define MIN 0
 #define MAX 14
-GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600),column(15),rows(15),x(0),y(0),
-    counter(1),x1(0),y1(0)
+GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600)
 {
+    column=15;
+    rows=15;
+    x=x1=0;
+    y=y1=0;
+    counter=1;
     this->setStyleSheet("background: #FFDEAD; border: 5px solid black;");
     this->setFixedSize(600,600);
     QColor color(0,0,0,0);
@@ -45,10 +49,11 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     //qDebug()<<pointX<<"    "<<pointY<<"\n"<<pe->x()<<"   "<<pe->y();
     this->moveFirst();
     this->conversionMove();
-    this->checkTable();
+    this->checkTable(x,y);
     counter++;
     this->moveSecond();
     this->conversionMove();
+    this->checkTable(x1,y1);
     counter++;
 
 }
@@ -115,81 +120,91 @@ void GameWidget::DebugInConsole()
         }
     }
 }
-void GameWidget::checkTable()
+void GameWidget::checkTable(int dx,int dy)
 {
-    //  qDebug()<<"x y"<<x<<""<<y;
-    int fiveRows,cx,cy;
-    fiveRows=0;
-    cx=x;
-    cy=y;
-    while(cx>(x-5) && cx>=0){
+    int b_fiveRows,w_fiveRows,cx,cy;
+    b_fiveRows=0;
+    w_fiveRows=0;
+    cx=dx;
+    cy=dy;
+    while(cx>(dx-5) && cx>=0){
         for (int i=0;i<5;++i){
             if(cx>=MIN && cx+i<=MAX){
-                // qDebug()<<"x  "<<c+i;
-                if (table[cx+i][y]==1)
-                    fiveRows++;
+                if (table[cx+i][dy]==1 )
+                    b_fiveRows++;
+                else if(table[cx+i][dy]==2)
+                    w_fiveRows++;
             }
         }
-        // qDebug()<<"Xrows "<<fiveRows;
-        if (fiveRows==5){
-            qDebug()<<"X You win";
-            fiveRows=0;
+        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+            b_fiveRows=0;
+            w_fiveRows=0;
         }
-        else {fiveRows=0;}
         cx--;
     }
-    while(cy>(y-5) && cy>=0){
+    while(cy>(dy-5) && cy>=0){
         for (int i=0;i<5;++i){
             if(cy>=MIN && cy+i<=MAX){
-                //               qDebug()<<"y "<<cy+i;
-                if (table[x][cy+i]==1)
-                    fiveRows++;
+                if (table[dx][cy+i]==1)
+                    b_fiveRows++;
+                else if(table[dx][cy+i]==2)
+                    w_fiveRows++;
             }
         }
-       // qDebug()<<"Yrows "<<fiveRows;
-        if (fiveRows==5){
-            qDebug()<<"Y You win";
-            fiveRows=0;
+        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+            b_fiveRows=0;
+            w_fiveRows=0;
         }
-        else {fiveRows=0;}
         cy--;
     }
-    cx=x;
-    cy=y;
-    while(cy>(y-5) && cx>(x-5)){
+    cx=dx;
+    cy=dy;
+    while(cy>(dy-5) && cx>(dx-5)){
         for (int i=0;i<5;++i){
             if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
-                //             qDebug()<<cx+i<<"  "<<cy+i;
                 if (table[cx+i][cy+i]==1)
-                    fiveRows++;
+                    b_fiveRows++;
+                else if (table[cx+i][cy+i]==2)
+                    w_fiveRows++;
             }
         }
-        //qDebug()<<"Arows "<<fiveRows;
-        if (fiveRows==5){
-            qDebug()<<"A You win";
-            fiveRows=0;
+        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+            b_fiveRows=0;
+            w_fiveRows=0;
         }
-        else {fiveRows=0;}
         cy--;
         cx--;
     }
-    cx=x;
-    cy=y;
-    while(cy<(y+5) && cx>(x-5)){
+    cx=dx;
+    cy=dy;
+    while(cy<(dy+5) && cx>(dx-5)){
         for (int i=0;i<5;++i){
-            if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
-                // qDebug()<<cx+i<<"  "<<cy-i;
+            if(cy-i>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
                 if (table[cx+i][cy-i]==1)
-                    fiveRows++;
+                    b_fiveRows++;
+                else if (table[cx+i][cy-i]==1)
+                    w_fiveRows++;
             }
         }
-        //qDebug()<<"Brows "<<fiveRows;
-        if (fiveRows==5){
-            qDebug()<<"B You win";
-            fiveRows=0;
+        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+            b_fiveRows=0;
+            w_fiveRows=0;
         }
-        else {fiveRows=0;}
         cy++;
         cx--;
     }
+}
+
+int GameWidget::checkFive(int black, int white)
+{
+    if (black==5){
+        qDebug()<<"Black  win";
+        return 1;
+    }
+    else if (white==5){
+        qDebug()<<"White win";
+        return 1;
+    }
+    else return 0;
+
 }

@@ -10,12 +10,12 @@ class GameWidget : public QWidget
 {
 public:
     GameWidget(QWidget* parent = 0);
-   virtual ~GameWidget();
+    virtual ~GameWidget();
     void clearTable();
     void moveFirst();
     void moveSecond();
     int counter;
-    void checkTable();
+    void checkTable(int dx, int dy);
 protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
@@ -28,6 +28,7 @@ private:
     QByteArray array;
     void conversionMove();
     void DebugInConsole();
+    int checkFive(int black, int white);
 };
 
 #endif // GAMEWIDGET_H
