@@ -122,77 +122,87 @@ void GameWidget::DebugInConsole()
 }
 void GameWidget::checkTable(int dx,int dy)
 {
-    int b_fiveRows,w_fiveRows,cx,cy;
-    b_fiveRows=0;
-    w_fiveRows=0;
-    cx=dx;
-    cy=dy;
-    while(cx>(dx-5) && cx>=0){
-        for (int i=0;i<5;++i){
-            if(cx>=MIN && cx+i<=MAX){
-                if (table[cx+i][dy]==1 )
-                    b_fiveRows++;
-                else if(table[cx+i][dy]==2)
-                    w_fiveRows++;
-            }
-        }
-        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
-            b_fiveRows=0;
-            w_fiveRows=0;
-        }
-        cx--;
-    }
-    while(cy>(dy-5) && cy>=0){
-        for (int i=0;i<5;++i){
-            if(cy>=MIN && cy+i<=MAX){
-                if (table[dx][cy+i]==1)
-                    b_fiveRows++;
-                else if(table[dx][cy+i]==2)
-                    w_fiveRows++;
-            }
-        }
-        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
-            b_fiveRows=0;
-            w_fiveRows=0;
-        }
-        cy--;
-    }
-    cx=dx;
-    cy=dy;
-    while(cy>(dy-5) && cx>(dx-5)){
-        for (int i=0;i<5;++i){
-            if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
-                if (table[cx+i][cy+i]==1)
-                    b_fiveRows++;
-                else if (table[cx+i][cy+i]==2)
-                    w_fiveRows++;
-            }
-        }
-        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
-            b_fiveRows=0;
-            w_fiveRows=0;
-        }
-        cy--;
-        cx--;
-    }
-    cx=dx;
-    cy=dy;
-    while(cy<(dy+5) && cx>(dx-5)){
-        for (int i=0;i<5;++i){
-            if(cy-i>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
-                if (table[cx+i][cy-i]==1)
-                    b_fiveRows++;
-                else if (table[cx+i][cy-i]==1)
-                    w_fiveRows++;
-            }
-        }
-        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
-            b_fiveRows=0;
-            w_fiveRows=0;
-        }
-        cy++;
-        cx--;
-    }
+//    int b_fiveRows,w_fiveRows,cx,cy;
+//    b_fiveRows=0;
+//    w_fiveRows=0;
+//    cx=dx;
+//    cy=dy;
+//    while(cx>(dx-5) && cx>=0){
+//        for (int i=0;i<5;++i){
+//            if(cx>=MIN && cx+i<=MAX){
+//                if (table[cx+i][dy]==1 )
+//                    b_fiveRows++;
+//                else if(table[cx+i][dy]==2)
+//                    w_fiveRows++;
+//            }
+//        }
+//        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+//            b_fiveRows=0;
+//            w_fiveRows=0;
+//        }
+//        cx--;
+//    }
+//    while(cy>(dy-5) && cy>=0){
+//        for (int i=0;i<5;++i){
+//            if(cy>=MIN && cy+i<=MAX){
+//                if (table[dx][cy+i]==1)
+//                    b_fiveRows++;
+//                else if(table[dx][cy+i]==2)
+//                    w_fiveRows++;
+//            }
+//        }
+//        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+//            b_fiveRows=0;
+//            w_fiveRows=0;
+//        }
+//        cy--;
+//    }
+//    cx=dx;
+//    cy=dy;
+//    while(cy>(dy-5) && cx>(dx-5)){
+//        for (int i=0;i<5;++i){
+//            if(cy>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
+//                if (table[cx+i][cy+i]==1)
+//                    b_fiveRows++;
+//                else if (table[cx+i][cy+i]==2)
+//                    w_fiveRows++;
+//            }
+//        }
+//        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+//            b_fiveRows=0;
+//            w_fiveRows=0;
+//        }
+//        cy--;
+//        cx--;
+//    }
+//    cx=dx;
+//    cy=dy;
+//    while(cy<(dy+5) && cx>(dx-5)){
+//        for (int i=0;i<5;++i){
+//            if(cy-i>=MIN && cy+i<=MAX && cx>=MIN && cx+i<=MAX){
+//                if (table[cx+i][cy-i]==1)
+//                    b_fiveRows++;
+//                else if (table[cx+i][cy-i]==1)
+//                    w_fiveRows++;
+//            }
+//        }
+//        if(this->checkFive(b_fiveRows,w_fiveRows)!=1){
+//            b_fiveRows=0;
+//            w_fiveRows=0;
+//        }
+//        cy++;
+//        cx--;
+//    }
+
+    if (checkDst(dx, dy, 1, 0, 1) >= 5 || checkDst(dx, dy, 0, 1, 1) >= 5
+            || checkDst(dx, dy, 1, 1, 1) >= 5  || checkDst(dx, dy, 1, -1, 1) >= 5)
+    qDebug()<<"Black Wins!";
+    else if (checkDst(dx, dy, 1, 0, 2) >= 5 || checkDst(dx, dy, 0, 1, 2) >= 5
+                          || checkDst(dx, dy, 1, 1, 2) >= 5  || checkDst(dx, dy, 1, -1, 2) >= 5)
+                  qDebug()<<"White Wins!";
+    else
+        qDebug("Continue game");
+
 }
 
 int GameWidget::checkFive(int black, int white)
@@ -208,3 +218,24 @@ int GameWidget::checkFive(int black, int white)
     else return 0;
 
 }
+int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
+ {
+     int cx = mx, cy = my;
+      int c = 0;
+      while (cx >= MIN && cx <= MAX && cy >= MIN && cy <= MAX && table[cx][cy] == a) {
+       ++c;
+      cx += dx;
+      cy += dy;
+      }
+      dx = -dx;
+      dy = -dy;
+      cx = x + dx;
+      cy = y + dy;
+      while (cx >= MIN && cx <= MAX && cy >= MIN && cy <= MAX && table[cx][cy] == a ) {
+          if (table[cx][cy] == 1)
+     ++c;
+      cx += dx;
+      cy += dy;
+      }
+      return c;
+ }
