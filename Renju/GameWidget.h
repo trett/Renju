@@ -15,7 +15,7 @@ public:
     void moveFirst();
     void moveSecond();
     int counter;
-    void checkTable(int dx, int dy);
+    void checkTable(int dx, int dy, int color);
 protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
@@ -24,12 +24,19 @@ private:
     QPixmap pix;
     int pointX,pointY,x,y,x1,y1;
     int **table;
-    int column, rows;
+    int **rating;
     QByteArray array;
     void conversionMove(int cx, int cy);
     void DebugInConsole();
     int checkDst(int mx, int my, int dx, int dy, int a);
     void generator();
+    void showWin(QString str);
+    int checkRatingH(int zx, int zy, int aq);
+    int checkRatingV(int zx, int zy, int aq);
+    int checkRatingD1(int zx, int zy, int aq);
+       int checkRatingD2(int zx, int zy, int aq);
+    bool odd;
+    void clearRating();
 };
 
 #endif // GAMEWIDGET_H
