@@ -50,19 +50,7 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
     pointY = ((qRound((double((pe->y()-20))/40)))*40)+20;
     x=(pointX-20)/40;
     y=(pointY-20)/40;
-    if (table[x][y]!=1 && table[x][y]!=2){
-        this->moveFirst();
-        this->conversionMove(x,y);
-        //qDebug()<<"x y"<<x<<y;
-        this->checkTable(x,y,1);
-        counter++;
-        this->moveSecond();
-        this->conversionMove(x1,y1);
-        //qDebug()<<"x1 y1"<<x1<<y1;
-        this->checkTable(x1,y1,2);
-        counter++;
-    }
-    else qDebug("Impossible");
+    game();
 }
 
 void GameWidget::clearTable()
@@ -80,6 +68,7 @@ void GameWidget::clearTable()
             rating[j][k]=0;
         }
     }
+    win=false;
 }
 
 void GameWidget::moveFirst()
@@ -104,7 +93,7 @@ void GameWidget::moveSecond()
 }
 void GameWidget::conversionMove(int cx, int cy)
 {   
-    odd = !!(counter & 1);
+    bool odd = !!(counter & 1);
     if (odd==true){
         table[cx][cy]=1;
     }
@@ -128,16 +117,21 @@ void GameWidget::DebugInConsole()
         }
     }
 }
-void GameWidget::checkTable(int dx,int dy,int color)
+int GameWidget::checkTable(int dx,int dy,int color)
 {
-    if (checkDst(dx, dy, 1, 0, color) >= 5 || checkDst(dx, dy, 0, 1, color) >= 5 || checkDst(dx, dy, 1, 1, color) >= 5  || checkDst(dx, dy, 1, -1, color) >= 5){
+    if (checkDst(dx, dy, 1, 0, color) >= 5 || checkDst(dx, dy, 0, 1, color) >= 5 ||
+            checkDst(dx, dy, 1, 1, color) >= 5  || checkDst(dx, dy, 1, -1, color) >= 5){
         if (color==1){
             showWin("black");
+
         }
         else if (color==2){
             showWin("white");
         }
+        //        qDebug("viigral");
+        return 1;
     }
+    else {qDebug("proveril");  return 0;}
 }
 
 int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
@@ -331,4 +325,22 @@ void GameWidget::clearRating()
             rating[j][k]=0;
         }
     }
+}
+
+void GameWidget::game()
+{
+    if (table[x][y]!=1 && table[x][y]!=2 && win!=true){
+        qDebug()<<win;
+        this->moveFirst();
+        this->conversionMove(x,y);
+        if (checkTable(x,y,1)!=1) {
+            counter++;
+            this->moveSecond();
+            this->conversionMove(x1,y1);
+            if(checkTable(x1,y1,2)==1) win=true;
+            counter++;
+        }
+        else win=true;
+    }
+    else qDebug("Impossible");
 }

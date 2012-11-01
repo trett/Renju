@@ -15,7 +15,8 @@ public:
     void moveFirst();
     void moveSecond();
     int counter;
-    void checkTable(int dx, int dy, int color);
+    int checkTable(int dx, int dy, int color);
+    void game();
 protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
@@ -35,7 +36,7 @@ private:
     int checkRatingV(int zx, int zy, int aq);
     int checkRatingD1(int zx, int zy, int aq);
     int checkRatingD2(int zx, int zy, int aq);
-    bool odd;
+    bool win;
     void clearRating();
 };
 
