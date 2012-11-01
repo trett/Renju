@@ -26,8 +26,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600)
 }
 GameWidget::~GameWidget()
 {
-    // qDebug("ia umer");
-    this->DebugInConsole();
+    //this->DebugInConsole();
     for (int i=0; i<COLUMN;++i){
         delete []table[i];
     }
@@ -49,19 +48,14 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
 {
     pointX = ((qRound((double((pe->x()-20))/40)))*40)+20;
     pointY = ((qRound((double((pe->y()-20))/40)))*40)+20;
-    //qDebug()<<pointX<<"    "<<pointY<<"\n"<<pe->x()<<"   "<<pe->y();
     x=(pointX-20)/40;
     y=(pointY-20)/40;
-    // qDebug()<<table[x][y];
     if (table[x][y]!=1 && table[x][y]!=2){
-
         this->moveFirst();
         this->conversionMove(x,y);
         //qDebug()<<"x y"<<x<<y;
         this->checkTable(x,y,1);
         counter++;
-
-
         this->moveSecond();
         this->conversionMove(x1,y1);
         //qDebug()<<"x1 y1"<<x1<<y1;
@@ -84,7 +78,6 @@ void GameWidget::clearTable()
         for(int k=0;k<ROWS;++k){
             table[j][k]=0;
             rating[j][k]=0;
-            //qDebug()<<cell [j][k];
         }
     }
 }
@@ -99,7 +92,6 @@ void GameWidget::moveFirst()
 }
 void GameWidget::moveSecond()
 {
-
     generator();
     if (table[x1][y1]!=1 && table[x1][y1]!=2){
         QPainter p3(&pix);
@@ -128,18 +120,16 @@ void GameWidget::DebugInConsole()
             if(k>=14) std::cout<<"\n";
         }
     }
-    //    std::cout<<"\n \n";
-    //    for (int j=0;j<15;++j){
-    //        for(int k=0;k<15;++k){
-    //            std::cout<<table[k][j]<<" ";
-    //            if(k>=14) std::cout<<"\n";
-    //        }
-    //    }
+    std::cout<<"\n \n";
+    for (int j=0;j<15;++j){
+        for(int k=0;k<15;++k){
+            std::cout<<table[k][j]<<" ";
+            if(k>=14) std::cout<<"\n";
+        }
+    }
 }
 void GameWidget::checkTable(int dx,int dy,int color)
 {
-    //    if (odd=true){
-    //        color=1;
     if (checkDst(dx, dy, 1, 0, color) >= 5 || checkDst(dx, dy, 0, 1, color) >= 5 || checkDst(dx, dy, 1, 1, color) >= 5  || checkDst(dx, dy, 1, -1, color) >= 5){
         if (color==1){
             showWin("black");
@@ -266,14 +256,16 @@ int GameWidget::checkRatingH(int mx, int my, int a)
 {
     int cx = mx, cy = my;
     int c = 0, i = 1;
-    while (cx >= MIN && cx+i <= MAX && cy >= MIN && cy <= MAX && table[cx+i][cy] == a && i<5) {
-        ++c;
-        ++i;
-    }
-    i=1;
-    while (cx-i >= MIN && cx <= MAX && cy >= MIN && cy <= MAX && table[cx-i][cy] == a && i<5 ) {
-        ++c;
-        i++;
+    if(table[mx][my]==0){
+        while (cx+i <= MAX && table[cx+i][cy] == a && i<5) {
+            ++c;
+            ++i;
+        }
+        i=1;
+        while (cx-i >= MIN && table[cx-i][cy] == a && i<5 ) {
+            ++c;
+            i++;
+        }
     }
     return c;
 
@@ -283,14 +275,16 @@ int GameWidget::checkRatingV(int mx, int my, int a)
 {
     int cx = mx, cy = my;
     int c = 0, i = 1;
-    while (cx >= MIN && cx+i <= MAX && cy >= MIN && cy+i <= MAX && table[cx][cy+i] == a && i<5) {
-        ++c;
-        ++i;
-    }
-    i=1;
-    while (cx>= MIN && cx <= MAX && cy-i >= MIN && cy <= MAX && table[cx][cy-i] == a && i<5 ) {
-        ++c;
-        i++;
+    if(table[mx][my]==0){
+        while (cy+i <= MAX && table[cx][cy+i] == a && i<5) {
+            ++c;
+            ++i;
+        }
+        i=1;
+        while (cy-i >= MIN && table[cx][cy-i] == a && i<5 ) {
+            ++c;
+            i++;
+        }
     }
     return c;
 }
@@ -299,14 +293,16 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
 {
     int cx = mx, cy = my;
     int c = 0, i = 1;
-    while (cx >= MIN && cx+i <= MAX && cy >= MIN && cy+i <= MAX && table[cx+i][cy+i] == a && i<5) {
-        ++c;
-        ++i;
-    }
-    i=1;
-    while (cx-i>= MIN && cx <= MAX && cy-i >= MIN && cy <= MAX && table[cx-i][cy-i] == a && i<5 ) {
-        ++c;
-        i++;
+    if(table[mx][my]==0){
+        while (cx+i <= MAX && cy+i <= MAX && table[cx+i][cy+i] == a && i<5) {
+            ++c;
+            ++i;
+        }
+        i=1;
+        while (cx-i>= MIN && cy-i >= MIN && table[cx-i][cy-i] == a && i<5 ) {
+            ++c;
+            i++;
+        }
     }
     return c;
 }
@@ -315,14 +311,16 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
 {
     int cx = mx, cy = my;
     int c = 0, i = 1;
-    while (cx >= MIN && cx+i <= MAX && cy-i >= MIN && cy <= MAX && table[cx+i][cy-i] == a && i<5) {
-        ++c;
-        ++i;
-    }
-    i=1;
-    while (cx-i>= MIN && cx <= MAX && cy-i >= MIN && cy+i <= MAX && table[cx-i][cy+i] == a && i<5 ) {
-        ++c;
-        i++;
+    if(table[mx][my]==0){
+        while (cx+i <= MAX && cy-i >= MIN && table[cx+i][cy-i] == a && i<5) {
+            ++c;
+            ++i;
+        }
+        i=1;
+        while (cx-i>= MIN && cy+i <= MAX && table[cx-i][cy+i] == a && i<5 ) {
+            ++c;
+            i++;
+        }
     }
     return c;
 }

@@ -34,7 +34,7 @@ private:
     int checkRatingH(int zx, int zy, int aq);
     int checkRatingV(int zx, int zy, int aq);
     int checkRatingD1(int zx, int zy, int aq);
-       int checkRatingD2(int zx, int zy, int aq);
+    int checkRatingD2(int zx, int zy, int aq);
     bool odd;
     void clearRating();
 };
