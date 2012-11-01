@@ -8,7 +8,7 @@ Renju::Renju(QWidget *parent) :
     ui(new Ui::Renju)
 {
     ui->setupUi(this);
-    this->setFixedSize(620,650);
+    this->setFixedSize(470,510);
     ui->centralWidget->setLayout(&v_layout);
 }
 

@@ -11,13 +11,13 @@
 #define COLUMN 15
 #define ROWS 15
 
-GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(600,600)
+GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
 {
     x=x1=0;
     y=y1=0;
     counter=1;
-    this->setStyleSheet("background: #FFDEAD; border: 5px solid black;");
-    this->setFixedSize(600,600);
+    this->setStyleSheet("background: #FFDEAD; border: 2px solid black;");
+    this->setFixedSize(460,460);
     QColor color(0,0,0,0);
     pix.fill(color);
     QBuffer buffer(&array);
@@ -38,18 +38,18 @@ void GameWidget::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing,true);
     for (int i=0; i<16; ++i){
-        p.drawLine(20,i*40+20,580,i*40+20);
-        p.drawLine(i*40+20,20,i*40+20,580);
+        p.drawLine(20,i*30+20,440,i*30+20);
+        p.drawLine(i*30+20,20,i*30+20,440);
     }
     p.drawPixmap(0,0,pix);
     p.end();
 }
 void GameWidget::mousePressEvent(QMouseEvent *pe)
 {
-    pointX = ((qRound((double((pe->x()-20))/40)))*40)+20;
-    pointY = ((qRound((double((pe->y()-20))/40)))*40)+20;
-    x=(pointX-20)/40;
-    y=(pointY-20)/40;
+    pointX = ((qRound((double((pe->x()-20))/30)))*30)+20;
+    pointY = ((qRound((double((pe->y()-20))/30)))*30)+20;
+    x=(pointX-20)/30;
+    y=(pointY-20)/30;
     game();
 }
 
@@ -76,7 +76,7 @@ void GameWidget::moveFirst()
     QPainter p2(&pix);
     p2.setRenderHint(QPainter::Antialiasing,true);
     p2.setBrush(QBrush(Qt::black));
-    p2.drawEllipse(QRect(pointX-10,pointY-10,20,20));
+    p2.drawEllipse(QRect(pointX-13,pointY-13,26,26));
     this->repaint();
 }
 void GameWidget::moveSecond()
@@ -86,7 +86,7 @@ void GameWidget::moveSecond()
         QPainter p3(&pix);
         p3.setRenderHint(QPainter::Antialiasing,true);
         p3.setBrush(QBrush(Qt::white));
-        p3.drawEllipse(QRect(x1*40+10,y1*40+10,20,20));
+        p3.drawEllipse(QRect(x1*30+7,y1*30+7,26,26));
         this->repaint();
     }
     else moveSecond();
@@ -128,10 +128,9 @@ int GameWidget::checkTable(int dx,int dy,int color)
         else if (color==2){
             showWin("white");
         }
-        //        qDebug("viigral");
         return 1;
     }
-    else {qDebug("proveril");  return 0;}
+    else return 0;
 }
 
 int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
