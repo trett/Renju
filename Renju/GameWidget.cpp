@@ -175,17 +175,17 @@ void GameWidget::generator()
 
             if (checkRatingH(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingH(i,j,2)==3) rating[i][j]+=5;
+            if (checkRatingH(i,j,2)==3) rating[i][j]+=8;
             if (checkRatingH(i,j,2)==4) rating[i][j]+=21;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingV(i,j,2)==3) rating[i][j]+=5;
+            if (checkRatingV(i,j,2)==3) rating[i][j]+=8;
             if (checkRatingV(i,j,2)==4) rating[i][j]+=21;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingD1(i,j,2)==3) rating[i][j]+=5;
+            if (checkRatingD1(i,j,2)==3) rating[i][j]+=8;
             if (checkRatingD1(i,j,2)==4) rating[i][j]+=21;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]+=2;
@@ -232,7 +232,6 @@ void GameWidget::generator()
     x1=cx;
     y1=cy;
     clearRating();
-    qDebug()<<cx<<cy;
 }
 
 void GameWidget::showWin(QString str)
@@ -329,7 +328,6 @@ void GameWidget::clearRating()
 void GameWidget::game()
 {
     if (table[x][y]!=1 && table[x][y]!=2 && win!=true){
-        qDebug()<<win;
         this->moveFirst();
         this->conversionMove(x,y);
         if (checkTable(x,y,1)!=1) {
