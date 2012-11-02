@@ -368,7 +368,7 @@ void GameWidget::game()
 void GameWidget::audio()
 {
     if(soundOff==true)
-        QProcess::startDetached("play -q /home/maat/QtProjects/Qrenju/Renju/klick16.wav");
+    QProcess::startDetached("play -q klick16.wav");
 }
 
 void GameWidget::rmMove()
