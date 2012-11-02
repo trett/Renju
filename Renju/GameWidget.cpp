@@ -16,7 +16,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
     x=x1=0;
     y=y1=0;
     counter=1;
-    this->setStyleSheet("background: #FFDEAD; border: 2px solid black;");
+    this->setStyleSheet("background: #FFDEAD; border: 2px solid black; border-radius: 5px");
     this->setFixedSize(460,460);
     QColor color(0,0,0,0);
     pix.fill(color);
@@ -46,11 +46,13 @@ void GameWidget::paintEvent(QPaintEvent *event)
 }
 void GameWidget::mousePressEvent(QMouseEvent *pe)
 {
-    pointX = ((qRound((double((pe->x()-20))/30)))*30)+20;
-    pointY = ((qRound((double((pe->y()-20))/30)))*30)+20;
-    x=(pointX-20)/30;
-    y=(pointY-20)/30;
-    game();
+    if (pe->x()>=10 && pe->y()>=10 && pe->x()<=450 && pe->y()<=450){
+        pointX = ((qRound((double((pe->x()-20))/30)))*30)+20;
+        pointY = ((qRound((double((pe->y()-20))/30)))*30)+20;
+        x=(pointX-20)/30;
+        y=(pointY-20)/30;
+        game();
+    }
 }
 
 void GameWidget::clearTable()
@@ -166,54 +168,54 @@ void GameWidget::generator()
 
             //для пустых полей
 
-            if (checkDst(i,j,0,1,0)>5) rating[i][j]++;
-            if (checkDst(i,j,1,0,0)>=5) rating[i][j]++;
-            if (checkDst(i,j,1,1,0)>=5) rating[i][j]++;
-            if (checkDst(i,j,1,-1,0)>=5) rating[i][j]++;
+            if (checkDst(i,j,0,1,0)>5) rating[i][j]+=3;
+            if (checkDst(i,j,1,0,0)>=5) rating[i][j]+=3;
+            if (checkDst(i,j,1,1,0)>=5) rating[i][j]+=3;
+            if (checkDst(i,j,1,-1,0)>=5) rating[i][j]+=3;
 
             // для белых
 
             if (checkRatingH(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingH(i,j,2)==3) rating[i][j]+=8;
-            if (checkRatingH(i,j,2)==4) rating[i][j]+=21;
+            if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
+            if (checkRatingH(i,j,2)==4) rating[i][j]+=25;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingV(i,j,2)==3) rating[i][j]+=8;
-            if (checkRatingV(i,j,2)==4) rating[i][j]+=21;
+            if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
+            if (checkRatingV(i,j,2)==4) rating[i][j]+=25;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingD1(i,j,2)==3) rating[i][j]+=8;
-            if (checkRatingD1(i,j,2)==4) rating[i][j]+=21;
+            if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
+            if (checkRatingD1(i,j,2)==4) rating[i][j]+=25;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
-            if (checkRatingD2(i,j,2)==3) rating[i][j]+=5;
-            if (checkRatingD2(i,j,2)==4) rating[i][j]+=21;
+            if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
+            if (checkRatingD2(i,j,2)==4) rating[i][j]+=25;
 
             // для черных
 
             if (checkRatingH(i,j,1)==1) rating[i][j]+=2;
-            if (checkRatingH(i,j,1)==2) rating[i][j]+=3;
-            if (checkRatingH(i,j,1)==3) rating[i][j]+=10;
-            if (checkRatingH(i,j,1)==4) rating[i][j]+=20;
+            if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingH(i,j,1)==4) rating[i][j]+=24;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]+=2;
-            if (checkRatingV(i,j,1)==2) rating[i][j]+=3;
-            if (checkRatingV(i,j,1)==3) rating[i][j]+=10;
-            if (checkRatingV(i,j,1)==4) rating[i][j]+=20;
+            if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingV(i,j,1)==4) rating[i][j]+=24;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]+=2;
-            if (checkRatingD1(i,j,1)==2) rating[i][j]+=3;
-            if (checkRatingD1(i,j,1)==3) rating[i][j]+=10;
-            if (checkRatingD1(i,j,1)==4) rating[i][j]+=20;
+            if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingD1(i,j,1)==4) rating[i][j]+=24;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
-            if (checkRatingD2(i,j,1)==2) rating[i][j]+=3;
-            if (checkRatingD2(i,j,1)==3) rating[i][j]+=10;
-            if (checkRatingD2(i,j,1)==4) rating[i][j]+=20;
+            if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingD2(i,j,1)==4) rating[i][j]+=24;
         }
     }
     // выбор большего рейтинга
@@ -236,12 +238,14 @@ void GameWidget::generator()
 
 void GameWidget::showWin(QString str)
 {
-    QMessageBox msgBox;
+    QMessageBox *msgBox = new QMessageBox;
+    msgBox->setTextFormat(Qt::RichText);
+    msgBox->setIcon(QMessageBox::Information);
     if (str=="black")
-        msgBox.setText("<FONT COLOR=green SIZE=20>You win!</FONT>");
+        msgBox->setText("You Win!");
     else if (str=="white")
-        msgBox.setText("<FONT COLOR=green SIZE=20>You loose!</FONT>");
-    msgBox.exec();
+        msgBox->setText("You loose!");
+    msgBox->exec();
 }
 
 int GameWidget::checkRatingH(int mx, int my, int a)
