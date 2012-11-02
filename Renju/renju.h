@@ -25,6 +25,10 @@ private slots:
 
     void on_action_4_triggered();
 
+    void on_action_3_triggered();
+
+    void on_action_2_triggered();
+
 private:
     Ui::Renju *ui;
 };

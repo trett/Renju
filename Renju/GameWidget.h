@@ -8,25 +8,30 @@
 
 class GameWidget : public QWidget
 {
+    Q_OBJECT
+
 public:
     GameWidget(QWidget* parent = 0);
     virtual ~GameWidget();
-    void clearTable();
-    void moveFirst();
-    void moveSecond();
-    int counter;
-    int checkTable(int dx, int dy, int color);
+    void clearTable(); 
+    int counter,rm;
     void game();
+    bool soundOff;
+    void  rmMove();
+    QString status;
 protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
 private:
     void paintEvent(QPaintEvent *event);
+    int checkTable(int dx, int dy, int color);
+    void moveFirst();
+    void moveSecond();
     QPixmap pix;
     int pointX,pointY,x,y,x1,y1;
     int **table;
     int **rating;
-    QByteArray array;
+    QByteArray array,array2;
     void conversionMove(int cx, int cy);
     void DebugInConsole();
     int checkDst(int mx, int my, int dx, int dy, int a);
@@ -38,6 +43,11 @@ private:
     int checkRatingD2(int zx, int zy, int aq);
     bool win;
     void clearRating();
+    void audio();
+
+signals:
+    void enblRm(bool);
+    void sendStatus(QString str);
 };
 
 #endif // GAMEWIDGET_H

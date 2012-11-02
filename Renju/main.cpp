@@ -5,7 +5,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Renju w;    
+     a.setApplicationName("qRenju");
+    Renju w;
+
     w.show();    
     return a.exec();
 }

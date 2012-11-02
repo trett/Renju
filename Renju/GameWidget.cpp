@@ -5,6 +5,7 @@
 #include "GameWidget.h"
 #include <iostream>
 #include <QMessageBox>
+#include <QProcess>
 
 #define MIN 0
 #define MAX 14
@@ -15,6 +16,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
 {
     x=x1=0;
     y=y1=0;
+    rm=0;
     counter=1;
     this->setStyleSheet("background: #FFDEAD; border: 2px solid black; border-radius: 5px");
     this->setFixedSize(460,460);
@@ -41,6 +43,12 @@ void GameWidget::paintEvent(QPaintEvent *event)
         p.drawLine(20,i*30+20,440,i*30+20);
         p.drawLine(i*30+20,20,i*30+20,440);
     }
+    p.setBrush(QBrush(Qt::black));
+    p.drawEllipse(225,225,10,10);
+    p.drawEllipse(105,105,10,10);
+    p.drawEllipse(345,105,10,10);
+    p.drawEllipse(105,345,10,10);
+    p.drawEllipse(345,345,10,10);
     p.drawPixmap(0,0,pix);
     p.end();
 }
@@ -80,6 +88,7 @@ void GameWidget::moveFirst()
     p2.setBrush(QBrush(Qt::black));
     p2.drawEllipse(QRect(pointX-13,pointY-13,26,26));
     this->repaint();
+    audio();
 }
 void GameWidget::moveSecond()
 {
@@ -90,6 +99,7 @@ void GameWidget::moveSecond()
         p3.setBrush(QBrush(Qt::white));
         p3.drawEllipse(QRect(x1*30+7,y1*30+7,26,26));
         this->repaint();
+        //audio();
     }
     else moveSecond();
 }
@@ -200,22 +210,22 @@ void GameWidget::generator()
             if (checkRatingH(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingH(i,j,1)==4) rating[i][j]+=24;
+            if (checkRatingH(i,j,1)==4) rating[i][j]+=26;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingV(i,j,1)==4) rating[i][j]+=24;
+            if (checkRatingV(i,j,1)==4) rating[i][j]+=26;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD1(i,j,1)==4) rating[i][j]+=24;
+            if (checkRatingD1(i,j,1)==4) rating[i][j]+=26;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD2(i,j,1)==4) rating[i][j]+=24;
+            if (checkRatingD2(i,j,1)==4) rating[i][j]+=26;
         }
     }
     // выбор большего рейтинга
@@ -242,9 +252,9 @@ void GameWidget::showWin(QString str)
     msgBox->setTextFormat(Qt::RichText);
     msgBox->setIcon(QMessageBox::Information);
     if (str=="black")
-        msgBox->setText("You Win!");
+        msgBox->setText("<FONT SIZE=15>You Win!</FONT>");
     else if (str=="white")
-        msgBox->setText("You loose!");
+        msgBox->setText("<FONT SIZE=15>You loose!</FONT>");
     msgBox->exec();
 }
 
@@ -331,6 +341,9 @@ void GameWidget::clearRating()
 
 void GameWidget::game()
 {
+    QBuffer buffer2(&array2);
+    buffer2.open(QIODevice::WriteOnly);
+    pix.save(&buffer2,"PNG");
     if (table[x][y]!=1 && table[x][y]!=2 && win!=true){
         this->moveFirst();
         this->conversionMove(x,y);
@@ -340,8 +353,30 @@ void GameWidget::game()
             this->conversionMove(x1,y1);
             if(checkTable(x1,y1,2)==1) win=true;
             counter++;
+            emit enblRm(true);
+            status = "Move: "+(QString::number(counter-1))+"      Black: "+(QString::number(x))\
+                    +"-"+(QString::number(y))+"         White: "\
+                    +(QString::number(x1))+"-"+(QString::number(y1));
+            emit sendStatus(status);
         }
         else win=true;
     }
-    else qDebug("Impossible");
+    else status="Invalid move!";
+    emit sendStatus(status);
+}
+
+void GameWidget::audio()
+{
+    if(soundOff==true)
+        QProcess::startDetached("play -q /home/maat/QtProjects/Qrenju/Renju/klick16.wav");
+}
+
+void GameWidget::rmMove()
+{
+    qDebug("jhblkjhb");
+    pix.loadFromData(array2);
+    counter+=-2;
+    table[x][y]=0;
+    table[x1][y1]=0;
+    this->update();
 }

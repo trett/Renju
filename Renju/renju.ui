@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>608</height>
+    <width>586</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>588</width>
+     <width>586</width>
      <height>21</height>
     </rect>
    </property>
@@ -52,8 +52,14 @@
    </property>
   </action>
   <action name="action_3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Внешний вид</string>
+    <string>Звук</string>
    </property>
   </action>
   <action name="action_4">

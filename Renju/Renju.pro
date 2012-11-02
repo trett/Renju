@@ -19,3 +19,10 @@ HEADERS  += \
     renju.h
 
 FORMS    += renju.ui
+
+RESOURCES += \
+    resources.qrc
+
+wince*{
+     DEPLOYMENT_PLUGIN += phonon_ds9 phonon_waveout
+ }
