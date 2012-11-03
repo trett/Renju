@@ -6,6 +6,7 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QProcess>
+#include <QtGui>
 
 #define MIN 0
 #define MAX 14
@@ -16,7 +17,6 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
 {
     x=x1=0;
     y=y1=0;
-    rm=0;
     counter=1;
     this->setStyleSheet("background: #FFDEAD; border: 2px solid black; border-radius: 5px");
     this->setFixedSize(460,460);
@@ -25,6 +25,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
     QBuffer buffer(&array);
     buffer.open(QIODevice::WriteOnly);
     pix.save(&buffer,"PNG");
+
 }
 GameWidget::~GameWidget()
 {
@@ -79,6 +80,7 @@ void GameWidget::clearTable()
         }
     }
     win=false;
+    counter=1;
 }
 
 void GameWidget::moveFirst()
@@ -192,25 +194,25 @@ void GameWidget::generator()
             if (checkRatingH(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingH(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingH(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingH(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingV(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingV(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingV(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD1(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingD1(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingD1(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD2(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingD2(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingD2(i,j,2)>=6) rating[i][j]+=10;
 
             // для черных
@@ -218,25 +220,25 @@ void GameWidget::generator()
             if (checkRatingH(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingH(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingH(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingH(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingV(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingV(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingV(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD1(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingD1(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingD1(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD2(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingD2(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingD2(i,j,1)>=6) rating[i][j]+=24;
         }
     }
@@ -399,3 +401,4 @@ void GameWidget::rmMove()
     table[x1][y1]=0;
     this->update();
 }
+

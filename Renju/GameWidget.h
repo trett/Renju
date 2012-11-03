@@ -14,7 +14,7 @@ public:
     GameWidget(QWidget* parent = 0);
     virtual ~GameWidget();
     void clearTable(); 
-    int counter,rm;
+    int counter;
     void game();
     bool soundOff;
     void  rmMove();
@@ -44,7 +44,6 @@ private:
     bool win;
     void clearRating();
     void audio();
-
 signals:
     void enblRm(bool);
     void sendStatus(QString str);
