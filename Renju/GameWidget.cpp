@@ -191,25 +191,25 @@ void GameWidget::generator()
 
             // для белых
 
-            if (checkRatingH(i,j,2)==1) rating[i][j]+=2;
+            if (checkRatingH(i,j,2)==1) rating[i][j]++;
             if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingH(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingH(i,j,2)>=6) rating[i][j]+=10;
 
-            if (checkRatingV(i,j,2)==1) rating[i][j]+=2;
+            if (checkRatingV(i,j,2)==1) rating[i][j]++;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingV(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingV(i,j,2)>=6) rating[i][j]+=10;
 
-            if (checkRatingD1(i,j,2)==1) rating[i][j]+=2;
+            if (checkRatingD1(i,j,2)==1) rating[i][j]++;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD1(i,j,2)==4) rating[i][j]+=35;
             if (checkRatingD1(i,j,2)>=6) rating[i][j]+=10;
 
-            if (checkRatingD2(i,j,2)==1) rating[i][j]+=2;
+            if (checkRatingD2(i,j,2)==1) rating[i][j]++;
             if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD2(i,j,2)==4) rating[i][j]+=35;
@@ -217,19 +217,19 @@ void GameWidget::generator()
 
             // для черных
 
-            if (checkRatingH(i,j,1)==1) rating[i][j]+=2;
+            if (checkRatingH(i,j,1)==1) rating[i][j]++;
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingH(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingH(i,j,1)>=6) rating[i][j]+=24;
 
-            if (checkRatingV(i,j,1)==1) rating[i][j]+=2;
+            if (checkRatingV(i,j,1)==1) rating[i][j]++;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingV(i,j,1)==4) rating[i][j]+=34;
             if (checkRatingV(i,j,1)>=6) rating[i][j]+=24;
 
-            if (checkRatingD1(i,j,1)==1) rating[i][j]+=2;
+            if (checkRatingD1(i,j,1)==1) rating[i][j]++;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingD1(i,j,1)==4) rating[i][j]+=34;
@@ -280,13 +280,19 @@ int GameWidget::checkRatingH(int mx, int my, int a)
         while (cx+i <= MAX && table[cx+i][cy] == a && i<5) {
             ++c;
             ++i;
-            if(c==3 && table[cx+i][cy]==0) c+=6;
+            if(c==3 && table[cx+i][cy]==0) c=6;
+            if(cx+i+1<MAX){
+                if(table[cx+i+1][cy]==a && table[cx+i][cy]==0) c++;
+            }
         }
         i=1;
         while (cx-i >= MIN && table[cx-i][cy] == a && i<5 ) {
             ++c;
             i++;
-            if(c==3 && table[cx-i][cy]==0) c+=6;
+            if(c==3 && table[cx-i][cy]==0) c=6;
+            if(cx-i-1>MIN){
+                if(table[cx-i-1][cy]==a && table[cx-i][cy]==0) c++;
+            }
         }
     }
     return c;
@@ -300,13 +306,19 @@ int GameWidget::checkRatingV(int mx, int my, int a)
         while (cy+i <= MAX && table[cx][cy+i] == a && i<5) {
             ++c;
             ++i;
-            if(c==3 && table[cx][cy+i]==0) c+=6;
+            if(c==3 && table[cx][cy+i]==0) c=6;
+            if(cx+i+1<MAX){
+                if(table[cx][cy+i+1]==a && table[cx][cy+i]==0) c++;
+            }
         }
         i=1;
         while (cy-i >= MIN && table[cx][cy-i] == a && i<5 ) {
             ++c;
             i++;
-            if(c==3 && table[cx][cy-i]==0) c+=6;
+            if(c==3 && table[cx][cy-i]==0) c=6;
+            if(cy-i-1>MIN){
+                if(table[cx][cy-i-1]==a && table[cx][cy-i]==0) c++;
+            }
         }
     }
     return c;
@@ -320,13 +332,19 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
         while (cx+i <= MAX && cy+i <= MAX && table[cx+i][cy+i] == a && i<5) {
             ++c;
             ++i;
-            if(c==3 && table[cx+i][cy+i]==0) c+=6;
+            if(c==3 && table[cx+i][cy+i]==0) c=6;
+            if(cx+i+1<MAX && cy+i+1<MAX){
+                if(table[cx+i+1][cy+i+1]==a && table[cx+i][cy+i]==0) c++;
+            }
         }
         i=1;
         while (cx-i>= MIN && cy-i >= MIN && table[cx-i][cy-i] == a && i<5 ) {
             ++c;
             i++;
-            if(c==3 && table[cx-i][cy-i]==0) c+=6;
+            if(c==3 && table[cx-i][cy-i]==0) c=7;
+            if(cx-i-1>MIN && cy-i-1>MIN){
+                if(table[cx-i-1][cy-i-1]==a && table[cx-i][cy-i]==0) c++;
+            }
         }
     }
     return c;
@@ -340,13 +358,19 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
         while (cx+i <= MAX && cy-i >= MIN && table[cx+i][cy-i] == a && i<5) {
             ++c;
             ++i;
-            if(c==3 && table[cx+i][cy-i]==0) c+=6;
+            if(c==3 && table[cx+i][cy-i]==0) c=6;
+            if(cx+i+1<MAX && cy-i-1>MIN){
+                if(table[cx+i+1][cy-i-1]==a && table[cx+i][cy-i]==0) c=1;
+            }
         }
         i=1;
         while (cx-i>= MIN && cy+i <= MAX && table[cx-i][cy+i] == a && i<5 ) {
             ++c;
             i++;
-            if(c==3 && table[cx-i][cy+i]==0) c+=6;
+            if(c==3 && table[cx-i][cy+i]==0) c=6;
+            if(cy+i+1<MAX && cx-i-1>MIN){
+                if(table[cx-i-1][cy+i+1]==a && table[cx-i][cy+i]==0) c=1;
+            }
         }
     }
     return c;
