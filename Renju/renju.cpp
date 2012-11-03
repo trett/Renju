@@ -19,7 +19,8 @@ Renju::~Renju()
 
 void Renju::on_action_triggered()
 {
-    gw.soundOff = true;
+    if (ui->action_3->isChecked()) gw.soundOff = true;
+    else gw.soundOff = false;
     gw.clearTable();
     v_layout.addWidget(&gw);
     gw.update();

@@ -5,9 +5,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-     a.setApplicationName("qRenju");
+    a.setApplicationName("qRenju");
     Renju w;
-
-    w.show();    
+    QIcon icon(":/icons/game_white.ico");
+    w.setWindowIcon(icon);
+    w.show();
     return a.exec();
 }

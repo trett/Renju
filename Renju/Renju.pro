@@ -20,5 +20,6 @@ HEADERS  += \
 
 FORMS    += renju.ui
 
-RESOURCES +=
+RESOURCES += \
+    resources.qrc
 
