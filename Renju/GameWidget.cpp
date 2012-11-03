@@ -83,12 +83,12 @@ void GameWidget::clearTable()
 
 void GameWidget::moveFirst()
 {
+    audio();
     QPainter p2(&pix);
     p2.setRenderHint(QPainter::Antialiasing,true);
     p2.setBrush(QBrush(Qt::black));
     p2.drawEllipse(QRect(pointX-13,pointY-13,26,26));
     this->repaint();
-    audio();
 }
 void GameWidget::moveSecond()
 {
@@ -99,7 +99,6 @@ void GameWidget::moveSecond()
         p3.setBrush(QBrush(Qt::white));
         p3.drawEllipse(QRect(x1*30+7,y1*30+7,26,26));
         this->repaint();
-        //audio();
     }
     else moveSecond();
 }
@@ -178,54 +177,67 @@ void GameWidget::generator()
 
             //для пустых полей
 
-            if (checkDst(i,j,0,1,0)>5) rating[i][j]+=3;
+            if (checkDst(i,j,0,1,0)>=5) rating[i][j]+=3;
             if (checkDst(i,j,1,0,0)>=5) rating[i][j]+=3;
             if (checkDst(i,j,1,1,0)>=5) rating[i][j]+=3;
             if (checkDst(i,j,1,-1,0)>=5) rating[i][j]+=3;
+
+            if (checkDst(i,j,0,1,0)==1) rating[i][j]+=2;
+            if (checkDst(i,j,1,0,0)==1) rating[i][j]+=2;
+            if (checkDst(i,j,1,1,0)==1) rating[i][j]+=2;
+            if (checkDst(i,j,1,-1,0)==1) rating[i][j]+=2;
 
             // для белых
 
             if (checkRatingH(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingH(i,j,2)==4) rating[i][j]+=25;
+            if (checkRatingH(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingH(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingV(i,j,2)==4) rating[i][j]+=25;
+            if (checkRatingV(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingV(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD1(i,j,2)==4) rating[i][j]+=25;
+            if (checkRatingD1(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=10;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD2(i,j,2)==4) rating[i][j]+=25;
+            if (checkRatingD2(i,j,2)==4) rating[i][j]+=30;
+            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=10;
 
             // для черных
 
             if (checkRatingH(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingH(i,j,1)==4) rating[i][j]+=26;
+            if (checkRatingH(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingH(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingV(i,j,1)==4) rating[i][j]+=26;
+            if (checkRatingV(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingV(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD1(i,j,1)==4) rating[i][j]+=26;
+            if (checkRatingD1(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=24;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
-            if (checkRatingD2(i,j,1)==4) rating[i][j]+=26;
+            if (checkRatingD2(i,j,1)==4) rating[i][j]+=29;
+            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=24;
         }
     }
     // выбор большего рейтинга
@@ -266,15 +278,16 @@ int GameWidget::checkRatingH(int mx, int my, int a)
         while (cx+i <= MAX && table[cx+i][cy] == a && i<5) {
             ++c;
             ++i;
+            if(c==3 && table[cx+i][cy]==0) c+=6;
         }
         i=1;
         while (cx-i >= MIN && table[cx-i][cy] == a && i<5 ) {
             ++c;
             i++;
+            if(c==3 && table[cx-i][cy]==0) c+=6;
         }
     }
     return c;
-
 }
 
 int GameWidget::checkRatingV(int mx, int my, int a)
@@ -285,11 +298,13 @@ int GameWidget::checkRatingV(int mx, int my, int a)
         while (cy+i <= MAX && table[cx][cy+i] == a && i<5) {
             ++c;
             ++i;
+            if(c==3 && table[cx][cy+i]==0) c+=6;
         }
         i=1;
         while (cy-i >= MIN && table[cx][cy-i] == a && i<5 ) {
             ++c;
             i++;
+            if(c==3 && table[cx][cy-i]==0) c+=6;
         }
     }
     return c;
@@ -303,11 +318,13 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
         while (cx+i <= MAX && cy+i <= MAX && table[cx+i][cy+i] == a && i<5) {
             ++c;
             ++i;
+            if(c==3 && table[cx+i][cy+i]==0) c+=6;
         }
         i=1;
         while (cx-i>= MIN && cy-i >= MIN && table[cx-i][cy-i] == a && i<5 ) {
             ++c;
             i++;
+            if(c==3 && table[cx-i][cy-i]==0) c+=6;
         }
     }
     return c;
@@ -321,11 +338,13 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
         while (cx+i <= MAX && cy-i >= MIN && table[cx+i][cy-i] == a && i<5) {
             ++c;
             ++i;
+            if(c==3 && table[cx+i][cy-i]==0) c+=6;
         }
         i=1;
         while (cx-i>= MIN && cy+i <= MAX && table[cx-i][cy+i] == a && i<5 ) {
             ++c;
             i++;
+            if(c==3 && table[cx-i][cy+i]==0) c+=6;
         }
     }
     return c;
@@ -368,7 +387,7 @@ void GameWidget::game()
 void GameWidget::audio()
 {
     if(soundOff==true)
-    QProcess::startDetached("play -q klick16.wav");
+        QProcess::startDetached("aplay -q klick16.wav");
 }
 
 void GameWidget::rmMove()

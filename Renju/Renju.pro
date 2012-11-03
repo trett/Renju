@@ -22,6 +22,3 @@ FORMS    += renju.ui
 
 RESOURCES +=
 
-wince*{
-     DEPLOYMENT_PLUGIN += phonon_ds9 phonon_waveout
- }
