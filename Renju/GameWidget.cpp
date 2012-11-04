@@ -17,7 +17,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
 {
     x=x1=0;
     y=y1=0;
-    counter=1;
+    counter=0;
     this->setStyleSheet("background: #FFDEAD; border: 2px solid black; border-radius: 5px");
     this->setFixedSize(460,460);
     QColor color(0,0,0,0);
@@ -80,7 +80,7 @@ void GameWidget::clearTable()
         }
     }
     win=false;
-    counter=1;
+    counter=0;
 }
 
 void GameWidget::moveFirst()
@@ -88,7 +88,8 @@ void GameWidget::moveFirst()
     audio();
     QPainter p2(&pix);
     p2.setRenderHint(QPainter::Antialiasing,true);
-    p2.setBrush(QBrush(Qt::black));
+    if(cmpFirst==true) p2.setBrush(QBrush(Qt::white));
+    else p2.setBrush(QBrush(Qt::black));
     p2.drawEllipse(QRect(pointX-13,pointY-13,26,26));
     this->repaint();
 }
@@ -98,19 +99,19 @@ void GameWidget::moveSecond()
     if (table[x1][y1]!=1 && table[x1][y1]!=2){
         QPainter p3(&pix);
         p3.setRenderHint(QPainter::Antialiasing,true);
-        p3.setBrush(QBrush(Qt::white));
+        if(cmpFirst==true) p3.setBrush(QBrush(Qt::black));
+        else p3.setBrush(QBrush(Qt::white));
         p3.drawEllipse(QRect(x1*30+7,y1*30+7,26,26));
         this->repaint();
     }
     else moveSecond();
 }
-void GameWidget::conversionMove(int cx, int cy)
+void GameWidget::conversionMove(int cx, int cy, int cl)
 {   
-    bool odd = !!(counter & 1);
-    if (odd==true){
+    if (cl==1){
         table[cx][cy]=1;
     }
-    else {
+    else if(cl==2){
         table[cx][cy]=2;
     }
 }
@@ -192,28 +193,28 @@ void GameWidget::generator()
             // для белых
 
             if (checkRatingH(i,j,2)==1) rating[i][j]++;
-            if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
+            if (checkRatingH(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingH(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingH(i,j,2)>=6) rating[i][j]+=10;
+            if (checkRatingH(i,j,2)>=6) rating[i][j]+=12;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]++;
-            if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
+            if (checkRatingV(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingV(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingV(i,j,2)>=6) rating[i][j]+=10;
+            if (checkRatingV(i,j,2)>=6) rating[i][j]+=12;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]++;
-            if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
+            if (checkRatingD1(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD1(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=10;
+            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=12;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]++;
-            if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
+            if (checkRatingD2(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD2(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=10;
+            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=12;
 
             // для черных
 
@@ -221,25 +222,25 @@ void GameWidget::generator()
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingH(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingH(i,j,1)>=6) rating[i][j]+=24;
+            if (checkRatingH(i,j,1)>=6) rating[i][j]+=10;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]++;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingV(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingV(i,j,1)>=6) rating[i][j]+=24;
+            if (checkRatingV(i,j,1)>=6) rating[i][j]+=10; //было 24
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]++;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingD1(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=24;
+            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=10;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
             if (checkRatingD2(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=24;
+            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=10;
         }
     }
     // выбор большего рейтинга
@@ -391,15 +392,15 @@ void GameWidget::game()
     pix.save(&buffer2,"PNG");
     if (table[x][y]!=1 && table[x][y]!=2 && win!=true){
         this->moveFirst();
-        this->conversionMove(x,y);
+        this->conversionMove(x,y,1);
         if (checkTable(x,y,1)!=1) {
             counter++;
             this->moveSecond();
-            this->conversionMove(x1,y1);
+            this->conversionMove(x1,y1,2);
             if(checkTable(x1,y1,2)==1) win=true;
             counter++;
             emit enblRm(true);
-            status = "Move: "+(QString::number(counter-1))+"      Black: "+(QString::number(x))\
+            status = "Move: "+(QString::number(counter))+"      Black: "+(QString::number(x))\
                     +"-"+(QString::number(y))+"         White: "\
                     +(QString::number(x1))+"-"+(QString::number(y1));
             emit sendStatus(status);
@@ -426,3 +427,15 @@ void GameWidget::rmMove()
     this->update();
 }
 
+void GameWidget::cmpFirstMove()
+{
+    x1=y1=7;
+    table[x1][y1]=0;
+    conversionMove(x1,y1,2);
+    counter++;
+    QPainter p4(&pix);
+    p4.setRenderHint(QPainter::Antialiasing,true);
+    p4.setBrush(QBrush(Qt::black));
+    p4.drawEllipse(QRect(x1*30+7,y1*30+7,26,26));
+    this->repaint();
+}

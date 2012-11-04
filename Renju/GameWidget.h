@@ -13,9 +13,8 @@ class GameWidget : public QWidget
 public:
     GameWidget(QWidget* parent = 0);
     virtual ~GameWidget();
-    void clearTable(); 
-    int counter;
-    void game();
+    void clearTable();
+    bool cmpFirst;
     bool soundOff;
     void  rmMove();
     QString status;
@@ -23,6 +22,8 @@ protected:
     virtual void mousePressEvent(QMouseEvent *pe);
 
 private:
+    int counter;
+    void game();
     void paintEvent(QPaintEvent *event);
     int checkTable(int dx, int dy, int color);
     void moveFirst();
@@ -32,7 +33,7 @@ private:
     int **table;
     int **rating;
     QByteArray array,array2;
-    void conversionMove(int cx, int cy);
+    void conversionMove(int cx, int cy, int cl);
     void DebugInConsole();
     int checkDst(int mx, int my, int dx, int dy, int a);
     void generator();
@@ -47,6 +48,8 @@ private:
 signals:
     void enblRm(bool);
     void sendStatus(QString str);
+public slots:
+    void cmpFirstMove();
 };
 
 #endif // GAMEWIDGET_H
