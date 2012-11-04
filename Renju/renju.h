@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "GameWidget.h"
 #include <QVBoxLayout>
+#include <QtGui>
 namespace Ui {
 class Renju;
 }
@@ -31,6 +32,7 @@ private slots:
 
 private:
     Ui::Renju *ui;
+    QLabel lbl;
 };
 
 #endif // CROSS_H

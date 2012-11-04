@@ -10,7 +10,10 @@ Renju::Renju(QWidget *parent) :
     ui->setupUi(this);
     this->setFixedSize(470,510);
     ui->centralWidget->setLayout(&v_layout);
-     gw.clearTable();
+    QPixmap pix(":/icons/renju2.jpg");
+    lbl.setPixmap(pix);
+    v_layout.addWidget(&lbl);
+    gw.clearTable();
 }
 
 Renju::~Renju()
@@ -20,6 +23,7 @@ Renju::~Renju()
 
 void Renju::on_action_triggered()
 {
+    lbl.close();
     if (ui->action_3->isChecked()) gw.soundOff = true;
     else gw.soundOff = false;
     gw.clearTable();
