@@ -5,8 +5,12 @@
 #include "GameWidget.h"
 #include <iostream>
 #include <QMessageBox>
-#include <QProcess>
 #include <QtGui>
+#if defined Q_WS_WIN
+#include <QSound>
+#elif defined Q_WS_X11
+#include <QProcess>
+#endif
 
 #define MIN 0
 #define MAX 14
@@ -196,51 +200,51 @@ void GameWidget::generator()
             if (checkRatingH(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingH(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingH(i,j,2)>=6) rating[i][j]+=12;
+            if (checkRatingH(i,j,2)>=6) rating[i][j]+=13;
 
             if (checkRatingV(i,j,2)==1) rating[i][j]++;
             if (checkRatingV(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingV(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingV(i,j,2)>=6) rating[i][j]+=12;
+            if (checkRatingV(i,j,2)>=6) rating[i][j]+=13;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]++;
             if (checkRatingD1(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD1(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=12;
+            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=13;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]++;
             if (checkRatingD2(i,j,2)==2) rating[i][j]+=5;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
             if (checkRatingD2(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=12;
+            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=13;
 
             // для черных
 
             if (checkRatingH(i,j,1)==1) rating[i][j]++;
             if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
-            if (checkRatingH(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingH(i,j,1)==3) rating[i][j]+=15;
             if (checkRatingH(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingH(i,j,1)>=6) rating[i][j]+=10;
+            if (checkRatingH(i,j,1)>=6) rating[i][j]+=12;
 
             if (checkRatingV(i,j,1)==1) rating[i][j]++;
             if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
-            if (checkRatingV(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingV(i,j,1)==3) rating[i][j]+=15;
             if (checkRatingV(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingV(i,j,1)>=6) rating[i][j]+=10; //было 24
+            if (checkRatingV(i,j,1)>=6) rating[i][j]+=12;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]++;
             if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
-            if (checkRatingD1(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingD1(i,j,1)==3) rating[i][j]+=15;
             if (checkRatingD1(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=10;
+            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=12;
 
             if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
             if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
-            if (checkRatingD2(i,j,1)==3) rating[i][j]+=12;
+            if (checkRatingD2(i,j,1)==3) rating[i][j]+=15;
             if (checkRatingD2(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=10;
+            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=12;
         }
     }
     // выбор большего рейтинга
@@ -413,8 +417,13 @@ void GameWidget::game()
 
 void GameWidget::audio()
 {
-    if(soundOff==true)
+    if(soundOff==true){
+#if defined Q_WS_WIN
+        QSound::play("klick16.wav")
+#elif defined Q_WS_X11
         QProcess::startDetached("aplay -q klick16.wav");
+#endif
+    }
 }
 
 void GameWidget::rmMove()

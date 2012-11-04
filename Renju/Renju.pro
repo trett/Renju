@@ -22,4 +22,4 @@ FORMS    += renju.ui
 
 RESOURCES += \
     resources.qrc
-
+RC_FILE = renju.rc
