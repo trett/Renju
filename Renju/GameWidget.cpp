@@ -36,8 +36,10 @@ GameWidget::~GameWidget()
     //this->DebugInConsole();
     for (int i=0; i<COLUMN;++i){
         delete []table[i];
+        delete []rating[i];
     }
     delete [] table;
+    delete [] rating;
 }
 
 void GameWidget::paintEvent(QPaintEvent *event)
@@ -286,7 +288,7 @@ int GameWidget::checkRatingH(int mx, int my, int a)
             ++c;
             ++i;
             if(cx+i<MAX){
-            if(c==3 && table[cx+i][cy]==0) c=6;
+                if(c==3 && table[cx+i][cy]==0) c=6;
             }
             if(cx+i+1<MAX){
                 if(table[cx+i+1][cy]==a && table[cx+i][cy]==0) c++;
@@ -297,7 +299,7 @@ int GameWidget::checkRatingH(int mx, int my, int a)
             ++c;
             i++;
             if (cx-i>MIN){
-            if(c==3 && table[cx-i][cy]==0) c=6;
+                if(c==3 && table[cx-i][cy]==0) c=6;
             }
             if(cx-i-1>MIN)
                 if(table[cx-i-1][cy]==a && table[cx-i][cy]==0) c++;
@@ -315,7 +317,7 @@ int GameWidget::checkRatingV(int mx, int my, int a)
             ++c;
             ++i;
             if(cy+i<=MAX){
-            if(c==3 && table[cx][cy+i]==0) c=6;
+                if(c==3 && table[cx][cy+i]==0) c=6;
             }
             if(cx+i+1<=MAX)
                 if(table[cx][cy+i+1]==a && table[cx][cy+i]==0) c++;
@@ -325,7 +327,7 @@ int GameWidget::checkRatingV(int mx, int my, int a)
             ++c;
             i++;
             if(cx-i>=MIN){
-            if(c==3 && table[cx][cy-i]==0) c=6;
+                if(c==3 && table[cx][cy-i]==0) c=6;
             }
             if(cy-i-1>=MIN)
                 if(table[cx][cy-i-1]==a && table[cx][cy-i]==0) c++;
@@ -343,7 +345,7 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
             ++c;
             ++i;
             if(cx+i<=MAX && cy+i<=MAX){
-            if(c==3 && table[cx+i][cy+i]==0) c=6;
+                if(c==3 && table[cx+i][cy+i]==0) c=6;
             }
             if(cx+i+1<=MAX && cy+i+1<=MAX)
                 if(table[cx+i+1][cy+i+1]==a && table[cx+i][cy+i]==0) c++;
@@ -353,7 +355,7 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
             ++c;
             i++;
             if(cx-i>= MIN && cy-i >= MIN){
-            if(c==3 && table[cx-i][cy-i]==0) c=7;
+                if(c==3 && table[cx-i][cy-i]==0) c=7;
             }
             if(cx-i-1>=MIN && cy-i-1>=MIN)
                 if(table[cx-i-1][cy-i-1]==a && table[cx-i][cy-i]==0) c++;
@@ -371,7 +373,7 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
             ++c;
             ++i;
             if (cx+i <= MAX && cy-i >= MIN){
-            if(c==3 && table[cx+i][cy-i]==0) c=6;
+                if(c==3 && table[cx+i][cy-i]==0) c=6;
             }
             if(cx+i+1<=MAX && cy-i-1>=MIN)
                 if(table[cx+i+1][cy-i-1]==a && table[cx+i][cy-i]==0) c=1;
@@ -381,11 +383,10 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
             ++c;
             i++;
             if (cx-i>= MIN && cy+i <= MAX){
-            if(c==3 && table[cx-i][cy+i]==0) c=6;
+                if(c==3 && table[cx-i][cy+i]==0) c=6;
             }
-            if(cy+i+1<=MAX && cx-i-1>=MIN){
+            if(cy+i+1<=MAX && cx-i-1>=MIN)
                 if(table[cx-i-1][cy+i+1]==a && table[cx-i][cy+i]==0) c=1;
-            }
         }
     }
     return c;
@@ -430,7 +431,7 @@ void GameWidget::audio()
     if(soundOff==true){
 #if defined Q_WS_WIN
         QSound::play("klick16.wav")
-#elif defined Q_WS_X11
+        #elif defined Q_WS_X11
         QProcess::startDetached("aplay -q klick16.wav");
 #endif
     }

@@ -10,6 +10,7 @@ Renju::Renju(QWidget *parent) :
     ui->setupUi(this);
     this->setFixedSize(470,510);
     ui->centralWidget->setLayout(&v_layout);
+     gw.clearTable();
 }
 
 Renju::~Renju()
