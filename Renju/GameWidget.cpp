@@ -22,6 +22,7 @@ GameWidget::GameWidget(QWidget *parent):QWidget(parent),pix(470,470)
     x=x1=0;
     y=y1=0;
     counter=0;
+    this->setAttribute(Qt::WA_StyledBackground);
     this->setStyleSheet("background: #FFDEAD; border: 2px solid black; border-radius: 5px");
     this->setFixedSize(460,460);
     QColor color(0,0,0,0);

@@ -8,7 +8,7 @@ Renju::Renju(QWidget *parent) :
     ui(new Ui::Renju)
 {
     ui->setupUi(this);
-    this->setFixedSize(470,510);
+    this->setFixedSize(475,515);
     ui->centralWidget->setLayout(&v_layout);
     QPixmap pix(":/icons/renju2.jpg");
     lbl.setPixmap(pix);
