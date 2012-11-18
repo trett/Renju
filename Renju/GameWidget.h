@@ -48,6 +48,7 @@ private:
 signals:
     void enblRm(bool);
     void sendStatus(QString str);
+    void sendEndOfGame(QString str);
 public slots:
     void cmpFirstMove();
 };

@@ -187,67 +187,62 @@ void GameWidget::generator()
 
             //для пустых полей
 
-            if (checkDst(i,j,0,1,0)>=5) rating[i][j]+=3;
-            if (checkDst(i,j,1,0,0)>=5) rating[i][j]+=3;
-            if (checkDst(i,j,1,1,0)>=5) rating[i][j]+=3;
-            if (checkDst(i,j,1,-1,0)>=5) rating[i][j]+=3;
-
-            if (checkDst(i,j,0,1,0)==1) rating[i][j]+=2;
-            if (checkDst(i,j,1,0,0)==1) rating[i][j]+=2;
-            if (checkDst(i,j,1,1,0)==1) rating[i][j]+=2;
-            if (checkDst(i,j,1,-1,0)==1) rating[i][j]+=2;
+            if (checkDst(i,j,0,1,0)>=5) rating[i][j]++;
+            if (checkDst(i,j,1,0,0)>=5) rating[i][j]++;
+            if (checkDst(i,j,1,1,0)>=5) rating[i][j]++;
+            if (checkDst(i,j,1,-1,0)>=5) rating[i][j]++;
 
             // для белых
 
             if (checkRatingH(i,j,2)==1) rating[i][j]++;
-            if (checkRatingH(i,j,2)==2) rating[i][j]+=5;
+            if (checkRatingH(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingH(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingH(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingH(i,j,2)>=6) rating[i][j]+=13;
+            if (checkRatingH(i,j,2)==4) rating[i][j]+=50;  //35
+            if (checkRatingH(i,j,2)>=6) rating[i][j]+=30;  //16
 
             if (checkRatingV(i,j,2)==1) rating[i][j]++;
-            if (checkRatingV(i,j,2)==2) rating[i][j]+=5;
+            if (checkRatingV(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingV(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingV(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingV(i,j,2)>=6) rating[i][j]+=13;
+            if (checkRatingV(i,j,2)==4) rating[i][j]+=50;
+            if (checkRatingV(i,j,2)>=6) rating[i][j]+=30;
 
             if (checkRatingD1(i,j,2)==1) rating[i][j]++;
-            if (checkRatingD1(i,j,2)==2) rating[i][j]+=5;
+            if (checkRatingD1(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD1(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD1(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=13;
+            if (checkRatingD1(i,j,2)==4) rating[i][j]+=50;
+            if (checkRatingD1(i,j,2)>=6) rating[i][j]+=30;
 
             if (checkRatingD2(i,j,2)==1) rating[i][j]++;
-            if (checkRatingD2(i,j,2)==2) rating[i][j]+=5;
+            if (checkRatingD2(i,j,2)==2) rating[i][j]+=3;
             if (checkRatingD2(i,j,2)==3) rating[i][j]+=15;
-            if (checkRatingD2(i,j,2)==4) rating[i][j]+=35;
-            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=13;
+            if (checkRatingD2(i,j,2)==4) rating[i][j]+=50;
+            if (checkRatingD2(i,j,2)>=6) rating[i][j]+=30;
 
             // для черных
 
             if (checkRatingH(i,j,1)==1) rating[i][j]++;
-            if (checkRatingH(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingH(i,j,1)==2) rating[i][j]+=3;
             if (checkRatingH(i,j,1)==3) rating[i][j]+=15;
-            if (checkRatingH(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingH(i,j,1)>=6) rating[i][j]+=12;
+            if (checkRatingH(i,j,1)==4) rating[i][j]+=49; //34
+            if (checkRatingH(i,j,1)>=6) rating[i][j]+=29; //15
 
             if (checkRatingV(i,j,1)==1) rating[i][j]++;
-            if (checkRatingV(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingV(i,j,1)==2) rating[i][j]+=3;
             if (checkRatingV(i,j,1)==3) rating[i][j]+=15;
-            if (checkRatingV(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingV(i,j,1)>=6) rating[i][j]+=12;
+            if (checkRatingV(i,j,1)==4) rating[i][j]+=49;
+            if (checkRatingV(i,j,1)>=6) rating[i][j]+=29;
 
             if (checkRatingD1(i,j,1)==1) rating[i][j]++;
-            if (checkRatingD1(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingD1(i,j,1)==2) rating[i][j]+=3;
             if (checkRatingD1(i,j,1)==3) rating[i][j]+=15;
-            if (checkRatingD1(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=12;
+            if (checkRatingD1(i,j,1)==4) rating[i][j]+=49;
+            if (checkRatingD1(i,j,1)>=6) rating[i][j]+=29;
 
-            if (checkRatingD2(i,j,1)==1) rating[i][j]+=2;
-            if (checkRatingD2(i,j,1)==2) rating[i][j]+=5;
+            if (checkRatingD2(i,j,1)==1) rating[i][j]++;
+            if (checkRatingD2(i,j,1)==2) rating[i][j]+=3;
             if (checkRatingD2(i,j,1)==3) rating[i][j]+=15;
-            if (checkRatingD2(i,j,1)==4) rating[i][j]+=34;
-            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=12;
+            if (checkRatingD2(i,j,1)==4) rating[i][j]+=49;
+            if (checkRatingD2(i,j,1)>=6) rating[i][j]+=29;
         }
     }
     // выбор большего рейтинга
@@ -265,19 +260,22 @@ void GameWidget::generator()
     }
     x1=cx;
     y1=cy;
+    qDebug()<<max;
     clearRating();
 }
 
 void GameWidget::showWin(QString str)
 {
-    QMessageBox *msgBox = new QMessageBox;
-    msgBox->setTextFormat(Qt::RichText);
-    msgBox->setIcon(QMessageBox::Information);
-    if (str=="black")
-        msgBox->setText("<FONT SIZE=15>You Win!</FONT>");
-    else if (str=="white")
-        msgBox->setText("<FONT SIZE=15>You loose!</FONT>");
-    msgBox->exec();
+//    QMessageBox *msgBox = new QMessageBox(this);
+//    msgBox->setStyleSheet();
+//    msgBox->setTextFormat(Qt::RichText);
+//    msgBox->setIcon(QMessageBox::Information);
+//    if (str=="black")
+//        msgBox->setText("<FONT SIZE=15>You Win!</FONT>");
+//    else if (str=="white")
+//        msgBox->setText("<FONT SIZE=15>You loose!</FONT>");
+//    msgBox->exec();
+    emit sendEndOfGame(str);
 }
 
 int GameWidget::checkRatingH(int mx, int my, int a)
@@ -288,22 +286,15 @@ int GameWidget::checkRatingH(int mx, int my, int a)
         while (cx+i <= MAX && table[cx+i][cy] == a && i<5) {
             ++c;
             ++i;
-            if(cx+i<MAX){
+            if(cx+i<MAX)
                 if(c==3 && table[cx+i][cy]==0) c=6;
-            }
-            if(cx+i+1<MAX){
-                if(table[cx+i+1][cy]==a && table[cx+i][cy]==0) c++;
-            }
         }
         i=1;
         while (cx-i >= MIN && table[cx-i][cy] == a && i<5 ) {
             ++c;
             i++;
-            if (cx-i>MIN){
+            if (cx-i>MIN)
                 if(c==3 && table[cx-i][cy]==0) c=6;
-            }
-            if(cx-i-1>MIN)
-                if(table[cx-i-1][cy]==a && table[cx-i][cy]==0) c++;
         }
     }
     return c;
@@ -317,21 +308,15 @@ int GameWidget::checkRatingV(int mx, int my, int a)
         while (cy+i <= MAX && table[cx][cy+i] == a && i<5) {
             ++c;
             ++i;
-            if(cy+i<=MAX){
+            if(cy+i<=MAX)
                 if(c==3 && table[cx][cy+i]==0) c=6;
-            }
-            if(cx+i+1<=MAX)
-                if(table[cx][cy+i+1]==a && table[cx][cy+i]==0) c++;
         }
         i=1;
         while (cy-i >= MIN && table[cx][cy-i] == a && i<5 ) {
             ++c;
             i++;
-            if(cx-i>=MIN){
+            if(cx-i>=MIN)
                 if(c==3 && table[cx][cy-i]==0) c=6;
-            }
-            if(cy-i-1>=MIN)
-                if(table[cx][cy-i-1]==a && table[cx][cy-i]==0) c++;
         }
     }
     return c;
@@ -345,21 +330,15 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
         while (cx+i <= MAX && cy+i <= MAX && table[cx+i][cy+i] == a && i<5) {
             ++c;
             ++i;
-            if(cx+i<=MAX && cy+i<=MAX){
+            if(cx+i<=MAX && cy+i<=MAX)
                 if(c==3 && table[cx+i][cy+i]==0) c=6;
-            }
-            if(cx+i+1<=MAX && cy+i+1<=MAX)
-                if(table[cx+i+1][cy+i+1]==a && table[cx+i][cy+i]==0) c++;
         }
         i=1;
         while (cx-i>= MIN && cy-i >= MIN && table[cx-i][cy-i] == a && i<5 ) {
             ++c;
             i++;
-            if(cx-i>= MIN && cy-i >= MIN){
-                if(c==3 && table[cx-i][cy-i]==0) c=7;
-            }
-            if(cx-i-1>=MIN && cy-i-1>=MIN)
-                if(table[cx-i-1][cy-i-1]==a && table[cx-i][cy-i]==0) c++;
+            if(cx-i>= MIN && cy-i >= MIN)
+                if(c==3 && table[cx-i][cy-i]==0) c=6;
         }
     }
     return c;
@@ -373,21 +352,15 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
         while (cx+i <= MAX && cy-i >= MIN && table[cx+i][cy-i] == a && i<5) {
             ++c;
             ++i;
-            if (cx+i <= MAX && cy-i >= MIN){
+            if (cx+i <= MAX && cy-i >= MIN)
                 if(c==3 && table[cx+i][cy-i]==0) c=6;
-            }
-            if(cx+i+1<=MAX && cy-i-1>=MIN)
-                if(table[cx+i+1][cy-i-1]==a && table[cx+i][cy-i]==0) c=1;
         }
         i=1;
         while (cx-i>= MIN && cy+i <= MAX && table[cx-i][cy+i] == a && i<5 ) {
             ++c;
             i++;
-            if (cx-i>= MIN && cy+i <= MAX){
+            if (cx-i>= MIN && cy+i <= MAX)
                 if(c==3 && table[cx-i][cy+i]==0) c=6;
-            }
-            if(cy+i+1<=MAX && cx-i-1>=MIN)
-                if(table[cx-i-1][cy+i+1]==a && table[cx-i][cy+i]==0) c=1;
         }
     }
     return c;
@@ -431,16 +404,15 @@ void GameWidget::audio()
 {
     if(soundOff==true){
 #if defined Q_WS_WIN
-        QSound::play("klick16.wav")
+        QSound::play("click.wav")
         #elif defined Q_WS_X11
-        QProcess::startDetached("aplay -q klick16.wav");
+        QProcess::startDetached("aplay -q click.wav");
 #endif
     }
 }
 
 void GameWidget::rmMove()
 {
-    qDebug("jhblkjhb");
     pix.loadFromData(array2);
     counter+=-2;
     table[x][y]=0;

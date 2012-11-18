@@ -20,16 +20,11 @@ public:
      QVBoxLayout v_layout;
 
 private slots:
-
-
     void on_action_triggered();
-
     void on_action_4_triggered();
-
     void on_action_3_triggered();
-
     void on_action_2_triggered();
-
+    void endOfGame(QString str);
 private:
     Ui::Renju *ui;
     QLabel lbl;
