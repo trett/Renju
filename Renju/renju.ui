@@ -20,12 +20,12 @@
      <x>0</x>
      <y>0</y>
      <width>586</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>Игра</string>
+     <string>Game</string>
     </property>
     <addaction name="action"/>
     <addaction name="action_2"/>
@@ -33,7 +33,7 @@
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>Настройки</string>
+     <string>Settings</string>
     </property>
     <addaction name="action_3"/>
    </widget>
@@ -43,12 +43,12 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
    <property name="text">
-    <string>Новая игра</string>
+    <string>New game</string>
    </property>
   </action>
   <action name="action_2">
    <property name="text">
-    <string>Отменить ход</string>
+    <string>Cancel last move</string>
    </property>
   </action>
   <action name="action_3">
@@ -59,12 +59,12 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Звук</string>
+    <string>Sound</string>
    </property>
   </action>
   <action name="action_4">
    <property name="text">
-    <string>Выход</string>
+    <string>Exit </string>
    </property>
   </action>
  </widget>

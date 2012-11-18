@@ -1,3 +1,19 @@
+/*Copyright (C) <2012>  <trett>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDebug>
@@ -260,21 +276,11 @@ void GameWidget::generator()
     }
     x1=cx;
     y1=cy;
-    qDebug()<<max;
     clearRating();
 }
 
 void GameWidget::showWin(QString str)
 {
-//    QMessageBox *msgBox = new QMessageBox(this);
-//    msgBox->setStyleSheet();
-//    msgBox->setTextFormat(Qt::RichText);
-//    msgBox->setIcon(QMessageBox::Information);
-//    if (str=="black")
-//        msgBox->setText("<FONT SIZE=15>You Win!</FONT>");
-//    else if (str=="white")
-//        msgBox->setText("<FONT SIZE=15>You loose!</FONT>");
-//    msgBox->exec();
     emit sendEndOfGame(str);
 }
 
