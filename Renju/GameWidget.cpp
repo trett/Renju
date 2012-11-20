@@ -410,7 +410,7 @@ void GameWidget::audio()
 {
     if(soundOff==true){
 #if defined Q_WS_WIN
-        QSound::play("click.wav")
+        QSound::play("click.wav");
         #elif defined Q_WS_X11
         QProcess::startDetached("aplay -q click.wav");
 #endif
