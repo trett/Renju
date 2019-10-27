@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/icons">
-        <file>game_white.ico</file>
-        <file>game_white.png</file>
-        <file>renju2.jpg</file>
-    </qresource>
-</RCC>

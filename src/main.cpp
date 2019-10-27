@@ -14,37 +14,18 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RENJU_H
-#define RENJU_H
+#include "window.h"
+#include "gameboard.h"
 
-#include <QMainWindow>
-#include "GameWidget.h"
-#include <QVBoxLayout>
-#include <QtGui>
-namespace Ui {
-class Renju;
-}
+#include <QApplication>
 
-class Renju : public QMainWindow
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
-    
-public:
-    explicit Renju(QWidget *parent = 0);
-    ~Renju();
-     GameWidget gw;
-     QVBoxLayout v_layout;
-
-private slots:
-    void on_action_triggered();
-    void on_action_4_triggered();
-    void on_action_3_triggered();
-    void on_action_2_triggered();
-    void endOfGame(QString str);
-
-private:
-    Ui::Renju *ui;
-    QLabel lbl;
-};
-
-#endif // CROSS_H
+    QApplication a(argc, argv);
+    a.setApplicationName("Renju");
+    Window w;
+    QIcon icon(":/icons/icon.ico");
+    w.setWindowIcon(icon);
+    w.show();
+    return a.exec();
+}

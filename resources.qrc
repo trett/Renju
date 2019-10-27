@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/icon.ico</file>
+        <file>icons/icon.png</file>
+        <file>sound/click.wav</file>
+        <file>icons/splash.jpg</file>
+    </qresource>
+</RCC>

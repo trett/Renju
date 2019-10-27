@@ -14,26 +14,24 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gameboard.h"
+
+#include <iostream>
+
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDebug>
 #include <QPixmap>
-#include "GameWidget.h"
-#include <iostream>
 #include <QMessageBox>
 #include <QtGui>
-#if defined Q_WS_WIN
 #include <QSound>
-#elif defined Q_WS_X11
-#include <QProcess>
-#endif
 
 #define MIN 0
 #define MAX 14
 #define COLUMN 15
 #define ROWS 15
 
-GameWidget::GameWidget(QWidget *parent) : QWidget(parent),pix(470,470)
+GameBoard::GameBoard(QWidget *parent) : QWidget(parent), pix(470,470)
 {
 	x = x1 = 0;
 	y = y1 = 0;
@@ -48,9 +46,8 @@ GameWidget::GameWidget(QWidget *parent) : QWidget(parent),pix(470,470)
 	pix.save(&buffer, "PNG");
 }
 
-GameWidget::~GameWidget()
+GameBoard::~GameBoard()
 {
-	//DebugInConsole();
 	for (int i = 0; i < COLUMN; ++i){
 		delete []table[i];
 		delete []rating[i];
@@ -59,7 +56,7 @@ GameWidget::~GameWidget()
 	delete [] rating;
 }
 
-void GameWidget::paintEvent(QPaintEvent *event)
+void GameBoard::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event)
 	QPainter p(this);
@@ -77,7 +74,7 @@ void GameWidget::paintEvent(QPaintEvent *event)
 	p.drawPixmap(0,  0,  pix);
 	p.end();
 }
-void GameWidget::mousePressEvent(QMouseEvent *pe)
+void GameBoard::mousePressEvent(QMouseEvent *pe)
 {
 	if (pe->x() >= 10 && pe->y() >= 10 && pe->x() <= 450 && pe->y() <= 450){
 		pointX = ((qRound((double((pe->x() - 20))/30))) * 30) + 20;
@@ -88,7 +85,7 @@ void GameWidget::mousePressEvent(QMouseEvent *pe)
 	}
 }
 
-void GameWidget::clearTable()
+void GameBoard::clearTable()
 {
 	pix.loadFromData(array);
 	table = new int *[COLUMN];
@@ -107,9 +104,9 @@ void GameWidget::clearTable()
 	counter = 0;
 }
 
-void GameWidget::moveFirst()
+void GameBoard::moveFirst()
 {
-	audio();
+	playSound();
 	QPainter p2(&pix);
 	p2.setRenderHint(QPainter::Antialiasing, true);
 	if(cmpFirst == true) p2.setBrush(QBrush(Qt::white));
@@ -117,7 +114,7 @@ void GameWidget::moveFirst()
 	p2.drawEllipse(QRect(pointX - 13, pointY - 13, 26, 26));
 	repaint();
 }
-void GameWidget::moveSecond()
+void GameBoard::moveSecond()
 {
 	generator();
 	if (table[x1][y1] !=1 && table[x1][y1] !=2){
@@ -130,7 +127,7 @@ void GameWidget::moveSecond()
 	}
 	else moveSecond();
 }
-void GameWidget::conversionMove(int cx, int cy, int cl)
+void GameBoard::conversionMove(int cx, int cy, int cl)
 {   
 	if (cl == 1){
 		table[cx][cy] = 1;
@@ -139,23 +136,8 @@ void GameWidget::conversionMove(int cx, int cy, int cl)
 		table[cx][cy] = 2;
 	}
 }
-void GameWidget::DebugInConsole()
-{
-	for (int j = 0; j < 15; ++j){
-		for(int k = 0; k < 15; ++k){
-			std::cout<<rating[k][j]<<" ";
-			if(k >= 14) std::cout<<"\n";
-		}
-	}
-	std::cout<<"\n \n";
-	for (int j = 0; j < 15; ++j){
-		for(int k = 0; k < 15; ++k){
-			std::cout<<table[k][j]<<" ";
-			if(k >= 14) std::cout<<"\n";
-		}
-	}
-}
-int GameWidget::checkTable(int dx, int dy, int color)
+
+int GameBoard::checkTable(int dx, int dy, int color)
 {
 	if (checkDst(dx, dy, 1, 0, color) >= 5 || checkDst(dx, dy, 0, 1, color) >= 5 ||
 			checkDst(dx, dy, 1, 1, color) >= 5  || checkDst(dx, dy, 1, -1, color) >= 5){
@@ -168,7 +150,7 @@ int GameWidget::checkTable(int dx, int dy, int color)
 	else return 0;
 }
 
-int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
+int GameBoard::checkDst(int mx, int my, int dx, int dy, int a)
 {
 	int cx = mx, cy = my;
 	int c = 0;
@@ -188,7 +170,8 @@ int GameWidget::checkDst(int mx, int my, int dx, int dy, int a)
 	}
 	return c;
 }
-void GameWidget::generator()
+
+void GameBoard::generator()
 {
 	for (int j = 0; j < COLUMN; ++j){
 		for(int k = 0; k < ROWS; ++k){
@@ -277,12 +260,12 @@ void GameWidget::generator()
 	clearRating();
 }
 
-void GameWidget::showWin(QString str)
+void GameBoard::showWin(QString str)
 {
 	emit sendEndOfGame(str);
 }
 
-int GameWidget::checkRatingH(int mx, int my, int a)
+int GameBoard::checkRatingH(int mx, int my, int a)
 {
 	int cx = mx,  cy = my;
 	int c = 0, i = 1;
@@ -304,7 +287,7 @@ int GameWidget::checkRatingH(int mx, int my, int a)
 	return c;
 }
 
-int GameWidget::checkRatingV(int mx, int my, int a)
+int GameBoard::checkRatingV(int mx, int my, int a)
 {
 	int cx = mx, cy = my;
 	int c = 0, i = 1;
@@ -326,7 +309,7 @@ int GameWidget::checkRatingV(int mx, int my, int a)
 	return c;
 }
 
-int GameWidget::checkRatingD1(int mx, int my, int a)
+int GameBoard::checkRatingD1(int mx, int my, int a)
 {
 	int cx = mx, cy = my;
 	int c = 0, i = 1;
@@ -348,7 +331,7 @@ int GameWidget::checkRatingD1(int mx, int my, int a)
 	return c;
 }
 
-int GameWidget::checkRatingD2(int mx, int my, int a)
+int GameBoard::checkRatingD2(int mx, int my, int a)
 {
 	int cx = mx, cy = my;
 	int c = 0, i = 1;
@@ -369,7 +352,7 @@ int GameWidget::checkRatingD2(int mx, int my, int a)
 	}
 	return c;
 }
-void GameWidget::clearRating()
+void GameBoard::clearRating()
 {
 	for (int j = 0; j < COLUMN; ++j){
 		for (int k = 0; k < ROWS; ++k){
@@ -378,7 +361,7 @@ void GameWidget::clearRating()
 	}
 }
 
-void GameWidget::game()
+void GameBoard::game()
 {
 	QBuffer buffer2(&array2);
 	buffer2.open(QIODevice::WriteOnly);
@@ -394,8 +377,8 @@ void GameWidget::game()
 			counter++;
 			emit enblRm(true);
 			status = "Move: " + (QString::number(counter))+"      Black: "+(QString::number(x))\
-					 + "-" + (QString::number(y))+ "         White: "\
-					 + (QString::number(x1)) + "-" +(QString::number(y1));
+					+ "-" + (QString::number(y))+ "         White: "\
+					+ (QString::number(x1)) + "-" +(QString::number(y1));
 			emit sendStatus(status);
 		}
 		else win = true;
@@ -404,18 +387,15 @@ void GameWidget::game()
 	emit sendStatus(status);
 }
 
-void GameWidget::audio()
+void GameBoard::playSound()
 {
-	if(soundOff == true){
-#if defined Q_WS_WIN
-		QSound::play("click.wav");
-#elif defined Q_WS_X11
-		QProcess::startDetached("aplay -q click.wav");
-#endif
+	if(soundBox == true){
+		//TODO:
+//		QSound::play(":/sound/click.wav");
 	}
 }
 
-void GameWidget::rmMove()
+void GameBoard::rmMove()
 {
 	pix.loadFromData(array2);
 	counter += -2;
@@ -424,7 +404,7 @@ void GameWidget::rmMove()
 	update();
 }
 
-void GameWidget::cmpFirstMove()
+void GameBoard::cmpFirstMove()
 {
 	x1 = y1 = 7;
 	table[x1][y1] = 0;

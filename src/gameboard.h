@@ -13,25 +13,24 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
 
-#ifndef GAMEWIDGET_H
-#define GAMEWIDGET_H
 #include <QWidget>
 #include <QPainter>
 #include <QPixmap>
 #include <QBuffer>
 #include <QVector>
 
-class GameWidget : public QWidget
+class GameBoard : public QWidget
 {
     Q_OBJECT
 
 public:
-    GameWidget(QWidget* parent = 0);
-    virtual ~GameWidget();
+    GameBoard(QWidget* parent = 0);
+    virtual ~GameBoard();
     void clearTable();
     bool cmpFirst;
-    bool soundOff;
+    bool soundBox;
     void  rmMove();
     QString status;
 protected:
@@ -60,7 +59,7 @@ private:
     int checkRatingD2(int zx, int zy, int aq);
     bool win;
     void clearRating();
-    void audio();
+    void playSound();
 signals:
     void enblRm(bool);
     void sendStatus(QString str);
@@ -69,4 +68,3 @@ public slots:
     void cmpFirstMove();
 };
 
-#endif // GAMEWIDGET_H

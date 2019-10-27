@@ -14,17 +14,38 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui/QApplication>
-#include "renju.h"
-#include "GameWidget.h"
+#pragma once
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    a.setApplicationName("qRenju");
-    Renju w;
-    QIcon icon(":/icons/game_white.ico");
-    w.setWindowIcon(icon);
-    w.show();
-    return a.exec();
+#include "gameboard.h"
+
+#include <QMainWindow>
+#include <QVBoxLayout>
+#include <QtGui>
+#include <QLabel>
+
+namespace Ui {
+class Window;
 }
+
+class Window : public QMainWindow
+{
+    Q_OBJECT
+    
+public:
+    explicit Window(QWidget *parent = 0);
+    ~Window();
+    GameBoard gameBoard;
+    QVBoxLayout v_layout;
+
+private slots:
+    void onNewGame();
+    void onCancelLastMove();
+    void onSoundCheck();
+    void onExit();
+    void endOfGame(QString str);
+
+private:
+    Ui::Window *ui;
+    QLabel lbl;
+};
+
