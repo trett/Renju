@@ -1,4 +1,6 @@
-find_package(Qt5 REQUIRED Widgets Multimedia)
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} SRC)
-add_executable(renju ${SRC} ${RESOURCES})
-target_link_libraries(renju Qt5::Widgets Qt5::Multimedia)
+find_package(Qt5 COMPONENTS Core Quick REQUIRED)
+file(GLOB SRC "*.cpp" "*.h")
+add_executable(${PROJECT_NAME} ${SRC} "qml/qml.qrc")
+target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick)
+ 
