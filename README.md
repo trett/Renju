@@ -1,8 +1,8 @@
-## Game of checkers Renju
+# Game of checkers Renju
 
-# Written using Qt5 and QML
+### Written using Qt5 and QML
 
-# License
+### License
 
 MIT
 
