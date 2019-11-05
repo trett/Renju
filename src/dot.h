@@ -11,7 +11,6 @@ class Dot : public QObject
 	Q_PROPERTY(int color READ color WRITE setColor)
 public:
 	explicit Dot(QObject *parent = nullptr);
-	Dot(const Dot &d2);
 
 	int x() const;
 	int y() const;

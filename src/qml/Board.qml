@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.9
 import renju.core.dot 1.0
 
 Item {

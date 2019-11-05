@@ -4,12 +4,6 @@ Dot::Dot(QObject *parent) : QObject(parent)
 {
 }
 
-Dot::Dot(const Dot &copy) {
-	m_x = copy.x();
-	m_y = copy.y();
-	m_color = copy.color();
-}
-
 int Dot::x() const {
 	return m_x;
 }

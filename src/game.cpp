@@ -23,9 +23,6 @@ void Game::nextMove(const QVariant &v) {
     if (!currentPlayer->canMove) {
         // TODO: Error
     }
-    if (hasWinner()) {
-        // TODO: emit(win)
-    }
     Dot *dot = qobject_cast<Dot*>(v.value<QObject*>());
     int *field = &table[dot->x()][dot->y()];
     if (*field != NONE) {
@@ -34,6 +31,10 @@ void Game::nextMove(const QVariant &v) {
     dot->setColor(currentPlayer->color);
     *field = currentPlayer->color;
     emit(paint(dot));
+    if (hasWinner()) {
+        // TODO: emit(win)
+        return;
+    }
     changePlayer();
 }
 
