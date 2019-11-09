@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import renju.core.dot 1.0
+import QtQuick.Dialogs 1.2
 
 Item {
     id: board
@@ -9,7 +10,7 @@ Item {
 
     property int xPos
     property int yPos
-    property string color;
+    property string color
     property bool needPaint: false
 
     signal mouseClicked(var obj)
@@ -47,11 +48,28 @@ Item {
         }
     }
 
+    MessageDialog {
+        id: winnerDialog
+        visible: false
+        title: "Renju"
+        icon: StandardIcon.Information
+        property string winner
+        informativeText: winner + " is win!"
+        onAccepted: {
+            close();
+        }
+    }
+
     function paintDot(dot) {
         board.xPos = dot.x * 40
         board.yPos = dot.y * 40
         board.color = dot.color === -1 ? "#494646" : "#f6f8fc"
         boardCanvas.requestPaint()
+    }
+
+    function showWin(color) {
+        winnerDialog.winner = color === -1 ? "Black" : "White"
+        winnerDialog.open()
     }
 }
 

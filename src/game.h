@@ -19,19 +19,20 @@ public:
 	explicit Game(QObject *parent = nullptr);
 	~Game();
 
+	QSharedPointer<GameBoard> *gameBoard;
+private:
 	static const int BOARD_SIZE = 15;
 	int table[BOARD_SIZE][BOARD_SIZE];
 	int totalMoves;
-
-	GameBoard *gameBoard;
-	Player *pl1;
-	Player *pl2;
+	QSharedPointer<Player> *pl1;
+	QSharedPointer<Player> *pl2;
 	Player *currentPlayer;
 
 	void changePlayer();
-	bool hasWinner();
+	bool hasWinner(Dot *dot);
 signals:
 	void paint(const Dot *dot);
+	void showWin(const Player *pl);
 public slots:
 	void nextMove(const QVariant &v);
 };
