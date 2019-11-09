@@ -1,5 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.3
+import QtQuick.Controls 2.3
+import QtGraphicalEffects 1.12
 
 Window {
     visible: true
@@ -17,7 +19,42 @@ Window {
         }
     }
 
-    Board {}
+    Rectangle {
+        id: splash
+        anchors.fill: parent
+        color: "#966F33"
+        width: splashImage.width
+        height: splashImage.height
+
+        Image {
+            id: splashImage
+            source: "qrenju.png"
+            anchors.centerIn: parent
+
+        }
+
+        DropShadow {
+            anchors.fill: splashImage
+            horizontalOffset: 3
+            verticalOffset: 3
+            radius: 8.0
+            samples: 17
+            color: "black"
+            source: splashImage
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                splash.destroy()
+                splashImage.visible = false;
+                board.visible = true;
+            }
+        }
+        Component.onCompleted: visible = true
+    }
+    Board {
+        id: board
+    }
 
     function paintGrid(ctx) {
         var fieldSize = width - boardOffset;

@@ -7,6 +7,7 @@ Item {
     objectName: "board"
     anchors.fill: parent
     layer.enabled: true
+    visible: false
     property int boardOffset: 20
     property int rowSize: 40
     property int dotSize: 17
