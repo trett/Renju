@@ -3,10 +3,12 @@ import QtQuick.Window 2.3
 
 Window {
     visible: true
-    width: 601
-    height: 601
+    width: 640
+    height: 640
     title: qsTr("QRenju")
-
+    color: "#966F33"
+    property int boardOffset: 20
+    property int rowSize: 40
     Canvas {
         id: background
         anchors.fill: parent
@@ -18,19 +20,16 @@ Window {
     Board {}
 
     function paintGrid(ctx) {
-        var step = 40;
-        var fieldSize = 600;
+        var fieldSize = width - boardOffset;
         ctx.beginPath();
-        ctx.clearRect(0, 0, fieldSize, fieldSize)
-        ctx.fillStyle = "#f4ff68";
-        ctx.fillRect(0, 0, fieldSize, fieldSize);
-        ctx.strokeStyle = Qt.black;
+        ctx.clearRect(0, 0, fieldSize, fieldSize);
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 1;
-        for (var i = 0; i <= fieldSize; i += step) {
-            ctx.moveTo(i, 0);
+        for (var i = boardOffset; i <= fieldSize; i += rowSize) {
+            ctx.moveTo(i, boardOffset);
             ctx.lineTo(i, fieldSize);
             ctx.stroke();
-            ctx.moveTo(0, i);
+            ctx.moveTo(boardOffset, i);
             ctx.lineTo(fieldSize, i);
             ctx.stroke();
         }

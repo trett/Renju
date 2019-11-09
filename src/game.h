@@ -21,7 +21,7 @@ public:
 
 	QSharedPointer<GameBoard> *gameBoard;
 private:
-	static const int BOARD_SIZE = 15;
+	static const int BOARD_SIZE = 16;
 	int table[BOARD_SIZE][BOARD_SIZE];
 	int totalMoves;
 	QSharedPointer<Player> *pl1;

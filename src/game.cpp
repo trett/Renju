@@ -1,7 +1,7 @@
 #include "game.h"
 
+#include <QSharedPointer>
 #include <QVariant>
-#include <QDebug>
 
 Game::Game(QObject *parent): QObject(parent)
 {

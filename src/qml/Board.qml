@@ -7,7 +7,9 @@ Item {
     objectName: "board"
     anchors.fill: parent
     layer.enabled: true
-
+    property int boardOffset: 20
+    property int rowSize: 40
+    property int dotSize: 17
     property int xPos
     property int yPos
     property string color
@@ -25,9 +27,9 @@ Item {
         onPaint: {
             if(board.needPaint) {
                 var ctx = getContext("2d");
-                ctx.fillStyle = parent.color;
+                ctx.fillStyle = color;
                 ctx.beginPath();
-                ctx.arc(parent.xPos, parent.yPos, 17, 0, 2 * Math.PI, false);
+                ctx.arc(xPos + boardOffset, yPos + boardOffset, dotSize, 0, 2 * Math.PI, false);
                 ctx.fill();
                 ctx.shadowOffsetX = 2;
                 ctx.shadowOffsetY = 2;
@@ -40,10 +42,11 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                dot.x = Math.round(mouseX / 40)
-                dot.y = Math.round(mouseY / 40)
-                board.needPaint = true
-                board.mouseClicked(dot)
+                console.log(mouseX + "  " + mouseY);
+                dot.x = Math.round((mouseX - boardOffset) / rowSize);
+                dot.y = Math.round((mouseY - boardOffset) / rowSize);
+                board.needPaint = true;
+                board.mouseClicked(dot);
             }
         }
     }
@@ -61,15 +64,15 @@ Item {
     }
 
     function paintDot(dot) {
-        board.xPos = dot.x * 40
-        board.yPos = dot.y * 40
-        board.color = dot.color === -1 ? "#494646" : "#f6f8fc"
-        boardCanvas.requestPaint()
+        board.xPos = dot.x * rowSize;
+        board.yPos = dot.y * rowSize;
+        board.color = dot.color === -1 ? "#494646" : "#f6f8fc";
+        boardCanvas.requestPaint();
     }
 
     function showWin(color) {
-        winnerDialog.winner = color === -1 ? "Black" : "White"
-        winnerDialog.open()
+        winnerDialog.winner = color === -1 ? "Black" : "White";
+        winnerDialog.open();
     }
 }
 
