@@ -19,14 +19,15 @@ public:
 	explicit Game(QObject *parent = nullptr);
 	~Game();
 
-	QSharedPointer<GameBoard> *gameBoard;
+	QPointer<GameBoard> *m_gameBoard;
 private:
 	static const int BOARD_SIZE = 16;
-	int table[BOARD_SIZE][BOARD_SIZE];
-	int totalMoves;
-	QSharedPointer<Player> *pl1;
-	QSharedPointer<Player> *pl2;
-	Player *currentPlayer;
+	int m_table[BOARD_SIZE][BOARD_SIZE];
+	int m_totalMoves;
+	QSharedPointer<Player> *m_pl1;
+	QSharedPointer<Player> *m_pl2;
+	Player *m_currentPlayer;
+	QList<Dot*>* m_history;
 
 	void changePlayer();
 	bool hasWinner(Dot *dot);

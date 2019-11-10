@@ -11,7 +11,7 @@ class GameBoard : public QObject
 	Q_OBJECT
 public:
 	explicit GameBoard(QObject *parent = nullptr);
-	QObject *board;
+	QObject *m_board;
 public slots:
 	void paintDot(const Dot *dot);
 	void showWin(const Player *pl);

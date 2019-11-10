@@ -3,6 +3,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QPointer>
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
 
     auto root = objects.first();
     Game *game = new Game();
-    game->gameBoard->data()->board = root->findChild<QObject*>("board");
-    QObject::connect(game->gameBoard->data()->board, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));
+    game->m_gameBoard->data()->m_board = root->findChild<QObject*>("board");
+    QObject::connect(game->m_gameBoard->data()->m_board, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));
     return app.exec();
 }

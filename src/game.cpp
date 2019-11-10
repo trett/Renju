@@ -1,51 +1,52 @@
 #include "game.h"
 
+#include <QPointer>
 #include <QSharedPointer>
 #include <QVariant>
 
-Game::Game(QObject *parent): QObject(parent)
+Game::Game(QObject *parent): QObject(parent), m_gameBoard(new QPointer<GameBoard>(new GameBoard())), m_history(new QList<Dot*>())
 {
-    gameBoard = new QSharedPointer<GameBoard>(new GameBoard());
-    QObject::connect(this, &Game::paint, gameBoard->data(), &GameBoard::paintDot);
-    QObject::connect(this, &Game::showWin, gameBoard->data(), &GameBoard::showWin);
-    memset(table, 0, sizeof(table[0][0]) * BOARD_SIZE * BOARD_SIZE);
+    QObject::connect(this, &Game::paint, m_gameBoard->data(), &GameBoard::paintDot);
+    QObject::connect(this, &Game::showWin, m_gameBoard->data(), &GameBoard::showWin);
+    memset(m_table, 0, sizeof(m_table[0][0]) * BOARD_SIZE * BOARD_SIZE);
 
-    pl1 = new QSharedPointer<Player>(new Player(BLACK));
-    pl2 = new QSharedPointer<Player>(new Player(WHITE));
-    pl1->data()->canMove = true;
-    currentPlayer = pl1->data();
+    m_pl1 = new QSharedPointer<Player>(new Player(BLACK));
+    m_pl2 = new QSharedPointer<Player>(new Player(WHITE));
+    m_pl1->data()->canMove = true;
+    m_currentPlayer = m_pl1->data();
 }
 
 Game::~Game() {
     for (int i = 0; i < BOARD_SIZE; i++) {
-        delete[] &table[i];
+        delete[] &m_table[i];
     }
 }
 
 void Game::nextMove(const QVariant &v) {
-    if (!currentPlayer->canMove) {
+    if (!m_currentPlayer->canMove) {
         // TODO: Error
     }
     Dot *dot = qobject_cast<Dot*>(v.value<QObject*>());
-    int *field = &table[dot->x()][dot->y()];
+    int *field = &m_table[dot->x()][dot->y()];
     if (*field != NONE) {
         return;
     }
-    dot->setColor(currentPlayer->color);
-    *field = currentPlayer->color;
+    dot->setColor(m_currentPlayer->color);
+    *field = m_currentPlayer->color;
     emit(paint(dot));
     if (hasWinner(dot)) {
-        emit(showWin(currentPlayer));
+        emit(showWin(m_currentPlayer));
         return;
     }
+    m_history->push_back(dot);
     changePlayer();
 }
 
 void Game::changePlayer() {
-    Player *previous = currentPlayer;
+    Player *previous = m_currentPlayer;
     previous->canMove = false;
-    currentPlayer = previous == pl1->data() ? pl2->data() : pl1->data();
-    currentPlayer->canMove = true;
+    m_currentPlayer = previous == m_pl1->data() ? m_pl2->data() : m_pl1->data();
+    m_currentPlayer->canMove = true;
 }
 
 bool Game::hasWinner(Dot *dot) {
@@ -56,10 +57,10 @@ bool Game::hasWinner(Dot *dot) {
     // x
     //  x
     //   x
-    for (int xx = x + 1, yy = y + 1; table[xx][yy] == dot->color() && counter != 5; ++xx, ++yy) {
+    for (int xx = x + 1, yy = y + 1; m_table[xx][yy] == dot->color() && counter != 5; ++xx, ++yy) {
         counter++;
     }
-    for (int xx = x - 1, yy = y - 1; table[xx][yy] == dot->color() && counter != 5; --xx, --yy) {
+    for (int xx = x - 1, yy = y - 1; m_table[xx][yy] == dot->color() && counter != 5; --xx, --yy) {
         counter++;
     }
     if (counter > 4) {
@@ -70,10 +71,10 @@ bool Game::hasWinner(Dot *dot) {
     //  x
     // x
     counter = 1;
-    for (int xx = x - 1, yy = y + 1; table[xx][yy] == dot->color() && counter != 5; --xx, ++yy) {
+    for (int xx = x - 1, yy = y + 1; m_table[xx][yy] == dot->color() && counter != 5; --xx, ++yy) {
         counter++;
     }
-    for (int xx = x + 1, yy = y - 1; table[xx][yy] == dot->color() && counter != 5; ++xx, --yy) {
+    for (int xx = x + 1, yy = y - 1; m_table[xx][yy] == dot->color() && counter != 5; ++xx, --yy) {
         counter++;
     }
     if (counter > 4) {
@@ -82,10 +83,10 @@ bool Game::hasWinner(Dot *dot) {
 
     // xxx
     counter = 1;
-    for (int xx = x - 1; table[xx][y] == dot->color() && counter != 5; --xx) {
+    for (int xx = x - 1; m_table[xx][y] == dot->color() && counter != 5; --xx) {
         counter++;
     }
-    for (int xx = x + 1; table[xx][y] == dot->color() && counter != 5; ++xx) {
+    for (int xx = x + 1; m_table[xx][y] == dot->color() && counter != 5; ++xx) {
         counter++;
     }
     if (counter > 4) {
@@ -96,10 +97,10 @@ bool Game::hasWinner(Dot *dot) {
     // x
     // x
     counter = 1;
-    for (int yy = y - 1; table[x][yy] == dot->color() && counter != 5; --yy) {
+    for (int yy = y - 1; m_table[x][yy] == dot->color() && counter != 5; --yy) {
         counter++;
     }
-    for (int yy = y + 1; table[x][yy] == dot->color() && counter != 5; ++yy) {
+    for (int yy = y + 1; m_table[x][yy] == dot->color() && counter != 5; ++yy) {
         counter++;
     }
     if (counter > 4) {
