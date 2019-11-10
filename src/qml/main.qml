@@ -11,6 +11,7 @@ Window {
     color: "#966F33"
     property int boardOffset: 20
     property int rowSize: 40
+
     Canvas {
         id: background
         anchors.fill: parent
@@ -42,6 +43,7 @@ Window {
             color: "black"
             source: splashImage
         }
+
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -52,6 +54,7 @@ Window {
         }
         Component.onCompleted: visible = true
     }
+
     Board {
         id: board
     }

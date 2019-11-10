@@ -42,12 +42,19 @@ Item {
 
         MouseArea {
             anchors.fill: parent
+            cursorShape: Qt.OpenHandCursor
+            onPressed: {
+                cursorShape = Qt.ClosedHandCursor
+            }
             onClicked: {
                 console.log(mouseX + "  " + mouseY);
                 dot.x = Math.round((mouseX - boardOffset) / rowSize);
                 dot.y = Math.round((mouseY - boardOffset) / rowSize);
                 board.needPaint = true;
                 board.mouseClicked(dot);
+            }
+            onReleased: {
+                cursorShape = Qt.OpenHandCursor
             }
         }
     }
