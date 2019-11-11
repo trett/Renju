@@ -10,7 +10,7 @@ class GameBoard : public QObject
 {
 	Q_OBJECT
 public:
-	explicit GameBoard(QObject *parent = nullptr);
+	explicit GameBoard(QObject *parent);
 	QObject *m_board;
 public slots:
 	void paintDot(const Dot *dot);

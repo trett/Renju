@@ -19,8 +19,9 @@ int main(int argc, char *argv[])
         return -1;
 
     auto root = objects.first();
-    Game *game = new Game();
-    game->m_gameBoard->data()->m_board = root->findChild<QObject*>("board");
-    QObject::connect(game->m_gameBoard->data()->m_board, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));
+    auto boardItem = root->findChild<QObject*>("board");
+    GameBoard *gameBoard = new GameBoard(boardItem);
+    Game *game = new Game(gameBoard);
+    QObject::connect(boardItem, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));
     return app.exec();
 }

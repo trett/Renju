@@ -4,22 +4,18 @@
 #include <QSharedPointer>
 #include <QVariant>
 
-Game::Game(QObject *parent): QObject(parent), m_gameBoard(new QPointer<GameBoard>(new GameBoard())), m_history(new QList<Dot*>())
+#include <QDebug>
+
+Game::Game(GameBoard *parent): QObject(parent), m_gameBoard(parent), m_history(new QList<Dot*>())
 {
-    QObject::connect(this, &Game::paint, m_gameBoard->data(), &GameBoard::paintDot);
-    QObject::connect(this, &Game::showWin, m_gameBoard->data(), &GameBoard::showWin);
+    QObject::connect(this, &Game::paint, m_gameBoard, &GameBoard::paintDot);
+    QObject::connect(this, &Game::showWin, m_gameBoard, &GameBoard::showWin);
     memset(m_table, 0, sizeof(m_table[0][0]) * BOARD_SIZE * BOARD_SIZE);
 
     m_pl1 = new QSharedPointer<Player>(new Player(BLACK));
     m_pl2 = new QSharedPointer<Player>(new Player(WHITE));
     m_pl1->data()->canMove = true;
     m_currentPlayer = m_pl1->data();
-}
-
-Game::~Game() {
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        delete[] &m_table[i];
-    }
 }
 
 void Game::nextMove(const QVariant &v) {

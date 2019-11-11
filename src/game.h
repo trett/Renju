@@ -16,14 +16,11 @@ public:
 		WHITE = 1
 	};
 
-	explicit Game(QObject *parent = nullptr);
-	~Game();
-
-	QPointer<GameBoard> *m_gameBoard;
+	explicit Game(GameBoard *gameBoard);
+	GameBoard *m_gameBoard;
 private:
 	static const int BOARD_SIZE = 16;
 	int m_table[BOARD_SIZE][BOARD_SIZE];
-	int m_totalMoves;
 	QSharedPointer<Player> *m_pl1;
 	QSharedPointer<Player> *m_pl2;
 	Player *m_currentPlayer;

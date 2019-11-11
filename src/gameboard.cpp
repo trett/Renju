@@ -6,7 +6,7 @@
 #include <QDebug>
 #endif
 
-GameBoard::GameBoard(QObject *parent) : QObject (parent)
+GameBoard::GameBoard(QObject *parent) : QObject (parent), m_board(parent)
 {
 }
 
