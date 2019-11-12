@@ -9,31 +9,31 @@
 
 class Game : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	enum DOT_COLOR {
-		NONE = 0,
-		BLACK = -1,
-		WHITE = 1
-	};
+    enum DOT_COLOR {
+        NONE = 0,
+        BLACK = -1,
+        WHITE = 1
+    };
 
-	explicit Game(GameBoard *gameBoard);
-	GameBoard *m_gameBoard;
+    explicit Game(GameBoard *gameBoard);
+    GameBoard *m_gameBoard;
 private:
-	static const int BOARD_SIZE = 16;
-	QVector<QVector<int>> m_table;
-	QSharedPointer<Player> *m_pl1;
-	QSharedPointer<Player> *m_pl2;
-	Player *m_currentPlayer;
-	QList<Dot*>* m_history;
+    static const int BOARD_SIZE = 16;
+    QVector<QVector<int>> m_table;
+    QSharedPointer<Player> *m_pl1;
+    QSharedPointer<Player> *m_pl2;
+    Player *m_currentPlayer;
+    QList<Dot*>* m_history;
 
-	void changePlayer();
-	bool hasWinner(Dot *dot);
+    void changePlayer();
+    bool hasWinner(Dot *dot);
 signals:
-	void paint(const Dot *dot);
-	void showWin(const Player *pl);
+    void paint(const Dot *dot);
+    void showWin(const Player *pl);
 public slots:
-	void nextMove(const QVariant &v);
+    void nextMove(const QVariant &v);
 };
 
 #endif // GAME_H
