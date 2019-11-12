@@ -1,12 +1,14 @@
 import QtQuick 2.9
 import QtQuick.Window 2.3
-import QtQuick.Controls 2.3
-import QtGraphicalEffects 1.12
+import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
 
 Window {
     visible: true
-    width: 640
-    height: 640
+    minimumWidth: 640
+    minimumHeight: 640
+    maximumWidth: 640
+    maximumHeight: 640
     title: qsTr("QRenju")
     color: "#966F33"
     property int boardOffset: 20
