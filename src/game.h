@@ -5,6 +5,7 @@
 #include "gameboard.h"
 
 #include <QObject>
+#include <QVector>
 
 class Game : public QObject
 {
@@ -20,7 +21,7 @@ public:
 	GameBoard *m_gameBoard;
 private:
 	static const int BOARD_SIZE = 16;
-	int m_table[BOARD_SIZE][BOARD_SIZE];
+	QVector<QVector<int>> m_table;
 	QSharedPointer<Player> *m_pl1;
 	QSharedPointer<Player> *m_pl2;
 	Player *m_currentPlayer;
