@@ -19,7 +19,7 @@ void GameBoard::paintDot(const Dot *dot) {
 
 void GameBoard::showWin(const Player *pl) {
 #ifdef QT_DEBUG
-    qDebug() << "winner is " << pl->color;
+    qDebug() << "winner is " << pl->m_color;
 #endif
-    QMetaObject::invokeMethod(m_board, "showWin", Q_ARG(QVariant, QVariant::fromValue<int>(pl->color)));
+    QMetaObject::invokeMethod(m_board, "showWin", Q_ARG(QVariant, QVariant::fromValue<int>(pl->m_color)));
 }

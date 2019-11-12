@@ -4,20 +4,18 @@
 #include <QSharedPointer>
 #include <QVariant>
 
-Game::Game(GameBoard *parent): QObject(parent), m_gameBoard(parent),
-    m_table(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0)),
-    m_history(new QList<Dot*>())
+Game::Game(GameBoard *parent): QObject(parent), m_gameBoard(parent), m_table(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
 {
     QObject::connect(this, &Game::paint, m_gameBoard, &GameBoard::paintDot);
     QObject::connect(this, &Game::showWin, m_gameBoard, &GameBoard::showWin);
-    m_pl1 = new QSharedPointer<Player>(new Player(BLACK));
-    m_pl2 = new QSharedPointer<Player>(new Player(WHITE));
-    m_pl1->data()->canMove = true;
-    m_currentPlayer = m_pl1->data();
+    m_pl1.m_color = BLACK;
+    m_pl2.m_color = WHITE;
+    m_pl1.m_canMove = true;
+    m_currentPlayer = &m_pl1;
 }
 
 void Game::nextMove(const QVariant &v) {
-    if (!m_currentPlayer->canMove) {
+    if (!m_currentPlayer->m_canMove) {
         // TODO: Error
     }
     Dot *dot = qobject_cast<Dot*>(v.value<QObject*>());
@@ -25,22 +23,22 @@ void Game::nextMove(const QVariant &v) {
     if (*field != NONE) {
         return;
     }
-    dot->setColor(m_currentPlayer->color);
-    *field = m_currentPlayer->color;
+    dot->setColor(m_currentPlayer->m_color);
+    *field = m_currentPlayer->m_color;
     emit(paint(dot));
     if (hasWinner(dot)) {
         emit(showWin(m_currentPlayer));
         return;
     }
-    m_history->push_back(dot);
+    m_history.push_back(dot);
     changePlayer();
 }
 
 void Game::changePlayer() {
     Player *previous = m_currentPlayer;
-    previous->canMove = false;
-    m_currentPlayer = previous == m_pl1->data() ? m_pl2->data() : m_pl1->data();
-    m_currentPlayer->canMove = true;
+    previous->m_canMove = false;
+    m_currentPlayer = previous == &m_pl1 ? &m_pl2 : &m_pl1;
+    m_currentPlayer->m_canMove = true;
 }
 
 bool Game::hasWinner(Dot *dot) {

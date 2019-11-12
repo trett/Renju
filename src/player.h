@@ -5,9 +5,9 @@
 class Player
 {
 public:
-    Player(int color);
-    bool canMove = false;
-    int color;
+    Player();
+    bool m_canMove = false;
+    int m_color;
 
     void move();
 };

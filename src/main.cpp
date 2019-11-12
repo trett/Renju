@@ -18,8 +18,7 @@ int main(int argc, char *argv[])
     if (objects.isEmpty())
         return -1;
 
-    auto root = objects.first();
-    auto boardItem = root->findChild<QObject*>("board");
+    auto boardItem = objects.first()->findChild<QObject*>("board");
     GameBoard *gameBoard = new GameBoard(boardItem);
     Game *game = new Game(gameBoard);
     QObject::connect(boardItem, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));

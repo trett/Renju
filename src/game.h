@@ -22,10 +22,10 @@ public:
 private:
     static const int BOARD_SIZE = 16;
     QVector<QVector<int>> m_table;
-    QSharedPointer<Player> *m_pl1;
-    QSharedPointer<Player> *m_pl2;
+    Player m_pl1;
+    Player m_pl2;
     Player *m_currentPlayer;
-    QList<Dot*>* m_history;
+    QList<Dot*> m_history;
 
     void changePlayer();
     bool hasWinner(Dot *dot);

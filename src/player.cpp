@@ -1,12 +1,12 @@
 #include "player.h"
 
-Player::Player(int clr) : color(clr)
+Player::Player()
 {
 }
 
 void Player::move() {
-    if (!canMove) {
+    if (!m_canMove) {
         return;
     }
-    canMove = false;
+    m_canMove = false;
 }
