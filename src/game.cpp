@@ -42,17 +42,21 @@ void Game::changePlayer() {
 }
 
 bool Game::hasWinner(Dot *dot) {
-    int counter = 1;
     int x = dot->x();
     int y = dot->y();
+
+    int xx, yy, counter;
+    auto moveNext = [dot](int x, int y, auto m_table, int counter) {
+        return counter != 5 && x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && m_table[x][y] == dot->color();
+    };
 
     // x
     //  x
     //   x
-    for (int xx = x + 1, yy = y + 1; m_table[xx][yy] == dot->color() && counter != 5; ++xx, ++yy) {
+    for (xx = x + 1, yy = y + 1, counter = 1; moveNext(xx, yy, m_table, counter); ++xx, ++yy) {
         counter++;
     }
-    for (int xx = x - 1, yy = y - 1; m_table[xx][yy] == dot->color() && counter != 5; --xx, --yy) {
+    for (xx = x - 1, yy = y - 1; moveNext(xx, yy, m_table, counter); --xx, --yy) {
         counter++;
     }
     if (counter > 4) {
@@ -62,11 +66,10 @@ bool Game::hasWinner(Dot *dot) {
     //   x
     //  x
     // x
-    counter = 1;
-    for (int xx = x - 1, yy = y + 1; m_table[xx][yy] == dot->color() && counter != 5; --xx, ++yy) {
+    for (xx = x - 1, yy = y + 1, counter = 1; moveNext(xx, yy, m_table, counter); --xx, ++yy) {
         counter++;
     }
-    for (int xx = x + 1, yy = y - 1; m_table[xx][yy] == dot->color() && counter != 5; ++xx, --yy) {
+    for (xx = x + 1, yy = y - 1; moveNext(xx, yy, m_table, counter); ++xx, --yy) {
         counter++;
     }
     if (counter > 4) {
@@ -74,11 +77,10 @@ bool Game::hasWinner(Dot *dot) {
     }
 
     // xxx
-    counter = 1;
-    for (int xx = x - 1; m_table[xx][y] == dot->color() && counter != 5; --xx) {
+    for (xx = x - 1, counter = 1; moveNext(xx, y, m_table, counter); --xx) {
         counter++;
     }
-    for (int xx = x + 1; m_table[xx][y] == dot->color() && counter != 5; ++xx) {
+    for (xx = x + 1; moveNext(xx, y, m_table, counter); ++xx) {
         counter++;
     }
     if (counter > 4) {
@@ -88,11 +90,10 @@ bool Game::hasWinner(Dot *dot) {
     // x
     // x
     // x
-    counter = 1;
-    for (int yy = y - 1; m_table[x][yy] == dot->color() && counter != 5; --yy) {
+    for (yy = y - 1, counter = 1; moveNext(x, yy, m_table, counter); --yy) {
         counter++;
     }
-    for (int yy = y + 1; m_table[x][yy] == dot->color() && counter != 5; ++yy) {
+    for (yy = y + 1; moveNext(x, yy, m_table, counter); ++yy) {
         counter++;
     }
     if (counter > 4) {
