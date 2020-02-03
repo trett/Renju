@@ -13,14 +13,12 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Dot>("renju.core.dot", 1, 0, "Dot");
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/Main.qml")));
     QList<QObject*> objects = engine.rootObjects();
     if (objects.isEmpty())
         return -1;
 
     auto boardItem = objects.first()->findChild<QObject*>("board");
-    GameBoard *gameBoard = new GameBoard(boardItem);
-    Game *game = new Game(gameBoard);
-    QObject::connect(boardItem, SIGNAL(mouseClicked(QVariant)), game, SLOT(nextMove(QVariant)));
+    new Game(new GameBoard(boardItem));
     return app.exec();
 }

@@ -1,10 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "player.h"
 #include "gameboard.h"
+#include "humanplayer.h"
+#include "simpleai.h"
 
 #include <QObject>
+#include <QSharedPointer>
 #include <QVector>
 
 class Game : public QObject
@@ -22,18 +24,19 @@ public:
 private:
     static const int BOARD_SIZE = 16;
     QVector<QVector<int>> m_table;
-    Player m_pl1;
-    Player m_pl2;
-    Player *m_currentPlayer;
+    QSharedPointer<HumanPlayer> m_pl;
+    QSharedPointer<SimpleAi> m_pl_ai;
+    IPlayer *m_currentPlayer;
     QList<Dot*> m_history;
 
-    void changePlayer();
     bool hasWinner(Dot *dot);
 signals:
     void paint(const Dot *dot);
-    void showWin(const Player *pl);
+    void showWin(const int color);
+    void playerChanged();
 public slots:
-    void nextMove(const QVariant &v);
+    void nextMove(const Dot *dot);
+    void changePlayer();
 };
 
 #endif // GAME_H

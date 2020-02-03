@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>Main.qml</file>
         <file>Board.qml</file>
         <file>qrenju.png</file>
+        <file>Dot.qml</file>
     </qresource>
 </RCC>

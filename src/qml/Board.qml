@@ -11,10 +11,6 @@ Item {
     property int boardOffset: 20
     property int rowSize: 40
     property int dotSize: 17
-    property int xPos
-    property int yPos
-    property string color
-    property bool needPaint: false
 
     signal mouseClicked(var obj)
 
@@ -22,40 +18,20 @@ Item {
         id: dot
     }
 
-    Canvas {
+    MouseArea {
         anchors.fill: parent
-        id: boardCanvas
-        onPaint: {
-            if(board.needPaint) {
-                var ctx = getContext("2d");
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(xPos + boardOffset, yPos + boardOffset, dotSize, 0, 2 * Math.PI, false);
-                ctx.fill();
-                ctx.shadowOffsetX = 2;
-                ctx.shadowOffsetY = 2;
-                ctx.shadowBlur = 1;
-                ctx.stroke();
-                ctx.closePath();
-            }
+        cursorShape: Qt.OpenHandCursor
+        onPressed: {
+            cursorShape = Qt.ClosedHandCursor
         }
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.OpenHandCursor
-            onPressed: {
-                cursorShape = Qt.ClosedHandCursor
-            }
-            onClicked: {
-                console.log(mouseX + "  " + mouseY);
-                dot.x = Math.round((mouseX - boardOffset) / rowSize);
-                dot.y = Math.round((mouseY - boardOffset) / rowSize);
-                board.needPaint = true;
-                board.mouseClicked(dot);
-            }
-            onReleased: {
-                cursorShape = Qt.OpenHandCursor
-            }
+        onClicked: {
+            console.log(mouseX + "  " + mouseY);
+            dot.x = Math.round((mouseX - boardOffset) / rowSize);
+            dot.y = Math.round((mouseY - boardOffset) / rowSize);
+            board.mouseClicked(dot);
+        }
+        onReleased: {
+            cursorShape = Qt.OpenHandCursor
         }
     }
 
@@ -72,10 +48,19 @@ Item {
     }
 
     function paintDot(dot) {
-        board.xPos = dot.x * rowSize;
-        board.yPos = dot.y * rowSize;
-        board.color = dot.color === -1 ? "#494646" : "#f6f8fc";
-        boardCanvas.requestPaint();
+        var component = Qt.createComponent("Dot.qml");
+        var dotItem = component.createObject(board,
+                                             {
+                                                 x: dot.x * rowSize,
+                                                 y: dot.y * rowSize,
+                                                 width: rowSize,
+                                                 height: rowSize,
+                                                 radius: rowSize / 2,
+                                                 "dotColor" : dot.color,
+                                             });
+        if (!dotItem) {
+            console.log("Error creating object");
+        }
     }
 
     function showWin(color) {
