@@ -9,6 +9,7 @@ class Dot : public QObject
     Q_PROPERTY(int x READ x WRITE setX)
     Q_PROPERTY(int y READ y WRITE setY)
     Q_PROPERTY(int color READ color WRITE setColor)
+
 public:
     explicit Dot(QObject *parent = nullptr);
 
@@ -18,6 +19,7 @@ public:
     void setX(const int x);
     void setY(const int y);
     void setColor(const int color);
+
 private:
     int m_x;
     int m_y;

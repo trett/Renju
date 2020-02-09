@@ -3,16 +3,20 @@
 
 #include "dot.h"
 #include "i_player.h"
+#include "renju.h"
 
 #include <QVector>
+
+using namespace Renju;
 
 class SimpleAi : public IPlayer
 {
 public:
-    SimpleAi(GameBoard *parent, int color, QVector<QVector<int>> *table);
+    SimpleAi(GameBoard *parent, DOT_COLOR color);
     void onPlayerChange();
+
 private:
-    QPair<int, QSharedPointer<Dot>> getNextMove(int color);
+    QPair<int, QList<QSharedPointer<Dot>>> generate(DOT_COLOR color);
     QVector<QVector<int>> m_rating;
 };
 #endif // SIMPLEAI_H
