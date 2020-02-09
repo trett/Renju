@@ -22,7 +22,7 @@ QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
             dot.setX(x);
             dot.setY(y);
             dot.setColor(color);
-            for (Table::Direction direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
+            for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
                 m_rating[y][x] = std::max(m_rating[y][x],Table::getDotCountInRow(&dot, direction));
             }
         }

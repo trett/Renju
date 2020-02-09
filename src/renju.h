@@ -21,7 +21,7 @@ using namespace Renju;
 class Table
 {
 public:
-    Table();
+    Table() = default;
     static QVector<QVector<int>> table;
     using Direction = QList<QPair<char, char>>;
     static const Direction XY;
@@ -29,6 +29,6 @@ public:
     static const Direction X;
     static const Direction Y;
 
-    int static getDotCountInRow(const Dot *dot, const Direction direction);
+    int static getDotCountInRow(const Dot *dot, const Direction &direction);
 };
 #endif // RENJU_H

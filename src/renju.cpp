@@ -1,10 +1,7 @@
 #include "renju.h"
 
-Table::Table()
-{
-}
 
-int Table::getDotCountInRow(const Dot* dot, const Direction direction)
+int Table::getDotCountInRow(const Dot* dot, const Direction &direction)
 {
     int counter = 1;
     for (QPair<char, char> pair : direction) {

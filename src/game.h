@@ -13,7 +13,7 @@ class Game : public QObject
 {
     Q_OBJECT
 public:
-    explicit Game(GameBoard *gameBoard);
+    explicit Game(GameBoard *parent);
     GameBoard *m_gameBoard;
 
 private:

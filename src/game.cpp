@@ -51,7 +51,7 @@ void Game::changePlayer()
 }
 
 bool Game::hasWinner(Dot *dot) {
-    for (Table::Direction direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
+    for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
         if (Table::getDotCountInRow(dot, direction) > 4) {
             return true;
         }
