@@ -16,7 +16,11 @@ void GameBoard::paintDot(const Dot *dot) {
 #ifdef QT_DEBUG
     qDebug() << "Painting dot" << "x:" << dot->x() << " y:" << dot->y();
 #endif
-    QMetaObject::invokeMethod(m_board, "paintDot", Q_ARG(QVariant, QVariant::fromValue<Dot*>(const_cast<Dot*>(dot))));
+    Dot tmp;
+    tmp.setX(dot->x());
+    tmp.setY(dot->y());
+    tmp.setColor(dot->color());
+    QMetaObject::invokeMethod(m_board, "paintDot", Q_ARG(QVariant, QVariant::fromValue<Dot*>(&tmp)));
 }
 
 void GameBoard::showWin(const int color) {

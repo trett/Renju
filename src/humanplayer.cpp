@@ -21,5 +21,5 @@ void HumanPlayer::getNextMove(const Dot *dot)
     }
     m_nextMove.setX(dot->x());
     m_nextMove.setY(dot->y());
-    emit(move(const_cast<Dot*>(&m_nextMove)));
+    emit(move(&m_nextMove));
 }

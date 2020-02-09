@@ -61,5 +61,5 @@ void SimpleAi::onPlayerChange()
         m_nextMove.setX(enemyMoves.second.last().data()->x());
         m_nextMove.setY(enemyMoves.second.last().data()->y());
     }
-    emit(move(const_cast<Dot*>(&m_nextMove)));
+    emit(move(&m_nextMove));
 }

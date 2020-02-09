@@ -26,7 +26,7 @@ void Game::nextMove(const Dot *dot) {
     nextDot.setX(dot->x());
     nextDot.setY(dot->y());
     Table::table[dot->y()][dot->x()] = m_currentPlayer->m_color;
-    emit(paint(const_cast<Dot*>(&nextDot)));
+    emit(paint(&nextDot));
     m_history.push_back(&nextDot);
     if (hasWinner(&nextDot)) {
         emit(showWin(m_currentPlayer->m_color));
