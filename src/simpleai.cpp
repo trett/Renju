@@ -13,12 +13,12 @@ SimpleAi::SimpleAi(GameBoard *parent, DOT_COLOR color) : IPlayer(parent), m_rati
 
 QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
     // compute new rating
+    Dot dot;
     for (int y = 0; y < m_rating.size(); y++) {
         for (int x = 0; x < m_rating.at(y).size(); x++) {
             if (Table::table.at(y).at(x) != 0) {
                 continue;
             }
-            Dot dot;
             dot.setX(x);
             dot.setY(y);
             dot.setColor(color);

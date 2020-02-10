@@ -4,6 +4,7 @@ import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 
 Window {
+    id: window
     visible: true
     minimumWidth: 640
     minimumHeight: 640
@@ -15,8 +16,9 @@ Window {
     property int rowSize: 40
 
     Canvas {
-        id: background
+        id: boardCanvas
         anchors.fill: parent
+        visible: false
         onPaint: {
             paintGrid(getContext("2d"));
         }
@@ -50,11 +52,20 @@ Window {
             anchors.fill: parent
             onClicked: {
                 splash.destroy()
-                splashImage.visible = false;
-                board.visible = true;
+                splashImage.visible = false
+                startScreen.visible = true
             }
         }
         Component.onCompleted: visible = true
+    }
+
+    StartScreen {
+        id: startScreen
+        onStartGame: {
+            startScreen.visible = false
+            boardCanvas.visible = true
+            board.visible = true
+        }
     }
 
     Board {
@@ -77,4 +88,6 @@ Window {
         }
         ctx.closePath();
     }
+
+
 }

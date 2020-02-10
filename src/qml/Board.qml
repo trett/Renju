@@ -48,7 +48,7 @@ Item {
     }
 
     function paintDot(dot) {
-        var component = Qt.createComponent("dot.qml");
+        var component = Qt.createComponent("Dot.qml");
         var dotItem = component.createObject(board,
                                              {
                                                  x: dot.x * rowSize,

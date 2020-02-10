@@ -3,6 +3,7 @@
         <file>Main.qml</file>
         <file>Board.qml</file>
         <file>qrenju.png</file>
-        <file>dot.qml</file>
+        <file>Dot.qml</file>
+        <file>StartScreen.qml</file>
     </qresource>
 </RCC>
