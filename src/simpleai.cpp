@@ -3,9 +3,8 @@
 #include <QDebug>
 
 
-SimpleAi::SimpleAi(GameBoard *parent, DOT_COLOR color) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
+SimpleAi::SimpleAi(GameBoard *parent) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
 {
-    m_color = color;
     // default first move
     m_nextMove.setX(7);
     m_nextMove.setY(7);

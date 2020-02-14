@@ -13,6 +13,7 @@ Item {
     property int dotSize: 17
 
     signal mouseClicked(var obj)
+    signal colorChoosed(var obj)
 
     Dot {
         id: dot
@@ -21,17 +22,13 @@ Item {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.OpenHandCursor
-        onPressed: {
-            cursorShape = Qt.ClosedHandCursor
-        }
+        onPressed:cursorShape = Qt.ClosedHandCursor
+        onReleased: cursorShape = Qt.OpenHandCursor
         onClicked: {
             console.log(mouseX + "  " + mouseY);
             dot.x = Math.round((mouseX - boardOffset) / rowSize);
             dot.y = Math.round((mouseY - boardOffset) / rowSize);
             board.mouseClicked(dot);
-        }
-        onReleased: {
-            cursorShape = Qt.OpenHandCursor
         }
     }
 
@@ -40,11 +37,10 @@ Item {
         visible: false
         title: "Renju"
         icon: StandardIcon.Information
-        property string winner
         informativeText: winner + " is win!"
-        onAccepted: {
-            close();
-        }
+        onAccepted: close();
+
+        property string winner
     }
 
     function paintDot(dot) {

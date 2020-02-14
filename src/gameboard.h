@@ -14,11 +14,13 @@ public:
 
 signals:
     void dotFromBoard(const Dot *dot);
+    void colorChanged(int color);
 
 public slots:
     void paintDot(const Dot *dot);
     void showWin(const int color);
     void onMouseClicked(const QVariant &v);
+    void onColorChoosed(const QVariant &color);
 };
 
 #endif // GAMEBOARD_H

@@ -10,6 +10,7 @@
 GameBoard::GameBoard(QObject *parent) : QObject (parent), m_board(parent)
 {
     QObject::connect(parent, SIGNAL(mouseClicked(QVariant)), this, SLOT(onMouseClicked(QVariant)));
+    QObject::connect(parent, SIGNAL(colorChoosed(QVariant)), this, SLOT(onColorChoosed(QVariant)));
 }
 
 void GameBoard::paintDot(const Dot *dot) {
@@ -33,4 +34,9 @@ void GameBoard::showWin(const int color) {
 void GameBoard::onMouseClicked(const QVariant &v)
 {
     emit(dotFromBoard(qobject_cast<Dot*>(v.value<QObject*>())));
+}
+
+void GameBoard::onColorChoosed(const QVariant &color)
+{
+    colorChanged(color.toInt());
 }

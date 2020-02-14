@@ -6,14 +6,24 @@ Game::Game(GameBoard *parent) : QObject(parent), m_gameBoard(parent)
 {
     QObject::connect(this, &Game::paint, m_gameBoard, &GameBoard::paintDot);
     QObject::connect(this, &Game::showWin, m_gameBoard, &GameBoard::showWin);
+    QObject::connect(m_gameBoard, &GameBoard::colorChanged, this, &Game::setPlayersColors);
+
     m_pl = QSharedPointer<HumanPlayer>(new HumanPlayer(parent));
-    // TODO: choose color
-    m_pl.data()->m_color = BLACK;
-    m_pl_ai = QSharedPointer<SimpleAi>(new SimpleAi(parent, WHITE));
-    m_pl.data()->m_canMove = true;
+    m_pl_ai = QSharedPointer<SimpleAi>(new SimpleAi(parent));
+
     QObject::connect(m_pl.data(), &IPlayer::move, this, &Game::nextMove);
     QObject::connect(m_pl_ai.data(), &IPlayer::move, this, &Game::nextMove);
+
     m_currentPlayer = m_pl.data();
+    m_pl.data()->m_canMove = true;
+}
+
+void Game::setPlayersColors(int humanChoosenColor)
+{
+    // TODO: black always move first
+    DOT_COLOR color = static_cast<DOT_COLOR>(humanChoosenColor);
+    m_pl.data()->m_color = static_cast<DOT_COLOR>(color);
+    m_pl_ai.data()->m_color = color == WHITE ? BLACK : WHITE;
 }
 
 void Game::nextMove(const Dot *dot) {

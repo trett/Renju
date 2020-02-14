@@ -12,7 +12,7 @@ using namespace Renju;
 class SimpleAi : public IPlayer
 {
 public:
-    SimpleAi(GameBoard *parent, DOT_COLOR color);
+    SimpleAi(GameBoard *parent);
     void onPlayerChange();
 
 private:

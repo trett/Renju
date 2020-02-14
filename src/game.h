@@ -22,6 +22,7 @@ private:
     IPlayer *m_currentPlayer;
     QList<Dot*> m_history;
 
+    void setPlayersColors(int humanChoosenColor);
     bool hasWinner(Dot *dot);
 
 signals:

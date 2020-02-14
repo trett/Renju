@@ -12,6 +12,7 @@ Window {
     maximumHeight: 640
     title: qsTr("QRenju")
     color: "#966F33"
+
     property int boardOffset: 20
     property int rowSize: 40
 
@@ -19,9 +20,7 @@ Window {
         id: boardCanvas
         anchors.fill: parent
         visible: false
-        onPaint: {
-            paintGrid(getContext("2d"));
-        }
+        onPaint: paintGrid(getContext("2d"));
     }
 
     Rectangle {
@@ -61,10 +60,11 @@ Window {
 
     StartScreen {
         id: startScreen
-        onStartGame: {
+        onStartGame: function(color) {
             startScreen.visible = false
             boardCanvas.visible = true
             board.visible = true
+            board.colorChoosed(color)
         }
     }
 
