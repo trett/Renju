@@ -1,70 +1,26 @@
-/*Copyright (C) <2012>  <trett>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-#pragma once
+#ifndef GAMEBOARD_H
+#define GAMEBOARD_H
 
-#include <QWidget>
-#include <QPainter>
-#include <QPixmap>
-#include <QBuffer>
-#include <QVector>
+#include "dot.h"
 
-class GameBoard : public QWidget
+#include <QObject>
+
+class GameBoard : public QObject
 {
     Q_OBJECT
-
 public:
-    GameBoard(QWidget* parent = 0);
-    virtual ~GameBoard();
-    void clearTable();
-    bool cmpFirst;
-    bool soundBox;
-    void  rmMove();
-    QString status;
-protected:
-    virtual void mousePressEvent(QMouseEvent *pe);
+    explicit GameBoard(QObject *parent);
+    QObject *m_board;
 
-private:
-    int counter;
-    void game();
-    void paintEvent(QPaintEvent *event);
-    int checkTable(int dx, int dy, int color);
-    void moveFirst();
-    void moveSecond();
-    QPixmap pix;
-    int pointX,pointY,x,y,x1,y1;
-    int **table;
-    int **rating;
-    QByteArray array,array2;
-    void conversionMove(int cx, int cy, int cl);
-    void DebugInConsole();
-    int checkDst(int mx, int my, int dx, int dy, int a);
-    void generator();
-    void showWin(QString str);
-    int checkRatingH(int zx, int zy, int aq);
-    int checkRatingV(int zx, int zy, int aq);
-    int checkRatingD1(int zx, int zy, int aq);
-    int checkRatingD2(int zx, int zy, int aq);
-    bool win;
-    void clearRating();
-    void playSound();
 signals:
-    void enblRm(bool);
-    void sendStatus(QString str);
-    void sendEndOfGame(QString str);
+    void dotFromBoard(const Dot *dot);
+    void colorChanged(int color);
+
 public slots:
-    void cmpFirstMove();
+    void paintDot(const Dot *dot);
+    void showWin(const int color);
+    void onMouseClicked(const QVariant &v);
+    void onColorChoosed(const QVariant &color);
 };
 
+#endif // GAMEBOARD_H

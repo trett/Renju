@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>Board.qml</file>
+        <file>qrenju.png</file>
+        <file>Dot.qml</file>
+        <file>Menu.qml</file>
+    </qresource>
+</RCC>
