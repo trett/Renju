@@ -34,7 +34,6 @@ Window {
             id: splashImage
             source: "qrenju.png"
             anchors.centerIn: parent
-
         }
 
         DropShadow {
@@ -52,16 +51,16 @@ Window {
             onClicked: {
                 splash.destroy()
                 splashImage.visible = false
-                startScreen.visible = true
+                menu.visible = true
             }
         }
         Component.onCompleted: visible = true
     }
 
-    StartScreen {
-        id: startScreen
+    Menu {
+        id: menu
         onStartGame: function(color) {
-            startScreen.visible = false
+            menu.visible = false
             boardCanvas.visible = true
             board.visible = true
             board.colorChoosed(color)
@@ -70,6 +69,13 @@ Window {
 
     Board {
         id: board
+        onShowWinText: function(color) {
+            menu.winColor = color;
+            boardCanvas.visible = false;
+            menu.state = "winner";
+            board.visible = false;
+            menu.visible = true;
+        }
     }
 
     function paintGrid(ctx) {
@@ -88,6 +94,4 @@ Window {
         }
         ctx.closePath();
     }
-
-
 }

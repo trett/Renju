@@ -1,6 +1,5 @@
 import QtQuick 2.9
 import renju.core.dot 1.0
-import QtQuick.Dialogs 1.2
 
 Item {
     id: board
@@ -8,12 +7,14 @@ Item {
     anchors.fill: parent
     layer.enabled: true
     visible: false
+
     property int boardOffset: 20
     property int rowSize: 40
     property int dotSize: 17
 
     signal mouseClicked(var obj)
     signal colorChoosed(var obj)
+    signal showWinText(var obj)
 
     Dot {
         id: dot
@@ -30,17 +31,6 @@ Item {
             dot.y = Math.round((mouseY - boardOffset) / rowSize);
             board.mouseClicked(dot);
         }
-    }
-
-    MessageDialog {
-        id: winnerDialog
-        visible: false
-        title: "Renju"
-        icon: StandardIcon.Information
-        informativeText: winner + " is win!"
-        onAccepted: close();
-
-        property string winner
     }
 
     function paintDot(dot) {
@@ -60,8 +50,7 @@ Item {
     }
 
     function showWin(color) {
-        winnerDialog.winner = color === -1 ? "Black" : "White";
-        winnerDialog.open();
+        board.showWinText(color === -1 ? "Black" : "White");
     }
 }
 

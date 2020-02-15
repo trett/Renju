@@ -1,14 +1,16 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.13
-import QtQuick.Layouts 1.14
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import QtGraphicalEffects 1.0
 
 Item {
-    id: startScreen
+    id: menu
     visible: false
     anchors.fill: parent
     state: "start"
 
     signal startGame(int color)
+    property string winColor
 
     ColumnLayout {
         id: column
@@ -23,7 +25,7 @@ Item {
             Layout.preferredWidth: 270
             Layout.preferredHeight: 70
             font.pointSize: 28
-            onClicked: startScreen.state = "colorChoice"
+            onClicked: menu.state = "colorChoice"
         }
 
         RoundButton {
@@ -41,7 +43,7 @@ Item {
             Layout.preferredWidth: 270
             Layout.preferredHeight: 70
             font.pointSize: 28
-            onClicked: startScreen.startGame(-1)
+            onClicked: menu.startGame(-1)
         }
 
         RoundButton {
@@ -51,9 +53,29 @@ Item {
             Layout.preferredWidth: 270
             Layout.preferredHeight: 70
             font.pointSize: 28
-            onClicked: startScreen.startGame(1)
+            onClicked: menu.startGame(1)
         }
 
+        Text {
+            id: winnerText
+            text: qsTr(menu.winColor + " is win!")
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: 270
+            Layout.preferredHeight: 70
+            font.pointSize: 30
+            color: "#fff"
+            layer.enabled: true
+            layer.effect: DropShadow {
+                verticalOffset: 2
+                color: "#333"
+                radius: 1
+                samples: 3
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: menu.state = "start"
+            }
+        }
     }
     states: [
         State {
@@ -72,6 +94,10 @@ Item {
             }
             PropertyChanges {
                 target: white
+                visible: false
+            }
+            PropertyChanges {
+                target: winnerText
                 visible: false
             }
         },
@@ -93,7 +119,33 @@ Item {
                 target: white
                 visible: true
             }
+            PropertyChanges {
+                target: winnerText
+                visible: false
+            }
+        },
+        State {
+            name: "winner"
+            PropertyChanges {
+                target: newGame
+                visible: false
+            }
+            PropertyChanges {
+                target: quit
+                visible: false
+            }
+            PropertyChanges {
+                target: black
+                visible: false
+            }
+            PropertyChanges {
+                target: white
+                visible: false
+            }
+            PropertyChanges {
+                target: winnerText
+                visible: true
+            }
         }
     ]
 }
-

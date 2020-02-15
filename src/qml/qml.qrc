@@ -4,6 +4,6 @@
         <file>Board.qml</file>
         <file>qrenju.png</file>
         <file>Dot.qml</file>
-        <file>StartScreen.qml</file>
+        <file>Menu.qml</file>
     </qresource>
 </RCC>
