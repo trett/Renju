@@ -2,19 +2,19 @@
 
 #include <QtConcurrent/QtConcurrentRun>
 
-Controller::Controller(QObject *parent) : QObject(parent)
+Controller::Controller(QObject *parent) : QObject(parent), m_parent(parent)
 {
 }
 
 void Controller::initGame(const QVariant &humanChoosenColor)
 {
-    m_pl = new HumanPlayer();
-    m_pl_ai = new SimpleAi();
+    m_pl = new HumanPlayer(m_parent);
+    m_pl_ai = new SimpleAi(m_parent);
 
     QObject::connect(m_pl, &IPlayer::move, this, &Controller::getNextMove);
 
     // TODO: black always move first
-    DOT_COLOR color = static_cast<DOT_COLOR>(humanChoosenColor.toInt());
+    auto color = static_cast<DOT_COLOR>(humanChoosenColor.toInt());
     m_pl->m_color = static_cast<DOT_COLOR>(color);
     m_pl_ai->m_color = color == WHITE ? BLACK : WHITE;
     m_currentPlayer = m_pl;

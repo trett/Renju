@@ -8,7 +8,7 @@
 class HumanPlayer : public IPlayer
 {
 public:
-    HumanPlayer();
+    HumanPlayer(QObject *parent);
     Dot *nextMove();
 
 public slots:

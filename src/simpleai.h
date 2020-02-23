@@ -11,7 +11,7 @@ using namespace Renju;
 class SimpleAi : public IPlayer
 {
 public:
-    SimpleAi();
+    SimpleAi(QObject *parent);
     Dot *nextMove();
 private:
     QPair<int, QList<QSharedPointer<Dot>>> generate(DOT_COLOR color);

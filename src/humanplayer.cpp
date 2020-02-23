@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-HumanPlayer::HumanPlayer() : IPlayer()
+HumanPlayer::HumanPlayer(QObject *parent) : IPlayer(parent)
 {
     QObject::connect(GameBoard::board(), SIGNAL(mouseClicked(QVariant)), this, SLOT(onMouseClicked(QVariant)));
 }

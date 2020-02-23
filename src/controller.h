@@ -24,7 +24,7 @@ public:
     enum GameState {
         NONE, AI, HUMAN
     };
-    Q_ENUMS(GameState)
+    Q_ENUM(GameState)
 
     Q_INVOKABLE void initGame(const QVariant &humanChoosenColor);
     Q_INVOKABLE bool checkWin(Dot *dot);
@@ -38,11 +38,12 @@ signals:
     void nextMoveChanged();
 
 private:
-    HumanPlayer *m_pl;
-    SimpleAi *m_pl_ai;
-    IPlayer *m_currentPlayer;
-    QList<Dot*> m_history;
+    QObject *m_parent;
+    HumanPlayer *m_pl = nullptr;
+    SimpleAi *m_pl_ai = nullptr;
+    IPlayer *m_currentPlayer = nullptr;
     Dot *m_nextMove = nullptr;
+    QList<Dot*> m_history;
     GameState m_state = NONE;
 };
 #endif // GAME_H

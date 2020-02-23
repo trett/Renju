@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QThread>
 
-SimpleAi::SimpleAi() : IPlayer(), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
+SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
 {
 }
 
@@ -49,7 +49,7 @@ Dot *SimpleAi::nextMove()
     qDebug() << "AI moving";
     qDebug() << "Self rating" << selfMoves.first << "\r\nEnemy rating" << enemyMoves.first;
 #endif
-    Dot *dot = new Dot();
+    Dot *dot = new Dot(this);
     // TODO: choose best move from generate
     if (selfMoves.first >= enemyMoves.first) {
         dot->setX(selfMoves.second.last().data()->x());

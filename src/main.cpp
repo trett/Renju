@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<Controller>("renju.core.controller", 1, 0, "Controller", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         Q_UNUSED(engine)
         Q_UNUSED(scriptEngine)
-        Controller *controller = new Controller();
+        auto *controller = new Controller();
         return controller;
     });
     QQmlApplicationEngine engine;
