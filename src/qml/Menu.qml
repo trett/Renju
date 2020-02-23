@@ -9,7 +9,7 @@ Item {
     anchors.fill: parent
     state: "start"
 
-    signal startGame(int color)
+    signal startGame(var color)
     property string winColor
 
     ColumnLayout {
@@ -56,27 +56,42 @@ Item {
             onClicked: menu.startGame(1)
         }
 
-        Text {
+        Rectangle {
             id: winnerText
-            text: qsTr(menu.winColor + " is win!")
+            color: "grey"
+            opacity: 0.7
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: 270
             Layout.preferredHeight: 70
-            font.pointSize: 30
-            color: "#fff"
-            layer.enabled: true
-            layer.effect: DropShadow {
-                verticalOffset: 2
-                color: "#333"
-                radius: 1
-                samples: 3
+            radius: 10
+
+            Text {
+                anchors.centerIn: parent
+                text: qsTr(menu.winColor + " is win!")
+                font.pointSize: 30
+                color: "#fff"
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    verticalOffset: 2
+                    color: "#333"
+                    radius: 1
+                    samples: 3
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: menu.state = "start"
+                }
             }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: menu.state = "start"
+
+            FastBlur {
+                anchors.fill: winnerText
+                source: winnerText
+                radius: 32
             }
         }
     }
+
     states: [
         State {
             name: "start"

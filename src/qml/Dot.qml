@@ -9,7 +9,4 @@ Rectangle {
         GradientStop { position: 0.0; color: dotColor === 1 ? "#f6f8fc" : "#131212" }
         GradientStop { position: 1.0; color: dotColor === 1 ? "#c8c7c7" : "#4b4141" }
     }
-    Component.onCompleted: {
-        console.log(dotColor)
-    }
 }

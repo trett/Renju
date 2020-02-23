@@ -1,25 +1,25 @@
 #include "humanplayer.h"
 
-#include "renju.h"
+#include "gameboard.h"
 
 #include <QDebug>
 
-HumanPlayer::HumanPlayer(GameBoard *parent) : IPlayer(parent)
+HumanPlayer::HumanPlayer() : IPlayer()
 {
-    m_gameBoard = parent;
-    QObject::connect(m_gameBoard, &GameBoard::dotFromBoard, this, &HumanPlayer::getNextMove);
+    QObject::connect(GameBoard::board(), SIGNAL(mouseClicked(QVariant)), this, SLOT(onMouseClicked(QVariant)));
 }
 
-void HumanPlayer::getNextMove(const Dot *dot)
+Dot *HumanPlayer::nextMove()
+{
+    return m_nextMove;
+}
+
+void HumanPlayer::onMouseClicked(const QVariant &dot)
 {
 #ifdef QT_DEBUG
     qDebug() << "Human moving";
 #endif
-    int field = Table::table.at(dot->y()).at(dot->x());
-    if (field != 0) {
-        return;
-    }
-    m_nextMove.setX(dot->x());
-    m_nextMove.setY(dot->y());
-    emit(move(&m_nextMove));
+    m_nextMove = qvariant_cast<Dot*>(dot);
+    m_nextMove->setColor(m_color);
+    emit move();
 }

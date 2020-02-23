@@ -1,6 +1,5 @@
 #include "renju.h"
 
-
 int Table::getDotCountInRow(const Dot* dot, const Direction &direction)
 {
     int counter = 1;

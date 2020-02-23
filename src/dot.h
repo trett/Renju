@@ -25,5 +25,5 @@ private:
     int m_y;
     int m_color;
 };
-
+Q_DECLARE_METATYPE(Dot*)
 #endif // DOT_H

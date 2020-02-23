@@ -1,5 +1,6 @@
-import QtQuick 2.9
+import QtQuick 2.12
 import renju.core.dot 1.0
+import renju.core.controller 1.0
 
 Item {
     id: board
@@ -11,9 +12,9 @@ Item {
     property int boardOffset: 20
     property int rowSize: 40
     property int dotSize: 17
+    property int choosenColor
 
     signal mouseClicked(var obj)
-    signal colorChoosed(var obj)
     signal showWinText(var obj)
 
     Dot {
@@ -30,6 +31,25 @@ Item {
             dot.x = Math.round((mouseX - boardOffset) / rowSize);
             dot.y = Math.round((mouseY - boardOffset) / rowSize);
             board.mouseClicked(dot);
+        }
+    }
+
+    onChoosenColorChanged: {
+        Controller.initGame(choosenColor);
+    }
+
+    Connections {
+        target: Controller
+        onNextMoveChanged: {
+            var nextMove = Controller.nextMove;
+            paintDot(nextMove);
+            if (Controller.checkWin(nextMove)) {
+                showWin(nextMove.color);
+                return;
+            }
+            if (Controller.state === Controller.AI) {
+                Controller.getNextMove()
+            }
         }
     }
 
@@ -53,4 +73,5 @@ Item {
         board.showWinText(color === -1 ? "Black" : "White");
     }
 }
+
 

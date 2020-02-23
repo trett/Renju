@@ -8,13 +8,13 @@
 class HumanPlayer : public IPlayer
 {
 public:
-    HumanPlayer(GameBoard *parent);
-
-private:
-    GameBoard *m_gameBoard;
+    HumanPlayer();
+    Dot *nextMove();
 
 public slots:
-    void getNextMove(const Dot *dot);
+    void onMouseClicked(const QVariant &dot);
+private:
+    Dot *m_nextMove = nullptr;
 };
 
 #endif // PLAYER_H

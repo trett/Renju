@@ -57,24 +57,22 @@ Window {
         Component.onCompleted: visible = true
     }
 
+    Board {
+        id: board
+        onShowWinText: function(color) {
+            menu.winColor = color;
+            menu.state = "winner";
+            menu.visible = true;
+        }
+    }
+
     Menu {
         id: menu
         onStartGame: function(color) {
             menu.visible = false
             boardCanvas.visible = true
             board.visible = true
-            board.colorChoosed(color)
-        }
-    }
-
-    Board {
-        id: board
-        onShowWinText: function(color) {
-            menu.winColor = color;
-            boardCanvas.visible = false;
-            menu.state = "winner";
-            board.visible = false;
-            menu.visible = true;
+            board.choosenColor = color
         }
     }
 

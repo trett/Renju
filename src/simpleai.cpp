@@ -1,13 +1,10 @@
 #include "simpleai.h"
 
 #include <QDebug>
+#include <QThread>
 
-
-SimpleAi::SimpleAi(GameBoard *parent) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
+SimpleAi::SimpleAi() : IPlayer(), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
 {
-    // default first move
-    m_nextMove.setX(7);
-    m_nextMove.setY(7);
 }
 
 QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
@@ -44,7 +41,7 @@ QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
     return QPair<int, QList<QSharedPointer<Dot>>>(max, dotList);
 }
 
-void SimpleAi::onPlayerChange()
+Dot *SimpleAi::nextMove()
 {
     auto selfMoves = generate(m_color);
     auto enemyMoves = generate(m_color == WHITE ? BLACK : WHITE);
@@ -52,13 +49,17 @@ void SimpleAi::onPlayerChange()
     qDebug() << "AI moving";
     qDebug() << "Self rating" << selfMoves.first << "\r\nEnemy rating" << enemyMoves.first;
 #endif
+    Dot *dot = new Dot();
     // TODO: choose best move from generate
     if (selfMoves.first >= enemyMoves.first) {
-        m_nextMove.setX(selfMoves.second.last().data()->x());
-        m_nextMove.setY(selfMoves.second.last().data()->y());
+        dot->setX(selfMoves.second.last().data()->x());
+        dot->setY(selfMoves.second.last().data()->y());
     } else {
-        m_nextMove.setX(enemyMoves.second.last().data()->x());
-        m_nextMove.setY(enemyMoves.second.last().data()->y());
+        dot->setX(enemyMoves.second.last().data()->x());
+        dot->setY(enemyMoves.second.last().data()->y());
     }
-    emit(move(&m_nextMove));
+    dot->setColor(m_color);
+    // humanize
+    QThread::msleep(qrand() % 300 + 400);
+    return dot;
 }

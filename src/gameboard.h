@@ -2,25 +2,21 @@
 #define GAMEBOARD_H
 
 #include "dot.h"
+#include "renju.h"
 
 #include <QObject>
+
+using namespace Renju;
 
 class GameBoard : public QObject
 {
     Q_OBJECT
+
 public:
     explicit GameBoard(QObject *parent);
-    QObject *m_board;
+    static QObject *board();
 
-signals:
-    void dotFromBoard(const Dot *dot);
-    void colorChanged(int color);
-
-public slots:
-    void paintDot(const Dot *dot);
-    void showWin(const int color);
-    void onMouseClicked(const QVariant &v);
-    void onColorChoosed(const QVariant &color);
+private:
+    static QObject *m_board;
 };
-
 #endif // GAMEBOARD_H
