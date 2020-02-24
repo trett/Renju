@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import renju.core.dot 1.0
 import renju.core.controller 1.0
+import QtQuick.Controls 2.14
 
 Item {
     id: board
@@ -22,15 +23,37 @@ Item {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         cursorShape: Qt.OpenHandCursor
         onPressed:cursorShape = Qt.ClosedHandCursor
         onReleased: cursorShape = Qt.OpenHandCursor
         onClicked: {
-            console.log(mouseX + "  " + mouseY);
-            dot.x = Math.round((mouseX - boardOffset) / rowSize);
-            dot.y = Math.round((mouseY - boardOffset) / rowSize);
-            board.mouseClicked(dot);
+            console.log(mouseX + "  " + mouseY)
+            dot.x = Math.round((mouseX - boardOffset) / rowSize)
+            dot.y = Math.round((mouseY - boardOffset) / rowSize)
+            board.mouseClicked(dot)
+        }
+    }
+
+    Rectangle {
+        id: indicator
+        anchors.centerIn: parent
+        width: rowSize * 1.5
+        height: rowSize * 1.5
+        color: "white"
+        opacity: 0.8
+        visible: false
+        radius: 10
+        z: 100
+        BusyIndicator {
+            id: busyIndicator
+            anchors.centerIn: parent
+            running: false
+        }
+        onVisibleChanged: {
+            busyIndicator.running = visible
+            mouseArea.enabled = !visible
         }
     }
 
@@ -41,20 +64,22 @@ Item {
     Connections {
         target: Controller
         onNextMoveChanged: {
-            var nextMove = Controller.nextMove;
-            paintDot(nextMove);
+            indicator.visible = Controller.state === Controller.AI
+            var nextMove = Controller.nextMove
+            paintDot(nextMove)
             if (Controller.checkWin(nextMove)) {
-                showWin(nextMove.color);
-                return;
+                showWin(nextMove.color)
+                return
             }
             if (Controller.state === Controller.AI) {
+                indicator.visible = true
                 Controller.getNextMove()
             }
         }
     }
 
     function paintDot(dot) {
-        var component = Qt.createComponent("Dot.qml");
+        var component = Qt.createComponent("Dot.qml")
         var dotItem = component.createObject(board,
                                              {
                                                  x: dot.x * rowSize,
@@ -63,14 +88,14 @@ Item {
                                                  height: rowSize,
                                                  radius: rowSize / 2,
                                                  "dotColor" : dot.color,
-                                             });
+                                             })
         if (!dotItem) {
-            console.log("Error creating object");
+            console.log("Error creating object")
         }
     }
 
     function showWin(color) {
-        board.showWinText(color === -1 ? "Black" : "White");
+        board.showWinText(color === -1 ? "Black" : "White")
     }
 }
 

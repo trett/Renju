@@ -20,7 +20,7 @@ Window {
         id: boardCanvas
         anchors.fill: parent
         visible: false
-        onPaint: paintGrid(getContext("2d"));
+        onPaint: paintGrid(getContext("2d"))
     }
 
     Rectangle {
@@ -60,9 +60,9 @@ Window {
     Board {
         id: board
         onShowWinText: function(color) {
-            menu.winColor = color;
-            menu.state = "winner";
-            menu.visible = true;
+            menu.winColor = color
+            menu.state = "winner"
+            menu.visible = true
         }
     }
 
@@ -77,19 +77,19 @@ Window {
     }
 
     function paintGrid(ctx) {
-        var fieldSize = width - boardOffset;
-        ctx.beginPath();
-        ctx.clearRect(0, 0, fieldSize, fieldSize);
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
+        var fieldSize = width - boardOffset
+        ctx.beginPath()
+        ctx.clearRect(0, 0, fieldSize, fieldSize)
+        ctx.strokeStyle = "black"
+        ctx.lineWidth = 1
         for (var i = boardOffset; i <= fieldSize; i += rowSize) {
-            ctx.moveTo(i, boardOffset);
-            ctx.lineTo(i, fieldSize);
-            ctx.stroke();
-            ctx.moveTo(boardOffset, i);
-            ctx.lineTo(fieldSize, i);
-            ctx.stroke();
+            ctx.moveTo(i, boardOffset)
+            ctx.lineTo(i, fieldSize)
+            ctx.stroke()
+            ctx.moveTo(boardOffset, i)
+            ctx.lineTo(fieldSize, i)
+            ctx.stroke()
         }
-        ctx.closePath();
+        ctx.closePath()
     }
 }

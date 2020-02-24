@@ -30,7 +30,7 @@ QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
         auto temp = std::max_element(it->constBegin(), it->constEnd());
         if (*temp >= max) {
             max = *temp;
-            QSharedPointer<Dot> dot = QSharedPointer<Dot>(new Dot);
+            QSharedPointer<Dot> dot(new Dot);
             dot.data()->setY(std::distance(m_rating.begin(), it));
             dot.data()->setX(std::distance(it->constBegin(), temp));
             dotList << dot;
@@ -38,7 +38,7 @@ QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
     }
     // clear rating table
     std::for_each(m_rating.begin(), m_rating.end(), [](auto &it) { it.fill(0); } );
-    return QPair<int, QList<QSharedPointer<Dot>>>(max, dotList);
+    return qMakePair(max, dotList);
 }
 
 Dot *SimpleAi::nextMove()
@@ -49,7 +49,7 @@ Dot *SimpleAi::nextMove()
     qDebug() << "AI moving";
     qDebug() << "Self rating" << selfMoves.first << "\r\nEnemy rating" << enemyMoves.first;
 #endif
-    Dot *dot = new Dot(this);
+    Dot *dot = new Dot();
     // TODO: choose best move from generate
     if (selfMoves.first >= enemyMoves.first) {
         dot->setX(selfMoves.second.last().data()->x());
