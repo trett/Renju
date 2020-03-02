@@ -13,7 +13,7 @@ Item {
     property int boardOffset: 20
     property int rowSize: 40
     property int dotSize: 17
-    property int choosenColor
+    property variant dots: []
 
     signal mouseClicked(var obj)
     signal showWinText(var obj)
@@ -57,10 +57,6 @@ Item {
         }
     }
 
-    onChoosenColorChanged: {
-        Controller.initGame(choosenColor);
-    }
-
     Connections {
         target: Controller
         onNextMoveChanged: {
@@ -92,10 +88,23 @@ Item {
         if (!dotItem) {
             console.log("Error creating object")
         }
+        dots.push(dotItem)
+    }
+
+    function init(color) {
+        Controller.initGame(color)
     }
 
     function showWin(color) {
         board.showWinText(color === -1 ? "Black" : "White")
+    }
+
+    function endGame() {
+        Controller.end()
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].destroy();
+        }
+        dots = [];
     }
 }
 

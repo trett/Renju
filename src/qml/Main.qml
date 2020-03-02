@@ -72,7 +72,12 @@ Window {
             menu.visible = false
             boardCanvas.visible = true
             board.visible = true
-            board.choosenColor = color
+            board.init(color)
+        }
+        onEndGame: {
+            boardCanvas.visible = false
+            board.visible = false
+            board.endGame()
         }
     }
 

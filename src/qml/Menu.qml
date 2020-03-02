@@ -10,6 +10,7 @@ Item {
     state: "start"
 
     signal startGame(var color)
+    signal endGame();
     property string winColor
 
     ColumnLayout {
@@ -80,7 +81,10 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: menu.state = "start"
+                    onClicked: {
+                        menu.endGame();
+                        menu.state = "start"
+                    }
                 }
             }
 

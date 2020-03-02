@@ -29,6 +29,7 @@ public:
     Q_INVOKABLE void initGame(const QVariant &humanChoosenColor);
     Q_INVOKABLE bool checkWin(Dot *dot);
     Q_INVOKABLE void getNextMove();
+    Q_INVOKABLE void end();
 
     void changePlayer();
     Dot *nextMove() const;
@@ -45,5 +46,6 @@ private:
     Dot *m_nextMove = nullptr;
     QList<Dot*> m_history;
     GameState m_state = NONE;
+
 };
 #endif // GAME_H

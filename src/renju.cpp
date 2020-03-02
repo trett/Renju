@@ -32,6 +32,11 @@ int Table::getDotCountInRow(const Dot* dot, const Direction &direction)
     return counter;
 }
 
+void Table::clear()
+{
+    std::for_each(table.begin(), table.end(), [](auto &it) { it.fill(0); } );
+}
+
 QVector<QVector<int>> Table::table(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0));
 using Direction = QList<QPair<char, char>>;
 const Direction Table::XY = { qMakePair('+', '+'),  qMakePair('-', '-') };

@@ -10,7 +10,6 @@ void Controller::initGame(const QVariant &humanChoosenColor)
 {
     m_pl = new HumanPlayer(m_parent);
     m_pl_ai = new SimpleAi(m_parent);
-
     QObject::connect(m_pl, &IPlayer::move, this, &Controller::getNextMove);
 
     // TODO: black always move first
@@ -55,6 +54,12 @@ bool Controller::checkWin(Dot *dot) {
         }
     }
     return false;
+}
+
+void Controller::end() {
+    Table::clear();
+    m_pl->deleteLater();
+    m_pl_ai->deleteLater();
 }
 
 Dot *Controller::nextMove() const

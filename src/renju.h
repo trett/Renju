@@ -30,5 +30,6 @@ public:
     static const Direction Y;
 
     int static getDotCountInRow(const Dot *dot, const Direction &direction);
+    void static clear();
 };
 #endif // RENJU_H
