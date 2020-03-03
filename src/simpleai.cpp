@@ -1,6 +1,6 @@
 #include "simpleai.h"
 
-#include <QDebug>
+#include <QSharedPointer>
 #include <QThread>
 
 SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
@@ -45,10 +45,8 @@ Dot *SimpleAi::nextMove()
 {
     auto selfMoves = generate(m_color);
     auto enemyMoves = generate(m_color == WHITE ? BLACK : WHITE);
-#ifdef QT_DEBUG
-    qDebug() << "AI moving";
-    qDebug() << "Self rating" << selfMoves.first << "\r\nEnemy rating" << enemyMoves.first;
-#endif
+    debug("AI moving");
+    debug("Self rating", selfMoves.first, "\r\nEnemy rating", enemyMoves.first);
     Dot *dot = new Dot();
     // TODO: choose best move from generate
     if (selfMoves.first >= enemyMoves.first) {

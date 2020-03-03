@@ -29,7 +29,6 @@ Item {
         onPressed:cursorShape = Qt.ClosedHandCursor
         onReleased: cursorShape = Qt.OpenHandCursor
         onClicked: {
-            console.log(mouseX + "  " + mouseY)
             dot.x = Math.round((mouseX - boardOffset) / rowSize)
             dot.y = Math.round((mouseY - boardOffset) / rowSize)
             board.mouseClicked(dot)

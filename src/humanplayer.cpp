@@ -1,8 +1,10 @@
 #include "humanplayer.h"
-
 #include "gameboard.h"
+#include "renju.h"
 
-#include <QDebug>
+#include <QVariant>
+
+using namespace Renju;
 
 HumanPlayer::HumanPlayer(QObject *parent) : IPlayer(parent)
 {
@@ -16,12 +18,11 @@ Dot *HumanPlayer::nextMove()
 
 void HumanPlayer::onMouseClicked(const QVariant &dot)
 {
-#ifdef QT_DEBUG
-    qDebug() << "Human moving";
-#endif
+    debug("Human moving");
     m_nextMove = qvariant_cast<Dot*>(dot);
     // check field is empty
     if (Table::table.at(m_nextMove->y()).at(m_nextMove->x()) != 0) {
+        debug("Invalid move");
         return;
     }
     m_nextMove->setColor(m_color);

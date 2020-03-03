@@ -6,6 +6,10 @@
 #include <QList>
 #include <QVector>
 
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
+
 namespace Renju {
 
 enum DOT_COLOR {
@@ -15,6 +19,13 @@ enum DOT_COLOR {
 };
 
 static const int BOARD_SIZE = 16;
+
+template<typename ...T>
+void debug(T&... message) {
+#ifdef QT_DEBUG
+    (qDebug() << ... << message);
+#endif
+}
 };
 
 using namespace Renju;
