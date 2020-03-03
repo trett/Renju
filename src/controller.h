@@ -46,6 +46,5 @@ private:
     Dot *m_nextMove = nullptr;
     QList<Dot*> m_history;
     GameState m_state = NONE;
-
 };
 #endif // GAME_H

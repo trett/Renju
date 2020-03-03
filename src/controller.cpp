@@ -21,10 +21,10 @@ void Controller::initGame(const QVariant &humanChoosenColor)
 }
 
 void Controller::getNextMove() {
+    if (!m_currentPlayer->m_canMove) {
+        return;
+    }
     QtConcurrent::run([this]() {
-        if (!m_currentPlayer->m_canMove) {
-            return;
-        }
         m_nextMove = m_currentPlayer->nextMove();
         Table::table[m_nextMove->y()][m_nextMove->x()] = m_currentPlayer->m_color;
         m_history.push_back(m_nextMove);
@@ -58,6 +58,7 @@ bool Controller::checkWin(Dot *dot) {
 
 void Controller::end() {
     Table::clear();
+    m_history.clear();
     m_pl->deleteLater();
     m_pl_ai->deleteLater();
 }

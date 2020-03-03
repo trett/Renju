@@ -20,6 +20,10 @@ void HumanPlayer::onMouseClicked(const QVariant &dot)
     qDebug() << "Human moving";
 #endif
     m_nextMove = qvariant_cast<Dot*>(dot);
+    // check field is empty
+    if (Table::table.at(m_nextMove->y()).at(m_nextMove->x()) != 0) {
+        return;
+    }
     m_nextMove->setColor(m_color);
     emit move();
 }

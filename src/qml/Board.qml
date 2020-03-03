@@ -42,7 +42,7 @@ Item {
         width: rowSize * 1.5
         height: rowSize * 1.5
         color: "white"
-        opacity: 0.8
+        opacity: 0.6
         visible: false
         radius: 10
         z: 100
