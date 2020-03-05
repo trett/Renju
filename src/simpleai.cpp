@@ -43,18 +43,25 @@ QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
 
 Dot *SimpleAi::nextMove()
 {
-    auto selfMoves = generate(m_color);
-    auto enemyMoves = generate(m_color == WHITE ? BLACK : WHITE);
-    debug("AI moving");
-    debug("Self rating", selfMoves.first, "\r\nEnemy rating", enemyMoves.first);
     Dot *dot = new Dot();
-    // TODO: choose best move from generate
-    if (selfMoves.first >= enemyMoves.first) {
-        dot->setX(selfMoves.second.last().data()->x());
-        dot->setY(selfMoves.second.last().data()->y());
+    auto enemyMoves = generate(m_color == WHITE ? BLACK : WHITE);
+    // check enemy has dotes
+    if (enemyMoves.first > 1) {
+        auto selfMoves = generate(m_color);
+        debug("AI moving");
+        debug("Self rating", selfMoves.first, "\r\nEnemy rating", enemyMoves.first);
+        // TODO: choose best move from generate
+        if (selfMoves.first >= enemyMoves.first) {
+            dot->setX(selfMoves.second.last().data()->x());
+            dot->setY(selfMoves.second.last().data()->y());
+        } else {
+            dot->setX(enemyMoves.second.last().data()->x());
+            dot->setY(enemyMoves.second.last().data()->y());
+        }
     } else {
-        dot->setX(enemyMoves.second.last().data()->x());
-        dot->setY(enemyMoves.second.last().data()->y());
+        // or it's first move and we set default values
+        dot->setX(7);
+        dot->setY(7);
     }
     dot->setColor(m_color);
     // humanize

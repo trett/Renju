@@ -9,18 +9,26 @@ Controller::Controller(QObject *parent) : QObject(parent), m_parent(parent)
 void Controller::initGame(const QVariant &humanChoosenColor)
 {
     debug("Init game");
-    m_pl = new HumanPlayer(m_parent);
+    m_pl_hmn = new HumanPlayer(m_parent);
     m_pl_ai = new SimpleAi(m_parent);
-    QObject::connect(m_pl, &IPlayer::move, this, &Controller::getNextMove);
+    QObject::connect(m_pl_hmn, &IPlayer::move, this, &Controller::getNextMove);
 
-    // TODO: black always move first
     auto color = static_cast<DOT_COLOR>(humanChoosenColor.toInt());
-    m_pl->m_color = static_cast<DOT_COLOR>(color);
+    m_pl_hmn->m_color = color;
     m_pl_ai->m_color = color == WHITE ? BLACK : WHITE;
-    debug("Human color is", m_pl->m_color);
+    debug("Human color is", m_pl_hmn->m_color);
     debug("AI color is", m_pl_ai->m_color);
-    m_currentPlayer = m_pl;
-    m_pl->m_canMove = true;
+
+    // inverse for first move
+    if (color == BLACK) {
+        m_currentPlayer = m_pl_ai;
+    } else {
+        m_currentPlayer = m_pl_hmn;
+    }
+    changePlayer();
+    if (m_state == AI) {
+        getNextMove();
+    }
 }
 
 void Controller::getNextMove() {
@@ -42,7 +50,7 @@ void Controller::changePlayer()
     IPlayer *previous = m_currentPlayer;
     previous->m_canMove = false;
     if (m_currentPlayer == m_pl_ai) {
-        m_currentPlayer = m_pl;
+        m_currentPlayer = m_pl_hmn;
         m_state = HUMAN;
     } else {
         m_currentPlayer = m_pl_ai;
@@ -64,7 +72,7 @@ void Controller::end() {
     debug("End game");
     Table::clear();
     m_history.clear();
-    m_pl->deleteLater();
+    m_pl_hmn->deleteLater();
     m_pl_ai->deleteLater();
 }
 
@@ -77,4 +85,3 @@ Controller::GameState Controller::state() const
 {
     return m_state;
 }
-

@@ -40,7 +40,7 @@ signals:
 
 private:
     QObject *m_parent;
-    HumanPlayer *m_pl = nullptr;
+    HumanPlayer *m_pl_hmn = nullptr;
     SimpleAi *m_pl_ai = nullptr;
     IPlayer *m_currentPlayer = nullptr;
     Dot *m_nextMove = nullptr;

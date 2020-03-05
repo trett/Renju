@@ -15,6 +15,8 @@ public:
         Q_UNUSED(parent)
         m_canMove = false;
     }
+
+    virtual ~IPlayer() {};
     bool m_canMove;
 
     Renju::DOT_COLOR m_color;
