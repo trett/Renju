@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.0
 
 Item {
     id: menu
@@ -15,7 +14,7 @@ Item {
 
     ColumnLayout {
         id: column
-        antialiasing: false
+        antialiasing: true
         spacing: 40
         anchors.centerIn: parent
 
@@ -56,44 +55,6 @@ Item {
             font.pointSize: 28
             onClicked: menu.startGame(1)
         }
-
-        Rectangle {
-            id: winnerText
-            color: "grey"
-            opacity: 0.7
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: 270
-            Layout.preferredHeight: 70
-            radius: 10
-
-            Text {
-                anchors.centerIn: parent
-                text: qsTr(menu.winColor + " is win!")
-                font.pointSize: 30
-                color: "#fff"
-                layer.enabled: true
-                layer.effect: DropShadow {
-                    verticalOffset: 2
-                    color: "#333"
-                    radius: 1
-                    samples: 3
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        menu.endGame();
-                        menu.state = "start"
-                    }
-                }
-            }
-
-            FastBlur {
-                anchors.fill: winnerText
-                source: winnerText
-                radius: 32
-            }
-        }
     }
 
     states: [
@@ -115,10 +76,6 @@ Item {
                 target: white
                 visible: false
             }
-            PropertyChanges {
-                target: winnerText
-                visible: false
-            }
         },
         State {
             name: "colorChoice"
@@ -138,10 +95,6 @@ Item {
                 target: white
                 visible: true
             }
-            PropertyChanges {
-                target: winnerText
-                visible: false
-            }
         },
         State {
             name: "winner"
@@ -160,10 +113,6 @@ Item {
             PropertyChanges {
                 target: white
                 visible: false
-            }
-            PropertyChanges {
-                target: winnerText
-                visible: true
             }
         }
     ]

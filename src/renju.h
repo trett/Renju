@@ -18,7 +18,7 @@ enum DOT_COLOR {
     WHITE = 1
 };
 
-static const int BOARD_SIZE = 16;
+static const int BOARD_SIZE = 15;
 
 template<typename ...T>
 void debug(T&... message) {

@@ -2,30 +2,37 @@ import QtQuick 2.9
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.12
 
 Window {
     id: window
     visible: true
-    minimumWidth: 640
-    minimumHeight: 640
-    maximumWidth: 640
-    maximumHeight: 640
     title: qsTr("QRenju")
     color: "#966F33"
+    minimumWidth: Screen.orientation === Qt.PortraitOrientation ? 720 : 640
+    minimumHeight: Screen.orientation === Qt.PortraitOrientation ? 1280 : 780
+    maximumWidth: minimumWidth
+    maximumHeight: minimumHeight
 
-    property int boardOffset: 20
-    property int rowSize: 40
+    property double offset: width / 32
+    property double rowSize: width / 15
 
-    Canvas {
-        id: boardCanvas
-        anchors.fill: parent
-        visible: false
-        onPaint: paintGrid(getContext("2d"))
+    ColumnLayout {
+        anchors.centerIn: parent
+        width: parent.width
+        height: parent.height
+
+        Board {
+            id: board
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: width
+        }
     }
 
     Rectangle {
         id: splash
-        anchors.fill: parent
+        anchors.centerIn: parent
         color: "#966F33"
         width: splashImage.width
         height: splashImage.height
@@ -57,44 +64,14 @@ Window {
         Component.onCompleted: visible = true
     }
 
-    Board {
-        id: board
-        onShowWinText: function(color) {
-            menu.winColor = color
-            menu.state = "winner"
-            menu.visible = true
-        }
-    }
-
     Menu {
         id: menu
         onStartGame: function(color) {
             menu.visible = false
-            boardCanvas.visible = true
+            board.offset = window.offset
+            board.rowSize = window.rowSize
             board.visible = true
             board.init(color)
         }
-        onEndGame: {
-            boardCanvas.visible = false
-            board.visible = false
-            board.endGame()
-        }
-    }
-
-    function paintGrid(ctx) {
-        var fieldSize = width - boardOffset
-        ctx.beginPath()
-        ctx.clearRect(0, 0, fieldSize, fieldSize)
-        ctx.strokeStyle = "black"
-        ctx.lineWidth = 1
-        for (var i = boardOffset; i <= fieldSize; i += rowSize) {
-            ctx.moveTo(i, boardOffset)
-            ctx.lineTo(i, fieldSize)
-            ctx.stroke()
-            ctx.moveTo(boardOffset, i)
-            ctx.lineTo(fieldSize, i)
-            ctx.stroke()
-        }
-        ctx.closePath()
     }
 }
