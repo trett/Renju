@@ -2,6 +2,7 @@
 
 #include <QSharedPointer>
 #include <QThread>
+#include <QMap>
 
 SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent)
 {
