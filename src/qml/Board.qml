@@ -164,6 +164,7 @@ Item {
     }
 
     function showWin(color) {
+        indicator.visible = false
         mouseArea.visible = false
         winnerText.winner = color === -1 ? "Black" : "White"
         winnerText.visible = true

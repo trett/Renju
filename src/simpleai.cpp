@@ -3,42 +3,30 @@
 #include <QSharedPointer>
 #include <QThread>
 
-SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent), m_rating(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
+SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent)
 {
 }
 
-QPair<int, QList<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
+QPair<int, QVector<QSharedPointer<Dot>>> SimpleAi::generate(DOT_COLOR color) {
     // compute new rating
-    Dot dot;
-    for (int y = 0; y < m_rating.size(); y++) {
-        for (int x = 0; x < m_rating.at(y).size(); x++) {
+    QMap<int, QVector<QSharedPointer<Dot>>> dotMap;
+    for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < BOARD_SIZE; x++) {
             if (Table::table.at(y).at(x) != 0) {
                 continue;
             }
-            dot.setX(x);
-            dot.setY(y);
-            dot.setColor(color);
-            for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
-                m_rating[y][x] = std::max(m_rating[y][x],Table::getDotCountInRow(&dot, direction));
-            }
-        }
-    }
-    QList<QSharedPointer<Dot>> dotList;
-    // search field with highest rating
-    int max = -1;
-    for (auto it = m_rating.begin(); it < m_rating.end(); it++) {
-        auto temp = std::max_element(it->constBegin(), it->constEnd());
-        if (*temp >= max) {
-            max = *temp;
             QSharedPointer<Dot> dot(new Dot);
-            dot.data()->setY(std::distance(m_rating.begin(), it));
-            dot.data()->setX(std::distance(it->constBegin(), temp));
-            dotList << dot;
+            dot->setX(x);
+            dot->setY(y);
+            dot->setColor(color);
+            int rate = -1;
+            for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
+                rate = std::max(rate, Table::getDotCountInRow(dot.data(), direction));
+            }
+            dotMap[rate].append(dot);
         }
     }
-    // clear rating table
-    std::for_each(m_rating.begin(), m_rating.end(), [](auto &it) { it.fill(0); } );
-    return qMakePair(max, dotList);
+    return qMakePair(dotMap.lastKey(), dotMap.last());
 }
 
 Dot *SimpleAi::nextMove()
@@ -50,14 +38,9 @@ Dot *SimpleAi::nextMove()
         auto selfMoves = generate(m_color);
         debug("AI moving");
         debug("Self rating", selfMoves.first, "\r\nEnemy rating", enemyMoves.first);
-        // TODO: choose best move from generate
-        if (selfMoves.first >= enemyMoves.first) {
-            dot->setX(selfMoves.second.last().data()->x());
-            dot->setY(selfMoves.second.last().data()->y());
-        } else {
-            dot->setX(enemyMoves.second.last().data()->x());
-            dot->setY(enemyMoves.second.last().data()->y());
-        }
+        auto corrected = selfMoves.first >= enemyMoves.first ? correctMove(selfMoves.second) : correctMove(enemyMoves.second);
+        dot->setX(corrected->x());
+        dot->setY(corrected->y());
     } else {
         // or it's first move and we set default values
         dot->setX(7);
@@ -65,6 +48,26 @@ Dot *SimpleAi::nextMove()
     }
     dot->setColor(m_color);
     // humanize
-    QThread::msleep(qrand() % 300 + 400);
+    QThread::msleep(qrand() % 200 + 300);
     return dot;
+}
+
+Dot *SimpleAi::correctMove(const QVector<QSharedPointer<Dot>> &dots)
+{
+    Dot temp;
+    QMap<int, Dot*> result;
+    foreach (auto dot, dots) {
+        int rating = 0;
+        for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
+            temp.setX(dot->x());
+            temp.setY(dot->y());
+            temp.setColor(NONE);
+            int emptyRows = Table::getDotCountInRow(&temp, direction);
+            if (emptyRows > 4) {
+                rating += emptyRows;
+            }
+        }
+        result.insert(rating, dot.data());
+    }
+    return result.last();
 }

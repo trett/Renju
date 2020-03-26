@@ -14,7 +14,7 @@ public:
     SimpleAi(QObject *parent);
     Dot *nextMove();
 private:
-    QPair<int, QList<QSharedPointer<Dot>>> generate(DOT_COLOR color);
-    QVector<QVector<int>> m_rating;
+    QPair<int, QVector<QSharedPointer<Dot>>> generate(DOT_COLOR color);
+    Dot* correctMove(const QVector<QSharedPointer<Dot>> &dots);
 };
 #endif // SIMPLEAI_H

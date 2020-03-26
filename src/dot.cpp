@@ -1,6 +1,6 @@
 #include "dot.h"
 
-Dot::Dot(QObject *parent) : QObject(parent)
+Dot::Dot(QObject *parent) : QObject(parent), m_x(0), m_y(0), m_color(0)
 {
 }
 
