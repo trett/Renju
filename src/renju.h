@@ -34,13 +34,15 @@ class Table
 public:
     Table() = default;
     static QVector<QVector<int>> table;
+    static QList<Dot*> history;
     using Direction = QList<QPair<char, char>>;
     static const Direction XY;
     static const Direction YX;
     static const Direction X;
     static const Direction Y;
 
-    int static getDotCountInRow(const Dot *dot, const Direction &direction);
+    int static getDotCountInRow(const Dot *dot, const Direction &direction, QVector<QVector<int>> model = table);
+    bool static checkWin(const Dot *dot, QVector<QVector<int>> model = table);
     void static clear();
 };
 #endif // RENJU_H

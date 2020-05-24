@@ -44,7 +44,6 @@ private:
     SimpleAi *m_pl_ai = nullptr;
     IPlayer *m_currentPlayer = nullptr;
     Dot *m_nextMove = nullptr;
-    QList<Dot*> m_history;
     GameState m_state = NONE;
 };
 #endif // GAME_H

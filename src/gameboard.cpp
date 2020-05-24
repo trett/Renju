@@ -7,6 +7,6 @@ GameBoard::GameBoard(QObject *parent) : QObject (parent)
 
 QObject *GameBoard::board()
 {
-   return m_board;
+    return m_board;
 }
 QObject *GameBoard::m_board = nullptr;

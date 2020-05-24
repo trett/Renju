@@ -39,7 +39,7 @@ void Controller::getNextMove() {
     QtConcurrent::run([this]() {
         m_nextMove = m_currentPlayer->nextMove();
         Table::table[m_nextMove->y()][m_nextMove->x()] = m_currentPlayer->m_color;
-        m_history.push_back(m_nextMove);
+        Table::history.push_back(m_nextMove);
         changePlayer();
         emit(nextMoveChanged());
     });
@@ -60,18 +60,13 @@ void Controller::changePlayer()
 }
 
 bool Controller::checkWin(Dot *dot) {
-    for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
-        if (Table::getDotCountInRow(dot, direction) > 4) {
-            return true;
-        }
-    }
-    return false;
+    return Table::checkWin(dot);
 }
 
 void Controller::end() {
     debug("End game");
     Table::clear();
-    m_history.clear();
+    Table::history.clear();
     m_pl_hmn->deleteLater();
     m_pl_ai->deleteLater();
 }
