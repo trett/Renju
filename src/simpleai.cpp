@@ -1,6 +1,5 @@
 #include "simpleai.h"
 
-#include <QSharedPointer>
 #include <QThread>
 #include <QMap>
 

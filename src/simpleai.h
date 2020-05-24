@@ -5,6 +5,7 @@
 #include "renju.h"
 
 #include <QVector>
+#include <QSharedPointer>
 
 using namespace Renju;
 
