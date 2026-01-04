@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.6.0'
+        host: 'linux'
+        target: 'desktop'
+    
+    - name: Build with CMake
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: QRenju-ubuntu
+        path: build/src/QRenju

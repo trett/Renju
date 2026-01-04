@@ -1,8 +1,8 @@
-import QtQuick 2.12
+import QtQuick
 import renju.core.dot 1.0
 import renju.core.controller 1.0
-import QtQuick.Controls 2.14
-import QtGraphicalEffects 1.0
+import QtQuick.Controls
+import QtQuick.Effects
 
 Item {
     id: board
@@ -62,13 +62,34 @@ Item {
         visible: false
         radius: 10
         z: 100
-        BusyIndicator {
-            id: busyIndicator
+        
+        Rectangle {
+            id: spinner
+            width: parent.width * 0.5
+            height: parent.height * 0.5
             anchors.centerIn: parent
-            running: false
+            color: "transparent"
+            
+            Rectangle {
+                width: parent.width * 0.2
+                height: parent.height * 0.2
+                radius: width / 2
+                color: "#333"
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+            }
+            
+            RotationAnimator {
+                target: spinner
+                from: 0
+                to: 360
+                duration: 1000
+                loops: Animation.Infinite
+                running: indicator.visible
+            }
         }
+        
         onVisibleChanged: {
-            busyIndicator.running = visible
             mouseArea.enabled = !visible
         }
     }
@@ -92,23 +113,23 @@ Item {
             radius: 10
 
             Text {
+                id: winText
                 anchors.centerIn: parent
                 text: qsTr(winnerText.winner + " is win!")
                 font.pointSize: 30
                 color: "#fff"
-                layer.enabled: true
-                layer.effect: DropShadow {
-                    verticalOffset: 2
-                    color: "#333"
-                    radius: 1
-                    samples: 3
-                }
+                visible: false
+            }
 
-                FastBlur {
-                    anchors.fill: parent
-                    source: parent
-                    radius: 32
-                }
+            MultiEffect {
+                anchors.fill: winText
+                source: winText
+                shadowEnabled: true
+                shadowVerticalOffset: 2
+                shadowColor: "#333"
+                shadowBlur: 0.1
+                blurEnabled: true
+                blur: 0.5
             }
         }
 
@@ -126,7 +147,7 @@ Item {
 
     Connections {
         target: Controller
-        onNextMoveChanged: {
+        function onNextMoveChanged() {
             indicator.visible = Controller.state === Controller.AI
             var nextMove = Controller.nextMove
             paintDot(nextMove)
