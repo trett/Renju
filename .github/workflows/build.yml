@@ -32,4 +32,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: QRenju-ubuntu
-        path: build/QRenju
+        path: build/src/QRenju
