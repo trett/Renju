@@ -1,2 +1,9 @@
 *.user
 *.autosave
+build/
+*.o
+*.so
+*.a
+moc_*
+qrc_*
+ui_*

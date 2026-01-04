@@ -2,6 +2,7 @@
 
 #include <QThread>
 #include <QMap>
+#include <QRandomGenerator>
 
 SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent), m_model(BOARD_SIZE, QVector<int>(BOARD_SIZE, 0))
 {
@@ -93,7 +94,7 @@ Dot *SimpleAi::nextMove()
     // clear model
     std::for_each(m_model.begin(), m_model.end(), [](auto &it) { it.fill(0); } );
     // humanize
-    QThread::msleep(qrand() % 200 + 300);
+    QThread::msleep(QRandomGenerator::global()->bounded(200) + 300);
     return dot;
 }
 
