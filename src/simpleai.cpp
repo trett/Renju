@@ -8,6 +8,14 @@ SimpleAi::SimpleAi(QObject *parent) : IPlayer(parent), m_model(BOARD_SIZE, QVect
 {
 }
 
+/**
+ * NegaMax algorithm with alpha-beta pruning for move generation
+ * @param color - Current player's color to generate move for
+ * @param depth - Search depth remaining (recursion depth)
+ * @param alpha - Best score the maximizing player can guarantee
+ * @param beta - Best score the minimizing player can guarantee
+ * @return Best evaluation score for the current position
+ */
 int SimpleAi::generate(DOT_COLOR color, int depth, int alpha, int beta) {
     DOT_COLOR opColor = color ? BLACK : WHITE;
     if (depth == 0) {
@@ -46,8 +54,15 @@ int SimpleAi::generate(DOT_COLOR color, int depth, int alpha, int beta) {
     return alpha;
 }
 
+/**
+ * Generates and prioritizes all possible moves for the given color
+ * Evaluates each empty position based on offensive and defensive patterns
+ * @param color - Color to generate moves for
+ * @return Vector of prioritized move positions
+ */
 QVector<QSharedPointer<Dot> > SimpleAi::getAllMoves(DOT_COLOR color)
 {
+    // Lambda to rate each position based on tactical patterns
     auto getRate = [this](DOT_COLOR color, int x, int y, QMap<int, QVector<QSharedPointer<Dot>>> &map){
         QSharedPointer<Dot> dot(new Dot);
         dot->setX(x);
@@ -136,6 +151,11 @@ QVector<QSharedPointer<Dot> > SimpleAi::getAllMoves(DOT_COLOR color)
     return res;
 }
 
+/**
+ * Determines the next best move for the AI player
+ * Uses NegaMax with alpha-beta pruning to evaluate positions
+ * @return Pointer to the selected move (Dot), or nullptr if no valid move exists
+ */
 Dot *SimpleAi::nextMove()
 {
     Dot *dot = new Dot;
@@ -167,6 +187,15 @@ Dot *SimpleAi::nextMove()
     return dot;
 }
 
+/**
+ * Checks if placing a dot creates an open three pattern
+ * Pattern: _XXX_ (three in a row with both ends open)
+ * Open three can lead to multiple winning threats
+ * @param x, y - Position to check
+ * @param color - Color of the dot
+ * @param direction - Direction to check (horizontal, vertical, diagonal)
+ * @return true if position creates open three
+ */
 bool SimpleAi::isOpenThree(int x, int y, DOT_COLOR color, const Table::Direction &direction)
 {
     // Pattern: _XXX_ (three in a row with both ends open)
@@ -211,6 +240,15 @@ bool SimpleAi::isOpenThree(int x, int y, DOT_COLOR color, const Table::Direction
     return openEnds == 2;
 }
 
+/**
+ * Checks if placing a dot creates an open four pattern
+ * Pattern: _XXXX_ or XXXX_ (four in a row with at least one end open)
+ * Open four is a winning threat that must be blocked immediately
+ * @param x, y - Position to check
+ * @param color - Color of the dot
+ * @param direction - Direction to check
+ * @return true if position creates open four (critical threat)
+ */
 bool SimpleAi::isOpenFour(int x, int y, DOT_COLOR color, const Table::Direction &direction)
 {
     // Pattern: _XXXX_ or XXXX_ (four in a row with at least one end open)
@@ -254,6 +292,14 @@ bool SimpleAi::isOpenFour(int x, int y, DOT_COLOR color, const Table::Direction 
     return false;
 }
 
+/**
+ * Checks if a position blocks an existing four-in-a-row threat
+ * This is the highest priority defensive move (must block to prevent loss)
+ * @param x, y - Position to check
+ * @param color - Color of the threatening stones (opponent's color)
+ * @param direction - Direction to check
+ * @return true if this position blocks a four-in-a-row threat
+ */
 bool SimpleAi::blocksExistingFour(int x, int y, DOT_COLOR color, const Table::Direction &direction)
 {
     // Check if placing at (x,y) blocks an existing four in a row
@@ -291,6 +337,15 @@ bool SimpleAi::blocksExistingFour(int x, int y, DOT_COLOR color, const Table::Di
     return totalCount >= 4;
 }
 
+/**
+ * Checks if placing a dot creates a split three pattern
+ * Pattern: XX_X or X_XX (three stones with one gap)
+ * Split three is a potential threat that can develop into winning patterns
+ * @param x, y - Position to check
+ * @param color - Color of the dot
+ * @param direction - Direction to check
+ * @return true if position creates split three
+ */
 bool SimpleAi::isSplitThree(int x, int y, DOT_COLOR color, const Table::Direction &direction)
 {
     // Pattern: XX_X or X_XX (three with one gap)
@@ -331,6 +386,14 @@ bool SimpleAi::isSplitThree(int x, int y, DOT_COLOR color, const Table::Directio
     return false;
 }
 
+/**
+ * Evaluates tactical patterns at a specific position
+ * Assigns scores based on pattern importance: blocking four > open four > open three > split three
+ * @param x, y - Position to evaluate
+ * @param color - Color of the stones
+ * @param direction - Direction to check
+ * @return Score representing pattern strength (higher = more critical)
+ */
 int SimpleAi::evaluatePattern(int x, int y, DOT_COLOR color, const Table::Direction &direction)
 {
     int score = 0;
@@ -349,6 +412,12 @@ int SimpleAi::evaluatePattern(int x, int y, DOT_COLOR color, const Table::Direct
     return score;
 }
 
+/**
+ * Counts and scores all tactical patterns on the board for a given color
+ * Used to evaluate the overall threat level and opportunity strength
+ * @param color - Color to count patterns for
+ * @return Total pattern score (sum of all pattern values on the board)
+ */
 int SimpleAi::countPatterns(DOT_COLOR color)
 {
     int totalScore = 0;
@@ -387,6 +456,12 @@ int SimpleAi::countPatterns(DOT_COLOR color)
     return totalScore;
 }
 
+/**
+ * Evaluates the current board position from AI's perspective
+ * Calculates both offensive (self) and defensive (opponent) scores
+ * Prioritizes blocking critical threats over creating opportunities
+ * @return Positive score favors AI, negative score favors opponent
+ */
 int SimpleAi::calculate()
 {
     // calculate how much possibilities to increase continuous dots
