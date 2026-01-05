@@ -23,6 +23,12 @@ private:
     int generate(DOT_COLOR color, int depth, int alpha, int beta);
     QVector<QSharedPointer<Dot>> getAllMoves(DOT_COLOR color);
     int calculate();
+    int evaluatePattern(int x, int y, DOT_COLOR color, const Table::Direction &direction);
+    bool isOpenThree(int x, int y, DOT_COLOR color, const Table::Direction &direction);
+    bool isOpenFour(int x, int y, DOT_COLOR color, const Table::Direction &direction);
+    bool isSplitThree(int x, int y, DOT_COLOR color, const Table::Direction &direction);
+    bool blocksExistingFour(int x, int y, DOT_COLOR color, const Table::Direction &direction);
+    int countPatterns(DOT_COLOR color);
     QSharedPointer<Dot> m_tmpDot;
     const int DEPTH = 6;
     const int MAX = 6000;
