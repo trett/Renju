@@ -7,8 +7,6 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<Dot>("renju.core.dot", 1, 0, "Dot");

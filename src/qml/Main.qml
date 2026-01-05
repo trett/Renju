@@ -1,8 +1,8 @@
-import QtQuick 2.9
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
-import QtGraphicalEffects 1.0
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls as QQC
+import QtQuick.Effects
+import QtQuick.Layouts
 
 Window {
     id: window
@@ -43,14 +43,14 @@ Window {
             anchors.centerIn: parent
         }
 
-        DropShadow {
+        MultiEffect {
             anchors.fill: splashImage
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 8.0
-            samples: 17
-            color: "black"
             source: splashImage
+            shadowEnabled: true
+            shadowHorizontalOffset: 3
+            shadowVerticalOffset: 3
+            shadowBlur: 0.5
+            shadowColor: "black"
         }
 
         MouseArea {
@@ -66,7 +66,7 @@ Window {
 
     Menu {
         id: menu
-        onStartGame: function(color) {
+        onStartGame: (color) => {
             menu.visible = false
             board.offset = window.offset
             board.rowSize = window.rowSize
