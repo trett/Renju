@@ -24,7 +24,7 @@ private:
     QVector<QSharedPointer<Dot>> getAllMoves(DOT_COLOR color);
     int calculate();
     QSharedPointer<Dot> m_tmpDot;
-    const int DEPTH = 3;
+    const int DEPTH = 6;
     const int MAX = 6000;
 };
 #endif // SIMPLEAI_H
