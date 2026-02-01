@@ -17,12 +17,12 @@ class SimpleAi : public IPlayer
 public:
     SimpleAi(QObject *parent);
     Dot *nextMove();
-    QVector<QVector<int>> m_model;
+    int m_board[BOARD_SIZE][BOARD_SIZE];
 private:
-    DOT_COLOR m_enemyColor = NONE;
     int generate(DOT_COLOR color, int depth, int alpha, int beta);
     QVector<QSharedPointer<Dot>> getAllMoves(DOT_COLOR color);
-    int calculate();
+    int calculate(DOT_COLOR color);
+    int countConsecutive(int x, int y, int dx, int dy, int color);
     int evaluatePattern(int x, int y, DOT_COLOR color, const Table::Direction &direction);
     bool isOpenThree(int x, int y, DOT_COLOR color, const Table::Direction &direction);
     bool isOpenFour(int x, int y, DOT_COLOR color, const Table::Direction &direction);

@@ -23,6 +23,7 @@ static const int BOARD_SIZE = 15;
 template<typename ...T>
 void debug(T&... message) {
 #ifdef QT_DEBUG
+    (void)sizeof...(message);
     (qDebug() << ... << message);
 #endif
 }
