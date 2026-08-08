@@ -1,9 +1,50 @@
-*.user
-*.autosave
-build/
+# C++ objects and libs
+*.slo
+*.lo
 *.o
-*.so
+*.obj
 *.a
-moc_*
-qrc_*
-ui_*
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+
+# Qt specific
+.qmake.stash
+Makefile*
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+*.pro.user
+*.pro.user.*
+*.autosave
+
+# Qt Creator
+*.cxx
+*.stash
+.qtcreator/
+
+# Qt Directories
+debug/
+release/
+build/
+temp_build/
+
+# macOS
+.DS_Store
+*.app/
+*.dmg
+
+# Backups and merges
+*.bak
+*.orig
+*~
+
+# IDEs
+.idea/
+.vscode/
+*.swp

@@ -19,12 +19,26 @@ Dot *HumanPlayer::nextMove()
 void HumanPlayer::onMouseClicked(const QVariant &dot)
 {
     debug("Human moving");
-    m_nextMove = qvariant_cast<Dot*>(dot);
+    Dot *clicked = qvariant_cast<Dot*>(dot);
+    if (!clicked) {
+        return;
+    }
+    if (clicked->y() < 0 || clicked->y() >= Renju::BOARD_SIZE ||
+        clicked->x() < 0 || clicked->x() >= Renju::BOARD_SIZE) {
+        debug("Click out of bounds");
+        return;
+    }
     // check field is empty
-    if (Table::table.at(m_nextMove->y()).at(m_nextMove->x()) != 0) {
+    if (Table::table.at(clicked->y()).at(clicked->x()) != 0) {
         debug("Invalid move");
         return;
     }
+    // clicked is a QML-owned object reused across clicks; clone it so the
+    // move we hand off (and that ends up in Table::history) is a distinct,
+    // C++-owned object rather than an alias to that mutable instance.
+    m_nextMove = new Dot();
+    m_nextMove->setX(clicked->x());
+    m_nextMove->setY(clicked->y());
     m_nextMove->setColor(m_color);
     emit move();
 }

@@ -14,6 +14,7 @@ class GameBoard : public QObject
 
 public:
     explicit GameBoard(QObject *parent);
+    ~GameBoard() override;
     static QObject *board();
 
 private:

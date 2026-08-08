@@ -1,6 +1,6 @@
 #include "renju.h"
 
-int Table::getDotCountInRow(const Dot* dot, const Direction &direction,  QVector<QVector<int>> model)
+int Table::getDotCountInRow(const Dot* dot, const Direction &direction, const QVector<QVector<int>> &model)
 {
     int counter = 1;
     for (QPair<char, char> pair : direction) {
@@ -32,7 +32,7 @@ int Table::getDotCountInRow(const Dot* dot, const Direction &direction,  QVector
     return counter;
 }
 
-bool Table::checkWin(const Dot *dot, QVector<QVector<int>> model)
+bool Table::checkWin(const Dot *dot, const QVector<QVector<int>> &model)
 {
     for (const Table::Direction &direction: QList<Table::Direction> { Table::X, Table::Y, Table::XY, Table::YX }) {
         if (Table::getDotCountInRow(dot, direction, model) > 4) {

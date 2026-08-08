@@ -10,13 +10,12 @@ class IPlayer : public QObject {
 
     Q_OBJECT
 public:
-    IPlayer(QObject *parent = nullptr)
+    explicit IPlayer(QObject *parent = nullptr)
+        : QObject(parent), m_canMove(false), m_color(Renju::NONE)
     {
-        Q_UNUSED(parent)
-        m_canMove = false;
     }
 
-    virtual ~IPlayer() {};
+    ~IPlayer() override = default;
     bool m_canMove;
 
     Renju::DOT_COLOR m_color;
