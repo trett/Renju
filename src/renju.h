@@ -18,7 +18,7 @@ enum DOT_COLOR {
     WHITE = 1
 };
 
-static const int BOARD_SIZE = 15;
+inline constexpr int BOARD_SIZE = 15;
 
 template<typename ...T>
 void debug(T&... message) {
@@ -33,7 +33,7 @@ using namespace Renju;
 class Table
 {
 public:
-    Table() = default;
+    Table() = delete;
     static QVector<QVector<int>> table;
     static QList<Dot*> history;
     using Direction = QList<QPair<char, char>>;
@@ -42,8 +42,8 @@ public:
     static const Direction X;
     static const Direction Y;
 
-    int static getDotCountInRow(const Dot *dot, const Direction &direction, QVector<QVector<int>> model = table);
-    bool static checkWin(const Dot *dot, QVector<QVector<int>> model = table);
+    int static getDotCountInRow(const Dot *dot, const Direction &direction, const QVector<QVector<int>> &model = table);
+    bool static checkWin(const Dot *dot, const QVector<QVector<int>> &model = table);
     void static clear();
 };
 #endif // RENJU_H

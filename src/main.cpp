@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
         return -1;
 
     auto boardItem = objects.first()->findChild<QObject*>("board");
+    if (!boardItem) {
+        return -1;
+    }
     new GameBoard(boardItem);
     return app.exec();
 }

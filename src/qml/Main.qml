@@ -27,7 +27,23 @@ Window {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: width
+            onGameEnded: {
+                menu.state = "start"
+                menu.visible = true
+            }
         }
+    }
+
+    Text {
+        id: winnerBanner
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: window.rowSize
+        visible: board.showingWin
+        text: qsTr(board.winner + " is win!")
+        font.pointSize: Math.max(1, window.rowSize * 0.9)
+        font.bold: true
+        color: "#000"
     }
 
     Rectangle {

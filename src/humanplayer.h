@@ -8,11 +8,11 @@
 class HumanPlayer : public IPlayer
 {
 public:
-    HumanPlayer(QObject *parent);
-    Dot *nextMove();
+    explicit HumanPlayer(QObject *parent);
+    Dot *nextMove() override;
 
 public slots:
-    void onMouseClicked(const QVariant &dot);
+    void onMouseClicked(const QVariant &dot) override;
 private:
     Dot *m_nextMove = nullptr;
 };

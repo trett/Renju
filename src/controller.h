@@ -1,14 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "gamelogger.h"
 #include "humanplayer.h"
 #include "renju.h"
 #include "simpleai.h"
 
+#include <QFutureWatcher>
 #include <QObject>
-#include <QSharedPointer>
 #include <QVariant>
-#include <QVector>
 
 using namespace Renju;
 
@@ -22,7 +22,7 @@ public:
     explicit Controller(QObject *parent = nullptr);
 
     enum GameState {
-        NONE, AI, HUMAN
+        IDLE, AI, HUMAN
     };
     Q_ENUM(GameState)
 
@@ -39,11 +39,13 @@ signals:
     void nextMoveChanged();
 
 private:
-    QObject *m_parent;
     HumanPlayer *m_pl_hmn = nullptr;
     SimpleAi *m_pl_ai = nullptr;
     IPlayer *m_currentPlayer = nullptr;
     Dot *m_nextMove = nullptr;
-    GameState m_state = NONE;
+    GameState m_state = IDLE;
+    QFutureWatcher<Dot*> *m_watcher = nullptr;
+    int m_moveToken = 0;
+    int m_moveNumber = 0;
 };
 #endif // GAME_H
